@@ -93,7 +93,6 @@
       --card-blur: 20px;
     }
 
-    /* CUSTOM THEMA: Ultra-translucent met super lichte blur */
     body.theme-custom {
       --bg-gradient: none;
       --bg-color: #000000;
@@ -157,14 +156,17 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 6px;
     }
     .title { 
       font-size: 15px; 
       font-weight: 700; 
       letter-spacing: -0.2px; 
       color: var(--text); 
+      white-space: nowrap;
     }
-    .header-actions { display: flex; gap: 6px; }
+    .header-actions { display: flex; gap: 5px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .header-actions::-webkit-scrollbar { display: none; }
     
     .btn-glass {
       background: var(--btn-bg);
@@ -172,7 +174,7 @@
       color: var(--text);
       font-size: 12px;
       font-weight: 600;
-      padding: 6px 12px;
+      padding: 6px 11px;
       min-height: 36px;
       border-radius: 999px;
       cursor: pointer;
@@ -181,6 +183,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      white-space: nowrap;
     }
 
     .nav-group {
@@ -493,7 +496,7 @@
       border: 1px solid var(--accent);
     }
     .set-row.completed {
-      opacity: 0.9;
+      opacity: 0.92;
     }
     .set-meta {
       display: flex;
@@ -503,6 +506,8 @@
       color: var(--text-muted);
       font-weight: 700;
       letter-spacing: 0.3px;
+      flex-wrap: wrap;
+      gap: 4px;
     }
     .badge-pr {
       background: var(--accent);
@@ -513,12 +518,37 @@
       font-weight: 800;
       text-shadow: none;
     }
+    .badge-pct {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      text-shadow: none;
+    }
+    .badge-pct.up {
+      background: rgba(48, 209, 88, 0.18);
+      color: var(--accent);
+      border: 0.5px solid rgba(48, 209, 88, 0.4);
+    }
+    .badge-pct.down {
+      background: rgba(255, 69, 58, 0.18);
+      color: var(--danger);
+      border: 0.5px solid rgba(255, 69, 58, 0.4);
+    }
+    .badge-pct.same {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
 
     .inputs-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr auto;
       gap: 6px;
       align-items: center;
+    }
+    .inputs-grid.with-lbs {
+      grid-template-columns: 1fr 1fr 1fr 1fr auto;
     }
 
     .rir-segment-container {
@@ -586,6 +616,7 @@
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
+      gap: 6px;
       border: 0.5px solid var(--border);
       font-variant-numeric: tabular-nums;
     }
@@ -600,6 +631,7 @@
       font-size: 11px; 
       font-weight: 600;
       cursor: pointer; 
+      white-space: nowrap;
     }
 
     input, select { 
@@ -607,7 +639,7 @@
       border: 0.5px solid var(--border); 
       color: var(--text); 
       border-radius: 10px; 
-      padding: 8px 8px; 
+      padding: 8px 6px; 
       min-height: 44px;
       font-size: 14px; 
       width: 100%; 
@@ -617,6 +649,7 @@
       font-variant-numeric: tabular-nums;
     }
     input[type="text"] { text-align: left; }
+    input.num-text { text-align: center; }
     input:focus, select:focus { border-color: var(--accent); }
     .label-col { 
       font-size: 10px; 
@@ -628,7 +661,7 @@
     }
 
     .check-btn { 
-      width: 46px; 
+      width: 44px; 
       height: 44px; 
       border-radius: 10px; 
       border: 0.5px solid var(--border); 
@@ -699,20 +732,20 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.68);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       z-index: 100;
       align-items: center;
       justify-content: center;
-      padding: 18px;
+      padding: 16px;
     }
     .modal-box {
       background: var(--card-bg);
       border: 0.5px solid var(--border);
       border-radius: 20px;
       padding: 18px;
-      max-width: 400px;
+      max-width: 430px;
       width: 100%;
       max-height: 88vh;
       overflow-y: auto;
@@ -745,6 +778,73 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+    }
+
+    /* Progressie Lijngrafiek Styling */
+    .prog-metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin: 10px 0;
+    }
+    .prog-metric-btn {
+      background: var(--btn-bg);
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 4px;
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+    .prog-metric-btn.active {
+      background: var(--accent);
+      color: #000000;
+      font-weight: 700;
+      border-color: transparent;
+      text-shadow: none;
+    }
+    .prog-summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .prog-stat-box {
+      background: var(--card-inner);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .prog-stat-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
+    .prog-stat-val { font-size: 14px; font-weight: 800; }
+    .chart-box {
+      background: var(--card-inner);
+      border: 0.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 8px 6px 8px;
+      margin-bottom: 10px;
+    }
+    .prog-log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      max-height: 170px;
+      overflow-y: auto;
+    }
+    .prog-log-item {
+      background: var(--card-inner);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-variant-numeric: tabular-nums;
     }
 
     #toast {
@@ -786,6 +886,7 @@
       <div class="title">Workout Log</div>
       <div class="header-actions">
         <button class="btn-glass" onclick="undoLastAction()">Herstel</button>
+        <button class="btn-glass" onclick="openProgressionModal()">Progressie</button>
         <button class="btn-glass" onclick="toggleSummary()">Volume W<span id="summaryWeekLabel">1</span></button>
         <button class="btn-glass" onclick="openSettingsModal()">Instellingen</button>
       </div>
@@ -876,19 +977,62 @@
     </div>
   </div>
 
+  <!-- PROGRESSIE TRACKER (LIJNGRAFIEK) MODAL -->
+  <div class="modal-overlay" id="progressionModal">
+    <div class="modal-box">
+      <h3>Progressie Tracker</h3>
+      <div style="margin-bottom: 8px;">
+        <select id="progExerciseSelect" onchange="renderProgressionChart()"></select>
+      </div>
+
+      <div class="prog-metrics-bar">
+        <button class="prog-metric-btn active" id="progMetric_weight" onclick="setProgMetric('weight')">Max Gewicht</button>
+        <button class="prog-metric-btn" id="progMetric_e1rm" onclick="setProgMetric('e1rm')">1RM Kracht</button>
+        <button class="prog-metric-btn" id="progMetric_reps" onclick="setProgMetric('reps')">Beste Reps</button>
+        <button class="prog-metric-btn" id="progMetric_volume" onclick="setProgMetric('volume')">Volume</button>
+      </div>
+
+      <div class="prog-summary-cards">
+        <div class="prog-stat-box">
+          <div class="prog-stat-lbl">Start</div>
+          <div class="prog-stat-val" id="progStartVal">-</div>
+        </div>
+        <div class="prog-stat-box">
+          <div class="prog-stat-lbl">Laatste</div>
+          <div class="prog-stat-val" id="progLatestVal">-</div>
+        </div>
+        <div class="prog-stat-box">
+          <div class="prog-stat-lbl">Totale Trend</div>
+          <div class="prog-stat-val" id="progTotalPct">-</div>
+        </div>
+      </div>
+
+      <div class="chart-box" id="progChartContainer"></div>
+
+      <div class="setting-title" style="margin-top: 6px;">Sessie Historie & Stijging</div>
+      <div class="prog-log-list" id="progLogList"></div>
+
+      <button class="btn-glass" style="width: 100%; min-height: 44px; margin-top: 12px; font-weight:700;" onclick="closeProgressionModal()">Sluiten</button>
+    </div>
+  </div>
+
   <!-- INSTELLINGEN MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box">
       <h3>Instellingen</h3>
 
       <div class="setting-section">
-        <div class="setting-title">Spiercategorisering</div>
+        <div class="setting-title">Spiercategorisering & Eenheden</div>
         <div class="setting-row">
-          <span>Modus:</span>
+          <span>Spiermodus:</span>
           <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)" style="max-width: 175px;">
             <option value="simple">Simpel (Hoofdgroepen)</option>
             <option value="advanced">Geavanceerd (Zone + Overlap)</option>
           </select>
+        </div>
+        <div class="setting-row">
+          <span>LBS (Pounds) kolom:</span>
+          <button class="btn-config" id="lbsToggleBtn" onclick="toggleLbsSetting()">LBS Uit</button>
         </div>
       </div>
 
@@ -975,6 +1119,9 @@
 
         <div style="margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border);">
           <div style="font-size:11px; font-weight:700; margin-bottom:6px; color:var(--text-muted);">SCHEMA IMPORT & EXPORT (CSV):</div>
+          <button class="btn-config" style="width:100%; margin-bottom:6px; border-color:var(--accent); color:var(--accent); font-weight:700;" onclick="copyGeminiPromptToClipboard()">
+            Kopieer Gemini Prompt
+          </button>
           <div style="display:flex; gap:6px; margin-bottom:6px;">
             <button class="btn-config" style="flex:1;" onclick="downloadCSVTemplate()">Download Format</button>
             <button class="btn-config" style="flex:1; background:var(--accent); color:#000; font-weight:700;" onclick="triggerCSVUpload()">Upload Schema</button>
@@ -998,7 +1145,15 @@
   </div>
 
   <script>
-    // --- 1. SAFE LOCALSTORAGE SHIM ---
+    // --- 1. SAFE LOCALSTORAGE SHIM & HELPERS ---
+    const KG_TO_LBS = 2.20462262;
+
+    function round1(val) {
+      const n = parseFloat(String(val).replace(',', '.'));
+      if (isNaN(n)) return '';
+      return Math.round(n * 10) / 10;
+    }
+
     const memoryStore = {};
     const SafeStore = {
       getItem(key) {
@@ -1157,6 +1312,7 @@
     ];
 
     let muscleMode = SafeStore.getItem('wk_muscle_mode_v27') || 'simple';
+    let showLbs = JSON.parse(SafeStore.getItem('wk_show_lbs_v27') ?? 'false');
     let currentTheme = SafeStore.getItem('wk_theme_v27') || 'glass';
     if (currentTheme === 'beast') currentTheme = 'glass';
 
@@ -1184,17 +1340,16 @@
     let wakeLock = null;
     let wakeLockUserToggled = false;
 
-    // Rusttimer variabelen
     let timerInterval = null;
     let timerTargetTime = 0;
     let timerSeconds = 0;
 
-    // Onafhankelijke Stopwatch variabelen
     let swInterval = null;
     let swStartTime = 0;
     let swElapsedBeforePause = 0;
     let swRunning = false;
 
+    let currentProgMetric = 'weight';
     let audioCtx = null;
     let silentKeepAliveNode = null;
     let activeCustomSourceNode = null;
@@ -1597,7 +1752,6 @@
       }
     }
 
-    // --- RUSTTIMER FUNCTIES ---
     function startTimer(seconds) {
       stopTimer();
       timerTargetTime = Date.now() + (seconds * 1000);
@@ -1643,7 +1797,6 @@
         `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
-    // --- ONAFHANKELIJKE STOPWATCH FUNCTIES ---
     function toggleIndependentStopwatch() {
       const btn = document.getElementById('swToggleBtn');
       if (swRunning) {
@@ -1892,7 +2045,71 @@
       applyTheme(themeName);
     }
 
-    // --- 7. CSV EXPORT, FORMAT DOWNLOAD & SCHEMA UPLOAD ---
+    // --- 7. GEMINI PROMPT KOPIËREN, CSV EXPORT, FORMAT DOWNLOAD & SCHEMA UPLOAD ---
+    function copyGeminiPromptToClipboard() {
+      const promptText = `Maak voor mijn workout-tracker web-app een kant-en-klaar CSV-bestand op basis van mijn trainingsschema onderaan dit bericht.
+
+Gebruik EXACT deze kolomkoppen op regel 1 (komma-gescheiden en elke waarde tussen dubbele aanhalingstekens):
+Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities
+
+Houd je strikt aan deze regels:
+1. ELKE SET IS EEN APARTE REGEL: Als een oefening 3 sets heeft, maak je 3 regels aan onder elkaar waarbij de kolom "Set" oploopt ("1", "2", "3").
+2. WEEK: Zet "Week" standaard op "1" (tenzij ik vraag om meerdere weken).
+3. DAG: Gebruik de dagnamen die ik opgeef (bijv. "Dag 1", "Dag 2" of de naam van de split).
+4. HOOFDGROEP: Kies per oefening uitsluitend één van deze exacte namen:
+   - Borst
+   - Rug
+   - Quadriceps
+   - Hamstrings/Glutes
+   - Schouders
+   - Biceps
+   - Triceps
+   - Calves/Abs
+5. SPECIFIEKE ZONE: Kies per oefening uitsluitend één van deze exacte ID's (passend bij de Hoofdgroep):
+   - Borst: chest_upper OF chest_mid_lower
+   - Rug: back_lats OF back_upper
+   - Quadriceps: quads
+   - Hamstrings/Glutes: hams_curl OF hams_hinge OF glutes
+   - Schouders: delts_front OF delts_side OF delts_rear
+   - Biceps: biceps OF brachialis_forearms
+   - Triceps: triceps_long OF triceps_lateral_medial
+   - Calves/Abs: calves OF abs_core
+6. OVERLAPSPIEREN: Vul hier secundaire spieren in die meehelpen bij de oefening, gescheiden door een puntkomma (bijv. "delts_front;triceps_lateral_medial" bij een druk-oefening, of "biceps;delts_rear" bij een roei-oefening). Gebruik alleen de exacte ID's uit punt 5. Laat leeg ("") bij pure isolatie.
+7. PLATES, GEWICHTKG, REPS: Laat "Plates" en "GewichtKG" leeg ("") tenzij ik gewichten noem. Vul bij "Reps" mijn doel-reps in (of laat leeg "").
+8. RIR & VOLTOOID: Zet "DoelRIR" en "BehaaldRIR" standaard op "2" (tenzij ik iets anders aangeef, gebruik "-1" voor Failure). Zet "Voltooid" altijd op "Nee".
+9. Geef het resultaat terug in één enkel CSV-codeblok zodat ik het direct kan kopiëren of opslaan als .csv bestand.
+
+HIER IS MIJN SCHEMA OM IN TE VULLEN:
+- Dag 1: [Typ hier je oefeningen + aantal sets]
+- Dag 2: [Typ hier je oefeningen + aantal sets]
+- Dag 3: [Typ hier je oefeningen + aantal sets]`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(promptText).then(() => {
+          showToast('Gemini prompt gekopieerd!');
+        }).catch(() => fallbackCopyText(promptText));
+      } else {
+        fallbackCopyText(promptText);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Gemini prompt gekopieerd!');
+      } catch (e) {
+        alert('Kon niet automatisch kopiëren.');
+      }
+      document.body.removeChild(ta);
+    }
+
     function exportCSV() {
       let csv = 'Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities\n';
       for (let w = 1; w <= totalWeeks; w++) {
@@ -1985,7 +2202,6 @@
           return;
         }
 
-        // Detecteer automatisch komma (,) of Nederlandse Excel puntkomma (;)
         const headerLine = lines[0];
         const commaCount = (headerLine.match(/,/g) || []).length;
         const semiCount = (headerLine.match(/;/g) || []).length;
@@ -2020,14 +2236,14 @@
           const completed = completedStr === 'ja' || completedStr === 'true' || completedStr === '1';
           const note = cols[13] || '';
 
-          // Automatisch KG of Plates berekenen als er één is ingevuld
           if (weight && !plates) {
             const wVal = parseFloat(weight.replace(',', '.'));
-            if (!isNaN(wVal)) plates = String(Math.round((wVal / 20) * 100) / 100);
+            if (!isNaN(wVal)) plates = String(round1(wVal / 20));
           } else if (plates && !weight) {
             const pVal = parseFloat(plates.replace(',', '.'));
-            if (!isNaN(pVal)) weight = String(Math.round(pVal * 20 * 10) / 10);
+            if (!isNaN(pVal)) weight = String(round1(pVal * 20));
           }
+          const lbsVal = weight ? String(round1(parseFloat(weight.replace(',', '.')) * KG_TO_LBS)) : '';
 
           if (wNum > maxImportedWeek) maxImportedWeek = wNum;
           importedDaysSet.add(dName);
@@ -2035,7 +2251,6 @@
           const key = `W${wNum}_${dName}`;
           if (!importedData[key]) importedData[key] = [];
 
-          // Zoek of oefening al op deze dag/week bestaat (voor meerdere sets onder elkaar)
           let exObj = importedData[key].find(item => item.exercise.toLowerCase() === exName.toLowerCase());
           if (!exObj) {
             exObj = {
@@ -2053,6 +2268,7 @@
           exObj.sets.push({
             plates: plates,
             weight: weight,
+            lbs: lbsVal,
             reps: reps,
             targetRir: String(targetRir),
             actualRir: String(actualRir),
@@ -2066,7 +2282,6 @@
           return;
         }
 
-        // Voeg geïmporteerde dagen/weken samen met de app
         days = Array.from(importedDaysSet);
         totalWeeks = maxImportedWeek;
         Object.keys(importedData).forEach(k => {
@@ -2089,7 +2304,241 @@
       reader.readAsText(file);
     }
 
-    // --- 8. WORKOUT LOGICA, SPIERGROEPEN, KOPIËREN & STATS ---
+    // --- 8. PROGRESSIE TRACKER (LIJNGRAFIEK / TRENDLIJN) ---
+    function getAllExerciseNames() {
+      const names = new Set();
+      for (let w = 1; w <= totalWeeks; w++) {
+        for (let d of days) {
+          (data[getKey(w, d)] || []).forEach(ex => {
+            if (ex.exercise && ex.exercise.trim().length > 1) {
+              names.add(ex.exercise.trim());
+            }
+          });
+        }
+      }
+      return Array.from(names);
+    }
+
+    function openProgressionModal(preselectedName = '') {
+      const modal = document.getElementById('progressionModal');
+      const select = document.getElementById('progExerciseSelect');
+      const allNames = getAllExerciseNames();
+
+      if (allNames.length === 0) {
+        showToast('Vul eerst een oefening en gewicht in');
+        return;
+      }
+
+      select.innerHTML = allNames.map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`).join('');
+
+      if (preselectedName && allNames.some(n => n.toLowerCase() === preselectedName.trim().toLowerCase())) {
+        const match = allNames.find(n => n.toLowerCase() === preselectedName.trim().toLowerCase());
+        select.value = match;
+      }
+
+      modal.style.display = 'flex';
+      renderProgressionChart();
+    }
+
+    function closeProgressionModal() {
+      document.getElementById('progressionModal').style.display = 'none';
+    }
+
+    function setProgMetric(metric) {
+      currentProgMetric = metric;
+      ['weight', 'e1rm', 'reps', 'volume'].forEach(m => {
+        const btn = document.getElementById(`progMetric_${m}`);
+        if (btn) btn.classList.toggle('active', m === metric);
+      });
+      renderProgressionChart();
+    }
+
+    function getExerciseHistorySessions(exerciseName) {
+      if (!exerciseName) return [];
+      const target = exerciseName.trim().toLowerCase();
+      const sessions = [];
+
+      for (let w = 1; w <= totalWeeks; w++) {
+        for (let d of days) {
+          const dayExs = data[getKey(w, d)] || [];
+          dayExs.forEach(ex => {
+            if (ex.exercise && ex.exercise.trim().toLowerCase() === target) {
+              const validSets = (ex.sets || []).filter(s => {
+                const wVal = parseFloat(String(s.weight || '').replace(',', '.'));
+                const rVal = parseFloat(String(s.reps || '').replace(',', '.'));
+                return (!isNaN(wVal) && wVal > 0) || (!isNaN(rVal) && rVal > 0);
+              });
+
+              if (validSets.length > 0) {
+                let maxWeight = 0;
+                let bestReps = 0;
+                let maxE1rm = 0;
+                let sessionVol = 0;
+                let bestSetStr = '';
+
+                validSets.forEach(s => {
+                  const kg = parseFloat(String(s.weight || '0').replace(',', '.')) || 0;
+                  const reps = parseFloat(String(s.reps || '0').replace(',', '.')) || 0;
+                  const e1rm = reps > 0 ? kg * (1 + reps / 30) : kg;
+                  sessionVol += (kg * reps);
+
+                  if (kg > maxWeight || (kg === maxWeight && reps > bestReps)) {
+                    maxWeight = kg;
+                    bestReps = reps;
+                    const unitVal = showLbs ? `${round1(kg * KG_TO_LBS)} lbs` : `${round1(kg)} kg`;
+                    bestSetStr = `${unitVal} × ${reps}`;
+                  }
+                  if (e1rm > maxE1rm) maxE1rm = e1rm;
+                });
+
+                const displayWeight = showLbs ? round1(maxWeight * KG_TO_LBS) : round1(maxWeight);
+                const displayE1rm = showLbs ? round1(maxE1rm * KG_TO_LBS) : round1(maxE1rm);
+                const displayVol = showLbs ? Math.round(sessionVol * KG_TO_LBS) : Math.round(sessionVol);
+
+                sessions.push({
+                  label: `W${w} ${d.replace('Dag ', 'D')}`,
+                  fullLabel: `Week ${w} - ${d}`,
+                  weight: displayWeight,
+                  e1rm: displayE1rm,
+                  reps: bestReps,
+                  volume: displayVol,
+                  bestSetStr: bestSetStr
+                });
+              }
+            }
+          });
+        }
+      }
+      return sessions;
+    }
+
+    function renderProgressionChart() {
+      const select = document.getElementById('progExerciseSelect');
+      const exName = select ? select.value : '';
+      const sessions = getExerciseHistorySessions(exName);
+      const chartBox = document.getElementById('progChartContainer');
+      const logList = document.getElementById('progLogList');
+      const unitLbl = showLbs ? 'lbs' : 'kg';
+
+      if (sessions.length === 0) {
+        document.getElementById('progStartVal').innerText = '-';
+        document.getElementById('progLatestVal').innerText = '-';
+        document.getElementById('progTotalPct').innerText = '-';
+        chartBox.innerHTML = `<div style="text-align:center; padding:24px 10px; color:var(--text-muted); font-size:12px;">Nog geen ingevulde gewichten of reps voor deze oefening.</div>`;
+        logList.innerHTML = '';
+        return;
+      }
+
+      const values = sessions.map(s => s[currentProgMetric] || 0);
+      const firstVal = values[0];
+      const lastVal = values[values.length - 1];
+      const suffix = currentProgMetric === 'reps' ? ' reps' : ` ${unitLbl}`;
+
+      document.getElementById('progStartVal').innerText = `${firstVal}${suffix}`;
+      document.getElementById('progLatestVal').innerText = `${lastVal}${suffix}`;
+
+      const pctEl = document.getElementById('progTotalPct');
+      if ( sessions.length > 1 && firstVal > 0 ) {
+        const totalDiffPct = round1(((lastVal - firstVal) / firstVal) * 100);
+        const sign = totalDiffPct > 0 ? '+' : '';
+        pctEl.innerText = `${sign}${totalDiffPct}%`;
+        pctEl.style.color = totalDiffPct > 0 ? 'var(--accent)' : (totalDiffPct < 0 ? 'var(--danger)' : 'var(--text)');
+      } else {
+        pctEl.innerText = '0%';
+        pctEl.style.color = 'var(--text-muted)';
+      }
+
+      // Teken SVG Lijngrafiek
+      const width = 360;
+      const height = 165;
+      const padLeft = 28;
+      const padRight = 24;
+      const padTop = 24;
+      const padBottom = 28;
+      const plotW = width - padLeft - padRight;
+      const plotH = height - padTop - padBottom;
+
+      const minV = Math.min(...values);
+      const maxV = Math.max(...values);
+      const range = maxV - minV === 0 ? (maxV || 10) * 0.2 : (maxV - minV);
+      const lowBound = Math.max(0, minV - range * 0.15);
+      const highBound = maxV + range * 0.15;
+
+      const points = values.map((v, idx) => {
+        const x = sessions.length === 1
+          ? padLeft + plotW / 2
+          : padLeft + (idx / (sessions.length - 1)) * plotW;
+        const y = padTop + plotH - ((v - lowBound) / (highBound - lowBound || 1)) * plotH;
+        return { x, y, v, label: sessions[idx].label };
+      });
+
+      const polylinePoints = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+      const areaPoints = `${points[0].x.toFixed(1)},${padTop + plotH} ${polylinePoints} ${points[points.length - 1].x.toFixed(1)},${padTop + plotH}`;
+
+      chartBox.innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" style="width:100%; height:auto; display:block; overflow:visible;">
+          <defs>
+            <linearGradient id="progLineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <line x1="${padLeft}" y1="${padTop}" x2="${width - padRight}" y2="${padTop}" stroke="var(--border)" stroke-dasharray="3,3" stroke-width="1" />
+          <line x1="${padLeft}" y1="${padTop + plotH / 2}" x2="${width - padRight}" y2="${padTop + plotH / 2}" stroke="var(--border)" stroke-dasharray="3,3" stroke-width="1" />
+          <line x1="${padLeft}" y1="${padTop + plotH}" x2="${width - padRight}" y2="${padTop + plotH}" stroke="var(--border)" stroke-width="1" />
+
+          ${points.length > 1 ? `<polygon points="${areaPoints}" fill="url(#progLineGrad)" />` : ''}
+          ${points.length > 1 ? `<polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${polylinePoints}" />` : ''}
+
+          ${points.map((p, i) => {
+            const showLabel = points.length <= 8 || i === 0 || i === points.length - 1 || i % Math.ceil(points.length / 6) === 0;
+            return `
+              <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="var(--accent)" stroke="var(--bg-color)" stroke-width="1.5" />
+              ${showLabel ? `<text x="${p.x.toFixed(1)}" y="${(p.y - 8).toFixed(1)}" fill="var(--text)" font-size="10" font-weight="700" text-anchor="middle">${p.v}</text>` : ''}
+              ${showLabel ? `<text x="${p.x.toFixed(1)}" y="${height - 7}" fill="var(--text-muted)" font-size="9" font-weight="600" text-anchor="middle">${p.label}</text>` : ''}
+            `;
+          }).join('')}
+        </svg>
+      `;
+
+      // Render sessie-overzicht met procentuele vergelijking t.o.v. vorige sessie
+      logList.innerHTML = sessions.map((s, idx) => {
+        let pctBadge = `<span class="badge-pct same">Start</span>`;
+        if (idx > 0) {
+          const prevVal = values[idx - 1];
+          const curVal = values[idx];
+          if (prevVal > 0) {
+            const pct = round1(((curVal - prevVal) / prevVal) * 100);
+            const sign = pct > 0 ? '+' : '';
+            const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'same');
+            pctBadge = `<span class="badge-pct ${cls}">${sign}${pct}%</span>`;
+          }
+        }
+        return `
+          <div class="prog-log-item">
+            <div>
+              <strong>${s.fullLabel}</strong>
+              <div style="font-size:10px; color:var(--text-muted);">Beste set: ${s.bestSetStr}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <strong>${values[idx]}${suffix}</strong>
+              ${pctBadge}
+            </div>
+          </div>
+        `;
+      }).reverse().join('');
+    }
+
+    // --- 9. WORKOUT LOGICA, LBS CONVERSIE & MEEST RECENTE SESSIE LOOKUP ---
+    function toggleLbsSetting() {
+      showLbs = !showLbs;
+      SafeStore.setItem('wk_show_lbs_v27', JSON.stringify(showLbs));
+      document.getElementById('lbsToggleBtn').innerText = showLbs ? 'LBS Aan' : 'LBS Uit';
+      renderExercises();
+      updateStats();
+      showToast(showLbs ? 'LBS (Pounds) kolom ingeschakeld' : 'LBS kolom verborgen');
+    }
+
     function pushHistory() {
       historyStack.push(JSON.stringify(data));
       if (historyStack.length > 20) historyStack.shift();
@@ -2125,6 +2574,7 @@
     function openSettingsModal() {
       document.getElementById('settingsModal').style.display = 'flex';
       document.getElementById('muscleModeSelect').value = muscleMode;
+      document.getElementById('lbsToggleBtn').innerText = showLbs ? 'LBS Aan' : 'LBS Uit';
       renderAudioDropdowns();
       renderThemeDropdown();
       updateCycleCountLabels();
@@ -2165,7 +2615,7 @@
       const k = getKey();
       if (!data[k] || data[k].length === 0) {
         data[k] = [
-          { exercise: '', muscle: '', advMuscle: '', overlapMuscles: [], note: '', linkedSuperset: false, sets: [{ weight: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }] }
+          { exercise: '', muscle: '', advMuscle: '', overlapMuscles: [], note: '', linkedSuperset: false, sets: [{ weight: '', lbs: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }] }
         ];
       }
     }
@@ -2279,7 +2729,7 @@
         overlapMuscles: [],
         note: '',
         linkedSuperset: false,
-        sets: [{ weight: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }]
+        sets: [{ weight: '', lbs: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }]
       });
       saveData();
       renderExercises();
@@ -2331,6 +2781,7 @@
       const prevSet = ex.sets[ex.sets.length - 1] || {};
       ex.sets.push({
         weight: prevSet.weight || '',
+        lbs: prevSet.lbs || '',
         plates: prevSet.plates || '',
         reps: prevSet.reps || '',
         targetRir: prevSet.targetRir || '2',
@@ -2419,6 +2870,7 @@
         const exSet = existingSets[idx] || {};
         return {
           weight: exSet.weight || '',
+          lbs: exSet.lbs || '',
           plates: exSet.plates || '',
           reps: exSet.reps || '',
           targetRir: s.targetRir || '2',
@@ -2526,44 +2978,92 @@
       showToast(`Hele schema van Week ${currentWeek} gekopieerd naar alle weken!`);
     }
 
+    // Automatische 3-weg berekening tussen Plates, KG en LBS (afgerond op max 1 decimaal)
     function updatePlatesInput(exIdx, setIdx, rawVal) {
       const k = getKey();
+      const s = data[k][exIdx].sets[setIdx];
       const cleanVal = (rawVal || '').replace(',', '.');
-      data[k][exIdx].sets[setIdx].plates = rawVal;
+      s.plates = rawVal;
 
       const p = parseFloat(cleanVal);
       if (!isNaN(p)) {
-        const calculatedKg = Math.round(p * 20 * 10) / 10;
-        data[k][exIdx].sets[setIdx].weight = calculatedKg;
+        const calculatedKg = round1(p * 20);
+        const calculatedLbs = round1(calculatedKg * KG_TO_LBS);
+        s.weight = calculatedKg;
+        s.lbs = calculatedLbs;
         const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
         if (kgInput) kgInput.value = calculatedKg;
+        const lbsInput = document.getElementById(`lbs_${exIdx}_${setIdx}`);
+        if (lbsInput) lbsInput.value = calculatedLbs;
       } else if (rawVal === '') {
-        data[k][exIdx].sets[setIdx].weight = '';
+        s.weight = '';
+        s.lbs = '';
         const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
         if (kgInput) kgInput.value = '';
+        const lbsInput = document.getElementById(`lbs_${exIdx}_${setIdx}`);
+        if (lbsInput) lbsInput.value = '';
       }
       saveData();
       updateStats();
+      updateLiveSetBadge(exIdx, setIdx);
     }
 
     function updateKgInput(exIdx, setIdx, rawVal) {
       const k = getKey();
+      const s = data[k][exIdx].sets[setIdx];
       const cleanVal = (rawVal || '').replace(',', '.');
-      data[k][exIdx].sets[setIdx].weight = rawVal;
+      s.weight = rawVal;
 
       const kg = parseFloat(cleanVal);
       if (!isNaN(kg)) {
-        const calculatedPlates = Math.round((kg / 20) * 100) / 100;
-        data[k][exIdx].sets[setIdx].plates = calculatedPlates;
+        const calculatedPlates = round1(kg / 20);
+        const calculatedLbs = round1(kg * KG_TO_LBS);
+        s.plates = calculatedPlates;
+        s.lbs = calculatedLbs;
+        const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
+        if (plateInput) plateInput.value = calculatedPlates;
+        const lbsInput = document.getElementById(`lbs_${exIdx}_${setIdx}`);
+        if (lbsInput) lbsInput.value = calculatedLbs;
+      } else if (rawVal === '') {
+        s.plates = '';
+        s.lbs = '';
+        const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
+        if (plateInput) plateInput.value = '';
+        const lbsInput = document.getElementById(`lbs_${exIdx}_${setIdx}`);
+        if (lbsInput) lbsInput.value = '';
+      }
+      saveData();
+      updateStats();
+      updateLiveSetBadge(exIdx, setIdx);
+    }
+
+    function updateLbsInput(exIdx, setIdx, rawVal) {
+      const k = getKey();
+      const s = data[k][exIdx].sets[setIdx];
+      const cleanVal = (rawVal || '').replace(',', '.');
+      s.lbs = rawVal;
+
+      const lbs = parseFloat(cleanVal);
+      if (!isNaN(lbs)) {
+        const calculatedKg = round1(lbs / KG_TO_LBS);
+        const calculatedPlates = round1(calculatedKg / 20);
+        s.weight = calculatedKg;
+        s.plates = calculatedPlates;
+        const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
+        if (kgInput) kgInput.value = calculatedKg;
         const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
         if (plateInput) plateInput.value = calculatedPlates;
       } else if (rawVal === '') {
-        data[k][exIdx].sets[setIdx].plates = '';
+        s.weight = '';
+        s.plates = '';
+        const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
+        if (kgInput) kgInput.value = '';
         const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
         if (plateInput) plateInput.value = '';
       }
       saveData();
       updateStats();
+      updateLiveSetBadge(exIdx, setIdx);
     }
 
     function updateRirQuick(exIdx, setIdx, field, val) {
@@ -2579,19 +3079,93 @@
       data[k][exIdx].sets[setIdx][field] = val;
       saveData();
       updateStats();
+      updateLiveSetBadge(exIdx, setIdx);
+    }
+
+    // Zoekt chronologisch terug naar de MEEST RECENTE vorige training waarin deze oefening is uitgevoerd
+    function getMostRecentPreviousSet(exerciseName, currentExIdx, setIdx) {
+      const target = (exerciseName || '').trim().toLowerCase();
+      const curDayIdx = days.indexOf(currentDay);
+
+      // Doorloop weken achteruit vanaf huidige week
+      for (let w = currentWeek; w >= 1; w--) {
+        const startDayIdx = (w === currentWeek) ? curDayIdx - 1 : days.length - 1;
+        for (let dIdx = startDayIdx; dIdx >= 0; dIdx--) {
+          const dName = days[dIdx];
+          const dayExercises = data[getKey(w, dName)] || [];
+
+          for (let eIdx = dayExercises.length - 1; eIdx >= 0; eIdx--) {
+            const ex = dayExercises[eIdx];
+            const nameMatch = target.length >= 2
+              ? (ex.exercise && ex.exercise.trim().toLowerCase() === target)
+              : (target.length === 0 && dName === currentDay && eIdx === currentExIdx);
+
+            if (nameMatch && ex.sets && ex.sets.length > 0) {
+              // Controleer of deze sessie daadwerkelijk ingevulde sets heeft (negeer lege gekopieerde weken/dagen)
+              const candidateSet = ex.sets[setIdx] || ex.sets[ex.sets.length - 1];
+              if (candidateSet && candidateSet.weight !== '' && candidateSet.weight !== undefined && candidateSet.reps !== '' && candidateSet.reps !== undefined) {
+                return {
+                  week: w,
+                  day: dName,
+                  weight: candidateSet.weight,
+                  plates: candidateSet.plates,
+                  lbs: candidateSet.lbs || round1(parseFloat(candidateSet.weight) * KG_TO_LBS),
+                  reps: candidateSet.reps,
+                  targetRir: candidateSet.targetRir,
+                  actualRir: candidateSet.actualRir
+                };
+              }
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    // Berekent de percentage-badge ten opzichte van de meest recente training
+    function buildPctComparisonHtml(curSet, prevSet) {
+      if (!prevSet) return '';
+      const curW = parseFloat(String(curSet.weight || '').replace(',', '.'));
+      const prevW = parseFloat(String(prevSet.weight || '').replace(',', '.'));
+      if (isNaN(curW) || isNaN(prevW) || prevW <= 0 || curW <= 0) return '';
+
+      const diffPct = round1(((curW - prevW) / prevW) * 100);
+      const sign = diffPct > 0 ? '+' : '';
+      const cls = diffPct > 0 ? 'up' : (diffPct < 0 ? 'down' : 'same');
+
+      const curR = parseFloat(String(curSet.reps || '').replace(',', '.'));
+      const prevR = parseFloat(String(prevSet.reps || '').replace(',', '.'));
+      let repExtra = '';
+      if (!isNaN(curR) && !isNaN(prevR) && curR !== prevR) {
+        const rDiff = round1(curR - prevR);
+        repExtra = ` (${rDiff > 0 ? '+' : ''}${rDiff} reps)`;
+      }
+
+      return `<span class="badge-pct ${cls}">${sign}${diffPct}% gewicht${repExtra}</span>`;
+    }
+
+    function updateLiveSetBadge(exIdx, setIdx) {
+      const badgeContainer = document.getElementById(`pct_badge_${exIdx}_${setIdx}`);
+      if (!badgeContainer) return;
+      const ex = data[getKey()][exIdx];
+      const set = ex.sets[setIdx];
+      const recent = getMostRecentPreviousSet(ex.exercise, exIdx, setIdx);
+      badgeContainer.innerHTML = buildPctComparisonHtml(set, recent);
     }
 
     function checkIsPR(exerciseName, weight, reps) {
       const wVal = parseFloat(weight);
       const rVal = parseFloat(reps);
-      if (!exerciseName || !wVal || !rVal || currentWeek === 1) return false;
+      if (!exerciseName || !wVal || !rVal) return false;
 
       const target = exerciseName.trim().toLowerCase();
+      const curDayIdx = days.indexOf(currentDay);
       let maxHistoricalWeight = 0;
 
-      for (let w = 1; w < currentWeek; w++) {
-        for (let d of days) {
-          const dayExercises = data[getKey(w, d)] || [];
+      for (let w = 1; w <= currentWeek; w++) {
+        const maxDayIdx = (w === currentWeek) ? curDayIdx - 1 : days.length - 1;
+        for (let dIdx = 0; dIdx <= maxDayIdx; dIdx++) {
+          const dayExercises = data[getKey(w, days[dIdx])] || [];
           dayExercises.forEach(ex => {
             if (ex.exercise && ex.exercise.trim().toLowerCase() === target) {
               ex.sets.forEach(s => {
@@ -2633,8 +3207,10 @@
       pushHistory();
       const k = getKey();
       const s = data[k][exIdx].sets[setIdx];
-      s.weight = weight;
-      s.plates = weight ? (Math.round((parseFloat(weight) / 20) * 100) / 100) : '';
+      const cleanW = parseFloat(String(weight).replace(',', '.'));
+      s.weight = !isNaN(cleanW) ? round1(cleanW) : weight;
+      s.plates = !isNaN(cleanW) ? round1(cleanW / 20) : '';
+      s.lbs = !isNaN(cleanW) ? round1(cleanW * KG_TO_LBS) : '';
       s.reps = reps;
       s.actualRir = String(actualRir);
       saveData();
@@ -2644,36 +3220,6 @@
 
     function saveData() {
       SafeStore.setItem('workout_data_v27', JSON.stringify(data));
-    }
-
-    function getLastWeekSet(exIdx, setIdx) {
-      if (currentWeek <= 1) return null;
-      const prevSets = data[getKey(currentWeek - 1, currentDay)];
-      if (prevSets && prevSets[exIdx] && prevSets[exIdx].sets && prevSets[exIdx].sets[setIdx]) {
-        const s = prevSets[exIdx].sets[setIdx];
-        if (s.weight && s.reps) return s;
-      }
-      return null;
-    }
-
-    function getThisWeekSet(exerciseName, currentExIdx, currentSetIdx) {
-      if (!exerciseName || exerciseName.trim().length < 2) return null;
-      const target = exerciseName.trim().toLowerCase();
-
-      for (let d of days) {
-        const dayExercises = data[getKey(currentWeek, d)] || [];
-        for (let eIdx = 0; eIdx < dayExercises.length; eIdx++) {
-          const ex = dayExercises[eIdx];
-          if (ex.exercise && ex.exercise.trim().toLowerCase() === target) {
-            for (let sIdx = 0; sIdx < ex.sets.length; sIdx++) {
-              if (d === currentDay && eIdx === currentExIdx && sIdx >= currentSetIdx) continue;
-              const s = ex.sets[sIdx];
-              if (s.weight && s.reps) return { day: d, ...s };
-            }
-          }
-        }
-      }
-      return null;
     }
 
     function renderExercises() {
@@ -2722,6 +3268,7 @@
               <div class="exercise-header">
                 <input type="text" list="exerciseSuggestions" placeholder="Oefening naam..." value="${escapeHtml(ex.exercise || '')}" 
                   onfocus="this.select()"
+                  onchange="renderExercises()"
                   oninput="handleExerciseNameChange(${exIdx}, this.value)" />
                 <button class="btn-action-tool" onclick="removeExercise(${exIdx})">✕</button>
               </div>
@@ -2770,6 +3317,7 @@
               <div class="exercise-tools">
                 <button class="btn-action-tool" onclick="addSetToExercise(${exIdx})">+ Set</button>
                 <button class="btn-action-tool" onclick="removeSetFromExercise(${exIdx})">- Set</button>
+                <button class="btn-action-tool" onclick="openProgressionModal('${escapeHtml(ex.exercise || '')}')">Progressie</button>
                 <button class="btn-action-tool" onclick="copyExerciseToAllWeeks(${exIdx})">Naar alle weken</button>
                 <button class="btn-action-tool" onclick="openWarmupCalculator(${exIdx})">Warm-up</button>
                 <button class="btn-action-tool ${isParent ? 'active-superset' : ''}" onclick="toggleSupersetLink(${exIdx})">
@@ -2785,54 +3333,56 @@
                 oninput="updateNote(${exIdx}, this.value)" />
 
               ${ex.sets.map((set, setIdx) => {
-                const lastWeek = getLastWeekSet(exIdx, setIdx);
-                const thisWeek = getThisWeekSet(ex.exercise, exIdx, setIdx);
+                // Haal ALTIJD de meest recente voorgaande instantie op (ook als de oefening meerdere keren per week voorkomt)
+                const recentSet = getMostRecentPreviousSet(ex.exercise, exIdx, setIdx);
                 const isPR = checkIsPR(ex.exercise, set.weight, set.reps);
-                const lastWeekRir = lastWeek ? (lastWeek.actualRir !== undefined && lastWeek.actualRir !== '' ? lastWeek.actualRir : lastWeek.targetRir) : '';
+                const recentRir = recentSet ? (recentSet.actualRir !== undefined && recentSet.actualRir !== '' ? recentSet.actualRir : recentSet.targetRir) : '';
+                const computedLbs = set.lbs !== undefined && set.lbs !== '' ? set.lbs : (set.weight ? round1(parseFloat(set.weight) * KG_TO_LBS) : '');
+                const pctHtml = buildPctComparisonHtml(set, recentSet);
 
                 return `
                   <div class="set-row ${set.completed ? 'completed' : ''} ${isPR ? 'is-pr' : ''}">
                     <div class="set-meta">
                       <span>SET ${setIdx + 1}</span>
                       <div style="display: flex; gap: 4px; align-items: center;">
-                        ${isPR ? `<span class="badge-pr">PR</span>` : ''}
+                        <span id="pct_badge_${exIdx}_${setIdx}">${pctHtml}</span>${isPR ? `<span class="badge-pr">PR</span>` : ''}
                         ${set.completed ? '<span style="color: var(--accent); font-size:10px;">Gereed</span>' : ''}
                       </div>
                     </div>
 
                     <div class="hints-wrapper">
-                      ${lastWeek ? `
+                      ${recentSet ? `
                         <div class="hint-chip last-week">
-                          <span>Vorige week: <strong>${lastWeek.weight}kg (${lastWeek.plates || (lastWeek.weight/20)} pl) × ${lastWeek.reps}</strong> (RIR ${lastWeekRir})</span>
-                          <button onclick="applyValues(${exIdx}, ${setIdx}, '${lastWeek.weight}', '${lastWeek.reps}', '${lastWeekRir}')">Overnemen</button>
-                        </div>
-                      ` : ''}
-
-                      ${thisWeek && (!lastWeek || thisWeek.weight !== lastWeek.weight || thisWeek.reps !== lastWeek.reps) ? `
-                        <div class="hint-chip this-week">
-                          <span>Eerder (${thisWeek.day}): <strong>${thisWeek.weight}kg × ${thisWeek.reps}</strong></span>
-                          <button onclick="applyValues(${exIdx}, ${setIdx}, '${thisWeek.weight}', '${thisWeek.reps}', '${thisWeek.actualRir || thisWeek.targetRir}')">Overnemen</button>
+                          <span>Laatste (W${recentSet.week} ${recentSet.day}): <strong>${recentSet.weight}kg${showLbs ? ` / ${recentSet.lbs}lbs` : ''} (${recentSet.plates || round1(recentSet.weight/20)} pl) × ${recentSet.reps}</strong> (RIR ${recentRir})</span>
+                          <button onclick="applyValues(${exIdx}, ${setIdx}, '${recentSet.weight}', '${recentSet.reps}', '${recentRir}')">Overnemen</button>
                         </div>
                       ` : ''}
                     </div>
 
-                    <div class="inputs-grid">
+                    <div class="inputs-grid ${showLbs ? 'with-lbs' : ''}">
                       <div>
                         <div class="label-col">Plates</div>
-                        <input type="text" id="plates_${exIdx}_${setIdx}" placeholder="pl" inputmode="decimal" 
+                        <input type="text" class="num-text" id="plates_${exIdx}_${setIdx}" placeholder="pl" inputmode="decimal" 
                           value="${set.plates ?? ''}" 
                           onfocus="this.select()"
-                          onkeydown="if(event.key==='Enter') document.getElementById('weight_${exIdx}_${setIdx}').focus()"
                           oninput="updatePlatesInput(${exIdx},${setIdx}, this.value)">
                       </div>
                       <div>
                         <div class="label-col">KG</div>
-                        <input type="number" id="weight_${exIdx}_${setIdx}" placeholder="kg" inputmode="decimal" 
+                        <input type="number" id="weight_${exIdx}_${setIdx}" placeholder="kg" inputmode="decimal" step="0.1"
                           value="${set.weight ?? ''}" 
                           onfocus="this.select()"
-                          onkeydown="if(event.key==='Enter') document.getElementById('reps_${exIdx}_${setIdx}').focus()"
                           oninput="updateKgInput(${exIdx},${setIdx}, this.value)">
                       </div>
+                      ${showLbs ? `
+                        <div>
+                          <div class="label-col">LBS</div>
+                          <input type="number" id="lbs_${exIdx}_${setIdx}" placeholder="lbs" inputmode="decimal" step="0.1"
+                            value="${computedLbs}" 
+                            onfocus="this.select()"
+                            oninput="updateLbsInput(${exIdx},${setIdx}, this.value)">
+                        </div>
+                      ` : ''}
                       <div>
                         <div class="label-col">Reps</div>
                         <input type="number" id="reps_${exIdx}_${setIdx}" placeholder="reps" inputmode="numeric" 
@@ -2900,7 +3450,11 @@
       });
 
       document.getElementById('completedStat').innerText = completedCount;
-      document.getElementById('tonnageStat').innerText = `${Math.round(tonnage)} kg`;
+      if (showLbs) {
+        document.getElementById('tonnageStat').innerText = `${Math.round(tonnage)} kg (${Math.round(tonnage * KG_TO_LBS)} lbs)`;
+      } else {
+        document.getElementById('tonnageStat').innerText = `${Math.round(tonnage)} kg`;
+      }
     }
 
     function toggleSummary() {
@@ -3029,6 +3583,7 @@
     async function init() {
       configureAmbientAudioSession();
       document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
+      document.getElementById('lbsToggleBtn').innerText = showLbs ? 'LBS Aan' : 'LBS Uit';
       document.getElementById('autoTimerSelect').value = autoTimerSeconds;
       document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
       document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
