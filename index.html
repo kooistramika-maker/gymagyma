@@ -65,7 +65,7 @@
                      radial-gradient(at 85% 85%, rgba(251, 191, 36, 0.4) 0px, transparent 60%);
       --bg-color: #fef3c7;
       --card-bg: rgba(255, 253, 245, 0.92);
-      --card-inner: rgba(254, 243, 199, 0.9);
+      --card-inner: rgba(240, 243, 199, 0.9);
       --text: #451a03;
       --text-muted: #78350f;
       --accent: #d97706;
@@ -734,13 +734,13 @@
 
   <div id="toast"></div>
 
-  <!-- Bestands-uploads voor Custom Achtergrond & Geluiden (Audio & Video) -->
+  <!-- Bestands-uploads voor Custom Achtergrond & Geluiden (Video en Audio) -->
   <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
-  <input type="file" id="customDoneMediaInput" accept="audio/*,video/*" style="display:none;" onchange="handleCustomMediaUpload(event, 'done')">
-  <input type="file" id="customAlarmMediaInput" accept="audio/*,video/*" style="display:none;" onchange="handleCustomMediaUpload(event, 'alarm')">
+  <input type="file" id="customDoneMediaInput" accept="video/*,audio/*" style="display:none;" onchange="handleMediaFileChosen(event, 'done')">
+  <input type="file" id="customAlarmMediaInput" accept="video/*,audio/*" style="display:none;" onchange="handleMediaFileChosen(event, 'alarm')">
 
-  <!-- Dynamische mediaspeler voor geüploade audio/video -->
-  <audio id="dynamicAudioPlayer" preload="auto"></audio>
+  <!-- Verborgen Video-element dat audio uit videoclips afspeelt op iOS zonder beeldvenster -->
+  <video id="hiddenMediaRunner" playsinline webkit-playsinline style="position:fixed; top:-999px; left:-999px; width:1px; height:1px; opacity:0; pointer-events:none;"></video>
 
   <datalist id="exerciseSuggestions"></datalist>
 
@@ -872,7 +872,7 @@
       </div>
 
       <div class="setting-section">
-        <div class="setting-title">Geluiden</div>
+        <div class="setting-title">Geluiden (Video & Audio)</div>
         <div class="setting-row">
           <span>Set Voltooid:</span>
           <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
@@ -935,6 +935,59 @@
   </div>
 
   <script>
+    // --- INDEXEDDB STORAGE VOOR GROTE VIDEO/AUDIO BESTANDEN ---
+    let idb = null;
+    function openMediaDB() {
+      return new Promise((resolve) => {
+        if (idb) return resolve(idb);
+        const req = indexedDB.open('GymTrackerMediaDB', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('media')) {
+            db.createObjectStore('media', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          idb = e.target.result;
+          resolve(idb);
+        };
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function idbSaveMedia(item) {
+      const db = await openMediaDB();
+      if (!db) return;
+      return new Promise((resolve) => {
+        const tx = db.transaction('media', 'readwrite');
+        tx.objectStore('media').put(item);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    }
+
+    async function idbGetMedia(id) {
+      const db = await openMediaDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        const tx = db.transaction('media', 'readonly');
+        const req = tx.objectStore('media').get(id);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function idbDeleteMedia(id) {
+      const db = await openMediaDB();
+      if (!db) return;
+      return new Promise((resolve) => {
+        const tx = db.transaction('media', 'readwrite');
+        tx.objectStore('media').delete(id);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    }
+
     const memoryStore = {};
     const SafeStore = {
       getItem(key) {
@@ -995,8 +1048,8 @@
     let autoTimerSeconds = parseInt(SafeStore.getItem('wk_autotimer_sec_v27') ?? '90');
     let soundVolume = parseFloat(SafeStore.getItem('wk_sound_volume_v27') ?? '1.0');
 
-    let customDoneAudios = JSON.parse(SafeStore.getItem('wk_custom_done_audios_v27')) || [];
-    let customAlarmAudios = JSON.parse(SafeStore.getItem('wk_custom_alarm_audios_v27')) || [];
+    let customDoneAudios = JSON.parse(SafeStore.getItem('wk_custom_done_audios_meta_v27')) || [];
+    let customAlarmAudios = JSON.parse(SafeStore.getItem('wk_custom_alarm_audios_meta_v27')) || [];
     let currentDoneAudioId = SafeStore.getItem('wk_active_done_audio_id_v27') || 'beep';
     let currentAlarmAudioId = SafeStore.getItem('wk_active_alarm_audio_id_v27') || 'classic';
 
@@ -1024,8 +1077,8 @@
     function changeVolumeLevel(val) {
       soundVolume = parseFloat(val);
       SafeStore.setItem('wk_sound_volume_v27', soundVolume);
-      const player = document.getElementById('dynamicAudioPlayer');
-      if (player) player.volume = soundVolume;
+      const runner = document.getElementById('hiddenMediaRunner');
+      if (runner) runner.volume = soundVolume;
       playSynthTone(750, 0.15, 'sawtooth');
       showToast(`Volume: ${Math.round(soundVolume * 100)}%`);
     }
@@ -1073,16 +1126,26 @@
       } catch (e) {}
     }
 
-    function playAlarmAudio() {
+    async function playMediaById(mediaId) {
+      const item = await idbGetMedia(mediaId);
+      if (!item || !item.blob) return false;
+
+      const runner = document.getElementById('hiddenMediaRunner');
+      const blobUrl = URL.createObjectURL(item.blob);
+      runner.src = blobUrl;
+      runner.volume = soundVolume;
+      runner.currentTime = 0;
+      runner.play().then(() => {
+        runner.onended = () => URL.revokeObjectURL(blobUrl);
+      }).catch(() => {});
+      return true;
+    }
+
+    async function playAlarmAudio() {
       if (!soundEnabled) return;
-      const customMatch = customAlarmAudios.find(a => a.id === currentAlarmAudioId);
-      if (customMatch && customMatch.data) {
-        const p = document.getElementById('dynamicAudioPlayer');
-        p.src = customMatch.data;
-        p.volume = soundVolume;
-        p.currentTime = 0;
-        p.play().catch(() => {});
-        return;
+      if (currentAlarmAudioId.startsWith('custom_media_')) {
+        const played = await playMediaById(currentAlarmAudioId);
+        if (played) return;
       }
 
       if (currentAlarmAudioId === 'boxing') {
@@ -1098,16 +1161,11 @@
       }
     }
 
-    function playDoneAudio() {
+    async function playDoneAudio() {
       if (!soundEnabled) return;
-      const customMatch = customDoneAudios.find(a => a.id === currentDoneAudioId);
-      if (customMatch && customMatch.data) {
-        const p = document.getElementById('dynamicAudioPlayer');
-        p.src = customMatch.data;
-        p.volume = soundVolume;
-        p.currentTime = 0;
-        p.play().catch(() => {});
-        return;
+      if (currentDoneAudioId.startsWith('custom_media_')) {
+        const played = await playMediaById(currentDoneAudioId);
+        if (played) return;
       }
 
       if (currentDoneAudioId === 'doubleclick') {
@@ -1122,45 +1180,13 @@
       }
     }
 
-    function pushHistory() {
-      historyStack.push(JSON.stringify(data));
-      if (historyStack.length > 20) historyStack.shift();
-    }
-
-    function undoLastAction() {
-      if (historyStack.length === 0) {
-        showToast('Niets om te herstellen');
-        return;
-      }
-      const previousState = historyStack.pop();
-      data = JSON.parse(previousState);
-      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
-      renderExercises();
-      updateStats();
-      if (document.getElementById('summaryPanel').style.display === 'block') {
-        renderWeeklySummary();
-      }
-      showToast('Laatste wijziging hersteld');
-    }
-
-    function changeMuscleMode(val) {
-      muscleMode = val;
-      SafeStore.setItem('wk_muscle_mode_v27', val);
-      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
-      renderExercises();
-      if (document.getElementById('summaryPanel').style.display === 'block') {
-        renderWeeklySummary();
-      }
-      showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
-    }
-
     function renderAudioDropdowns() {
       const doneSelect = document.getElementById('doneAudioSelect');
       let doneHtml = `
         <option value="beep">Luide Piep</option>
         <option value="doubleclick">Dubbele Klik</option>
         <option value="chime">Krachtige Chime</option>
-        <option value="upload_new">+ Nieuw Geluid/Video...</option>
+        <option value="upload_new">+ Nieuw Filmpje/Audio...</option>
       `;
       customDoneAudios.forEach(item => {
         doneHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
@@ -1174,7 +1200,7 @@
         <option value="classic">Luid Alarm (Klassiek)</option>
         <option value="boxing">Boksbel (Doordringend)</option>
         <option value="triplebeep">3x Snelle Piep</option>
-        <option value="upload_new">+ Nieuw Geluid/Video...</option>
+        <option value="upload_new">+ Nieuw Filmpje/Audio...</option>
       `;
       customAlarmAudios.forEach(item => {
         alarmHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
@@ -1218,62 +1244,86 @@
       showToast('Geluid ingesteld');
     }
 
-    function handleCustomMediaUpload(event, type) {
+    async function handleMediaFileChosen(event, type) {
       const file = event.target.files[0];
       if (!file) return;
 
-      const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : `Geluid ${Date.now()}`;
-      const name = prompt('Geef dit geluid/video een naam:', defaultName.substring(0, 16));
+      const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : `Video ${Date.now()}`;
+      const name = prompt('Geef dit fragment een naam:', defaultName.substring(0, 16));
       if (!name || name.trim() === '') return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const base64 = e.target.result;
-        try {
-          const newItem = {
-            id: 'custom_media_' + Date.now(),
-            name: name.trim(),
-            data: base64
-          };
+      const mediaId = 'custom_media_' + Date.now();
+      await idbSaveMedia({ id: mediaId, blob: file, name: name.trim() });
 
-          if (type === 'done') {
-            customDoneAudios.push(newItem);
-            SafeStore.setItem('wk_custom_done_audios_v27', JSON.stringify(customDoneAudios));
-            currentDoneAudioId = newItem.id;
-            SafeStore.setItem('wk_active_done_audio_id_v27', newItem.id);
-          } else {
-            customAlarmAudios.push(newItem);
-            SafeStore.setItem('wk_custom_alarm_audios_v27', JSON.stringify(customAlarmAudios));
-            currentAlarmAudioId = newItem.id;
-            SafeStore.setItem('wk_active_alarm_audio_id_v27', newItem.id);
-          }
+      const meta = { id: mediaId, name: name.trim() };
+      if (type === 'done') {
+        customDoneAudios.push(meta);
+        SafeStore.setItem('wk_custom_done_audios_meta_v27', JSON.stringify(customDoneAudios));
+        currentDoneAudioId = mediaId;
+        SafeStore.setItem('wk_active_done_audio_id_v27', mediaId);
+      } else {
+        customAlarmAudios.push(meta);
+        SafeStore.setItem('wk_custom_alarm_audios_meta_v27', JSON.stringify(customAlarmAudios));
+        currentAlarmAudioId = mediaId;
+        SafeStore.setItem('wk_active_alarm_audio_id_v27', mediaId);
+      }
 
-          renderAudioDropdowns();
-          showToast(`'${name}' opgeslagen!`);
-        } catch (err) {
-          showToast('Bestand is te groot voor browseropslag');
-        }
-      };
-      reader.readAsDataURL(file);
+      renderAudioDropdowns();
+      showToast(`'${name}' opgeslagen! Speelt alleen audio af.`);
+      playMediaById(mediaId);
     }
 
-    function deleteCustomAudio(type) {
-      if (!confirm('Weet je zeker dat je dit geluid wilt verwijderen?')) return;
+    async function deleteCustomAudio(type) {
+      if (!confirm('Weet je zeker dat je dit opgeslagen fragment wilt wissen?')) return;
 
       if (type === 'done') {
+        await idbDeleteMedia(currentDoneAudioId);
         customDoneAudios = customDoneAudios.filter(a => a.id !== currentDoneAudioId);
-        SafeStore.setItem('wk_custom_done_audios_v27', JSON.stringify(customDoneAudios));
+        SafeStore.setItem('wk_custom_done_audios_meta_v27', JSON.stringify(customDoneAudios));
         currentDoneAudioId = 'beep';
         SafeStore.setItem('wk_active_done_audio_id_v27', 'beep');
       } else {
+        await idbDeleteMedia(currentAlarmAudioId);
         customAlarmAudios = customAlarmAudios.filter(a => a.id !== currentAlarmAudioId);
-        SafeStore.setItem('wk_custom_alarm_audios_v27', JSON.stringify(customAlarmAudios));
+        SafeStore.setItem('wk_custom_alarm_audios_meta_v27', JSON.stringify(customAlarmAudios));
         currentAlarmAudioId = 'classic';
         SafeStore.setItem('wk_active_alarm_audio_id_v27', 'classic');
       }
 
       renderAudioDropdowns();
-      showToast('Geluid verwijderd');
+      showToast('Fragment verwijderd');
+    }
+
+    function pushHistory() {
+      historyStack.push(JSON.stringify(data));
+      if (historyStack.length > 20) historyStack.shift();
+    }
+
+    function undoLastAction() {
+      if (historyStack.length === 0) {
+        showToast('Niets om te herstellen');
+        return;
+      }
+      const previousState = historyStack.pop();
+      data = JSON.parse(previousState);
+      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast('Laatste wijziging hersteld');
+    }
+
+    function changeMuscleMode(val) {
+      muscleMode = val;
+      SafeStore.setItem('wk_muscle_mode_v27', val);
+      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
     }
 
     function openSettingsModal() {
