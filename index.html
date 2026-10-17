@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Workout Tracker</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(at 10% 15%, rgba(30, 58, 95, 0.4) 0px, transparent 55%),
+                     radial-gradient(at 85% 25%, rgba(65, 35, 80, 0.3) 0px, transparent 50%),
+                     radial-gradient(at 50% 80%, rgba(20, 35, 55, 0.35) 0px, transparent 60%);
+      --bg-color: #0b0c10;
+      --card-bg: rgba(22, 25, 34, 0.85);
+      --card-inner: rgba(15, 17, 24, 0.88);
+      --text: #f4f4f7;
+      --text-muted: #9aa0a6;
+      --accent: #30d158;
+      --border: rgba(255, 255, 255, 0.1);
+      --header-bg: rgba(12, 14, 18, 0.9);
+      --bottom-bg: rgba(14, 16, 22, 0.92);
+      --btn-bg: rgba(255, 255, 255, 0.08);
+      --active-pill-bg: #ffffff;
+      --active-pill-color: #000;
+    }
+
+    body.theme-bright {
+      --bg-gradient: radial-gradient(at 10% 10%, rgba(210, 225, 245, 0.6) 0px, transparent 60%),
+                     radial-gradient(at 85% 85%, rgba(230, 230, 240, 0.8) 0px, transparent 60%);
+      --bg-color: #f2f4f8;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-inner: rgba(240, 243, 248, 0.92);
+      --text: #111418;
+      --text-muted: #64748b;
+      --accent: #16a34a;
+      --border: rgba(0, 0, 0, 0.08);
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --bottom-bg: rgba(255, 255, 255, 0.95);
+      --btn-bg: rgba(0, 0, 0, 0.05);
+      --active-pill-bg: #0f172a;
+      --active-pill-color: #fff;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body { 
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      background-size: cover;
+      color: var(--text); 
+      padding-bottom: 140px; 
+      min-height: 100vh;
+    }
+
+    header { 
+      padding: 10px 14px; 
+      border-bottom: 1px solid var(--border); 
+      position: sticky; 
+      top: 0; 
+      background: var(--header-bg); 
+      backdrop-filter: blur(25px); 
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 40; 
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .title { 
+      font-size: 14px; 
+      font-weight: 800; 
+      letter-spacing: 0.8px; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+    }
+    .header-actions { display: flex; gap: 6px; }
+    
+    .btn-glass {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      min-height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .nav-scroll { 
+      display: flex; 
+      gap: 6px; 
+      overflow-x: auto; 
+      padding: 2px 0; 
+      flex: 1; 
+      -webkit-overflow-scrolling: touch; 
+    }
+    .nav-scroll::-webkit-scrollbar { display: none; }
+    
+    button.pill { 
+      background: var(--btn-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text-muted); 
+      padding: 6px 14px; 
+      min-height: 36px;
+      border-radius: 999px; 
+      font-size: 13px; 
+      font-weight: 600; 
+      white-space: nowrap; 
+      cursor: pointer; 
+    }
+    button.pill.active { 
+      background: var(--active-pill-bg); 
+      color: var(--active-pill-color); 
+      border-color: var(--active-pill-bg); 
+    }
+
+    .container { padding: 12px 14px; max-width: 650px; margin: 0 auto; }
+    
+    .stats-card { 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 16px; 
+      padding: 12px 16px; 
+      display: flex; 
+      justify-content: space-between; 
+      margin-bottom: 12px; 
+      font-size: 12px; 
+      color: var(--text-muted);
+    }
+    .stats-card strong { color: var(--text); font-weight: 800; }
+
+    .bulk-copy-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .btn-bulk-copy {
+      flex: 1;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #summaryPanel {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .summary-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .exercise-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .exercise-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .exercise-title-summary {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(48, 209, 88, 0.18);
+      color: var(--accent);
+    }
+    .collapse-icon {
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    .exercise-block.collapsed .collapse-icon {
+      transform: rotate(-90deg);
+    }
+    .exercise-block.collapsed .exercise-body {
+      display: none;
+    }
+
+    .exercise-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .muscle-selectors-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .overlap-toggle-btn {
+      background: var(--btn-bg);
+      border: 1px dashed var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .overlap-chips-wrapper {
+      display: none;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .overlap-chips-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .chip-overlap {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .chip-overlap.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .exercise-tools {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    
+    .btn-action-tool {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 10px;
+      min-height: 36px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .note-input {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      width: 100%;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .set-row {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .set-row.completed { opacity: 0.88; }
+    .set-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .rir-segment-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.12);
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      border-radius: 10px;
+      margin-top: 3px;
+    }
+    .rir-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+    }
+    .rir-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-muted);
+      width: 48px;
+      text-transform: uppercase;
+    }
+    .rir-btns {
+      display: flex;
+      gap: 3px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .btn-rir {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 0;
+      min-width: 32px;
+      min-height: 36px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-rir.active {
+      background: var(--accent);
+      color: #000;
+      font-weight: 900;
+    }
+
+    input, select { 
+      background: var(--card-inner); 
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      border-radius: 10px; 
+      padding: 8px 6px; 
+      min-height: 42px;
+      font-size: 13px; 
+      width: 100%; 
+      outline: none; 
+      text-align: center;
+      font-weight: 600;
+    }
+    input[type="text"] { text-align: left; }
+    .label-col { 
+      font-size: 9px; 
+      color: var(--text-muted); 
+      text-align: center; 
+      text-transform: uppercase; 
+      font-weight: 800; 
+      margin-bottom: 3px; 
+    }
+
+    .check-btn { 
+      width: 44px; 
+      height: 42px; 
+      border-radius: 10px; 
+      border: 1px solid var(--border); 
+      background: var(--btn-bg); 
+      color: var(--text-muted); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .check-btn.checked { 
+      background: var(--accent); 
+      color: #000; 
+      border-color: var(--accent); 
+    }
+
+    .bottom-bar { 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      right: 0; 
+      background: var(--bottom-bg); 
+      border-top: 1px solid var(--border); 
+      padding: 10px 14px env(safe-area-inset-bottom, 12px); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      z-index: 50; 
+    }
+    .timer-info { display: flex; flex-direction: column; min-width: 75px; }
+    .timer-sub { font-size: 9px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; }
+    .timer-display { font-size: 20px; font-weight: 800; }
+    .timer-controls { display: flex; gap: 4px; align-items: center; }
+    .timer-controls button, .timer-controls select { 
+      background: var(--btn-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      padding: 7px 10px; 
+      min-height: 38px; 
+      border-radius: 999px; 
+      font-size: 11px; 
+      font-weight: 700; 
+      cursor: pointer; 
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      max-width: 380px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .setting-section {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .setting-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 13px; }
+
+    #toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg-color);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      z-index: 300;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast"></div>
+
+  <header>
+    <div class="top-row">
+      <div class="title">Workout Log</div>
+      <div class="header-actions">
+        <button class="btn-glass" onclick="undoLastAction()">Herstel</button>
+        <button class="btn-glass" onclick="toggleSummary()">Volume W<span id="summaryWeekLabel">1</span></button>
+        <button class="btn-glass" onclick="openSettingsModal()">⚙️ Instellingen</button>
+      </div>
+    </div>
+    <div class="nav-group"><div class="nav-scroll" id="daysList"></div></div>
+    <div class="nav-group"><div class="nav-scroll" id="weeksList"></div></div>
+  </header>
+
+  <div class="container">
+    <div id="summaryPanel">
+      <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800;">
+        <span>WEEKVOLUME (<span id="summaryModeLabel">SIMPEL</span>)</span>
+        <span style="color: var(--text-muted); font-size: 10px;">Sets (Direct + Overlap)</span>
+      </div>
+      <div class="summary-grid" id="summaryGrid"></div>
+    </div>
+
+    <div class="stats-card">
+      <div>Sets: <strong id="completedStat">0</strong> voltooid</div>
+      <div>Dagvolume: <strong id="tonnageStat">0 kg</strong></div>
+    </div>
+
+    <div class="bulk-copy-bar">
+      <button class="btn-bulk-copy" onclick="copyCurrentDayToAllWeeks()">📋 Kopieer dag naar alle weken</button>
+      <button class="btn-bulk-copy" onclick="copyCurrentWeekToAllWeeks()">📦 Kopieer week naar alle weken</button>
+    </div>
+
+    <div id="exercisesContainer"></div>
+
+    <button onclick="addNewExercise()" class="btn-action-tool" style="width: 100%; min-height: 44px; margin-top: 6px; font-weight: 800; border-radius: 14px;">
+      + Oefening Toevoegen
+    </button>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="timer-info">
+      <span class="timer-sub" id="timerModeLabel">Rusttimer</span>
+      <span class="timer-display" id="timerText">00:00</span>
+    </div>
+    <div class="timer-controls">
+      <select id="autoTimerSelect" onchange="changeAutoTimerSetting(this.value)">
+        <option value="0">Auto: Uit</option>
+        <option value="60">Auto: 60s</option>
+        <option value="90">Auto: 90s</option>
+        <option value="120">Auto: 2m</option>
+      </select>
+      <button onclick="addTimer(60)">+60s</button>
+      <button onclick="stopTimer()" style="color:#ef4444;">Stop</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom:12px; text-align:center;">⚙️ Instellingen</h3>
+      <div class="setting-section">
+        <div class="setting-title">Spiercategorisering</div>
+        <div class="setting-row">
+          <span>Modus:</span>
+          <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)">
+            <option value="simple">Simpel (Hoofdgroepen)</option>
+            <option value="advanced">Geavanceerd (Specifiek + Overlap)</option>
+          </select>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-title">Thema</div>
+        <div class="setting-row">
+          <span>Kleur:</span>
+          <select onchange="changeTheme(this.value)">
+            <option value="glass">Zwart</option>
+            <option value="bright">Wit</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-glass" style="width:100%; min-height:40px; margin-top:6px; font-weight:800;" onclick="closeSettingsModal()">Sluiten</button>
+    </div>
+  </div>
+
+  <script>
+    // --- SAFARI DATA-URL SAFE STORAGE SHIM ---
+    const memoryStore = {};
+    const SafeStore = {
+      getItem(key) {
+        try {
+          if (typeof window.localStorage !== 'undefined') {
+            const val = window.localStorage.getItem(key);
+            if (val !== null) return val;
+          }
+        } catch (e) {}
+        return memoryStore[key] || null;
+      },
+      setItem(key, val) {
+        memoryStore[key] = String(val);
+        try {
+          if (typeof window.localStorage !== 'undefined') {
+            window.localStorage.setItem(key, String(val));
+          }
+        } catch (e) {}
+      }
+    };
+
+    const SIMPLE_MUSCLE_GROUPS = ['Borst', 'Rug', 'Quadriceps', 'Hamstrings/Glutes', 'Schouders', 'Biceps', 'Triceps', 'Calves/Abs'];
+    const ADVANCED_MUSCLES = [
+      { id: 'chest_upper', label: 'Bovenkant (Incline)', parent: 'Borst' },
+      { id: 'chest_mid_lower', label: 'Midden / Onder (Flat)', parent: 'Borst' },
+      { id: 'back_lats', label: 'Lats (Verticale trek)', parent: 'Rug' },
+      { id: 'back_upper', label: 'Bovenrug / Traps (Rows)', parent: 'Rug' },
+      { id: 'quads', label: 'Quadriceps (Squat/Extension)', parent: 'Quadriceps' },
+      { id: 'hams_curl', label: 'Hamstrings (Leg Curl)', parent: 'Hamstrings/Glutes' },
+      { id: 'hams_hinge', label: 'Hamstrings (Hinge / RDL)', parent: 'Hamstrings/Glutes' },
+      { id: 'glutes', label: 'Glutes (Hip Thrust)', parent: 'Hamstrings/Glutes' },
+      { id: 'delts_front', label: 'Voorste schouderkop', parent: 'Schouders' },
+      { id: 'delts_side', label: 'Zijkant (Lateral Raise)', parent: 'Schouders' },
+      { id: 'delts_rear', label: 'Achterkant (Face Pulls)', parent: 'Schouders' },
+      { id: 'biceps', label: 'Biceps (Biceps Brachii)', parent: 'Biceps' },
+      { id: 'brachialis_forearms', label: 'Brachialis / Onderarm', parent: 'Biceps' },
+      { id: 'triceps_long', label: 'Lange kop (Overhead)', parent: 'Triceps' },
+      { id: 'triceps_lateral_medial', label: 'Laterale / Mediale kop', parent: 'Triceps' },
+      { id: 'calves', label: 'Kuiten', parent: 'Calves/Abs' },
+      { id: 'abs_core', label: 'Core / Abs', parent: 'Calves/Abs' }
+    ];
+
+    let muscleMode = SafeStore.getItem('wk_muscle_mode') || 'simple';
+    let days = ['Dag 1', 'Dag 2', 'Dag 3', 'Dag 4', 'Dag 5'];
+    let totalWeeks = 8;
+    let currentWeek = 1;
+    let currentDay = days[0];
+    let data = {};
+    try {
+      data = JSON.parse(SafeStore.getItem('workout_data') || '{}');
+    } catch(e) { data = {}; }
+
+    let autoTimerSeconds = parseInt(SafeStore.getItem('wk_timer_sec') || '90');
+    let historyStack = [];
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let audioCtx = null;
+
+    function playBeep() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    function pushHistory() {
+      historyStack.push(JSON.stringify(data));
+      if (historyStack.length > 15) historyStack.shift();
+    }
+
+    function undoLastAction() {
+      if (historyStack.length === 0) { showToast('Niets om te herstellen'); return; }
+      data = JSON.parse(historyStack.pop());
+      saveData();
+      renderExercises();
+      updateStats();
+      showToast('Hersteld');
+    }
+
+    function changeMuscleMode(val) {
+      muscleMode = val;
+      SafeStore.setItem('wk_muscle_mode', val);
+      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('muscleModeSelect').value = muscleMode;
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function changeTheme(theme) {
+      document.body.className = theme === 'bright' ? 'theme-bright' : '';
+    }
+
+    function showToast(msg) {
+      const toast = document
