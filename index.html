@@ -6,313 +6,1029 @@
   <title>Workout Tracker</title>
   <style>
     :root {
-      --bg: #090a0f;
-      --card: #141721;
-      --card-inner: #1c202e;
-      --text: #f1f3f7;
-      --muted: #7e8697;
-      --accent: #22c55e;
-      --border: rgba(255, 255, 255, 0.08);
-      --btn: rgba(255, 255, 255, 0.06);
+      --bg-gradient: radial-gradient(at 10% 15%, rgba(30, 58, 95, 0.4) 0px, transparent 55%),
+                     radial-gradient(at 85% 25%, rgba(65, 35, 80, 0.3) 0px, transparent 50%),
+                     radial-gradient(at 50% 80%, rgba(20, 35, 55, 0.35) 0px, transparent 60%);
+      --bg-color: #0b0c10;
+      --card-bg: rgba(22, 25, 34, 0.85);
+      --card-inner: rgba(15, 17, 24, 0.88);
+      --text: #f4f4f7;
+      --text-muted: #9aa0a6;
+      --accent: #30d158;
+      --border: rgba(255, 255, 255, 0.1);
+      --header-bg: rgba(12, 14, 18, 0.9);
+      --bottom-bg: rgba(14, 16, 22, 0.92);
+      --btn-bg: rgba(255, 255, 255, 0.08);
+      --active-pill-bg: #ffffff;
+      --active-pill-color: #000;
+      --card-blur: 25px;
     }
+
+    body.theme-bright {
+      --bg-gradient: radial-gradient(at 10% 10%, rgba(210, 225, 245, 0.6) 0px, transparent 60%),
+                     radial-gradient(at 85% 85%, rgba(230, 230, 240, 0.8) 0px, transparent 60%);
+      --bg-color: #f2f4f8;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-inner: rgba(240, 243, 248, 0.92);
+      --text: #111418;
+      --text-muted: #64748b;
+      --accent: #16a34a;
+      --border: rgba(0, 0, 0, 0.08);
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --bottom-bg: rgba(255, 255, 255, 0.95);
+      --btn-bg: rgba(0, 0, 0, 0.05);
+      --active-pill-bg: #0f172a;
+      --active-pill-color: #fff;
+      --card-blur: 25px;
+    }
+
+    body.theme-light-color {
+      --bg-gradient: radial-gradient(at 15% 20%, rgba(186, 230, 253, 0.7) 0px, transparent 60%),
+                     radial-gradient(at 80% 80%, rgba(167, 243, 208, 0.7) 0px, transparent 60%);
+      --bg-color: #ecfeff;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-inner: rgba(224, 242, 254, 0.88);
+      --text: #083344;
+      --text-muted: #155e75;
+      --accent: #0284c7;
+      --border: rgba(14, 116, 144, 0.15);
+      --header-bg: rgba(236, 254, 255, 0.94);
+      --bottom-bg: rgba(236, 254, 255, 0.95);
+      --btn-bg: rgba(14, 116, 144, 0.08);
+      --active-pill-bg: #0e7490;
+      --active-pill-color: #fff;
+      --card-blur: 25px;
+    }
+
+    body.theme-medium-color {
+      --bg-gradient: radial-gradient(at 15% 15%, rgba(254, 215, 170, 0.6) 0px, transparent 60%),
+                     radial-gradient(at 85% 85%, rgba(251, 191, 36, 0.4) 0px, transparent 60%);
+      --bg-color: #fef3c7;
+      --card-bg: rgba(255, 253, 245, 0.92);
+      --card-inner: rgba(254, 243, 199, 0.9);
+      --text: #451a03;
+      --text-muted: #78350f;
+      --accent: #d97706;
+      --border: rgba(180, 83, 9, 0.15);
+      --header-bg: rgba(254, 243, 199, 0.94);
+      --bottom-bg: rgba(254, 243, 199, 0.95);
+      --btn-bg: rgba(180, 83, 9, 0.08);
+      --active-pill-bg: #b45309;
+      --active-pill-color: #fff;
+      --card-blur: 25px;
+    }
+
+    body.theme-dark-color {
+      --bg-gradient: radial-gradient(at 15% 15%, rgba(49, 46, 129, 0.5) 0px, transparent 60%),
+                     radial-gradient(at 85% 85%, rgba(67, 56, 202, 0.4) 0px, transparent 60%);
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --card-inner: rgba(15, 23, 42, 0.85);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: rgba(129, 140, 248, 0.2);
+      --header-bg: rgba(15, 23, 42, 0.92);
+      --bottom-bg: rgba(15, 23, 42, 0.94);
+      --btn-bg: rgba(129, 140, 248, 0.12);
+      --active-pill-bg: #4f46e5;
+      --active-pill-color: #fff;
+      --card-blur: 25px;
+    }
+
+    body.theme-custom {
+      --bg-gradient: none;
+      --bg-color: #0b0c10;
+      --border: rgba(255, 255, 255, 0.18);
+      --header-bg: rgba(10, 12, 18, 0.45);
+      --bottom-bg: rgba(12, 14, 22, 0.55);
+      --btn-bg: rgba(255, 255, 255, 0.14);
+      --active-pill-bg: var(--accent);
+      --active-pill-color: #000;
+      --card-blur: 2px;
+      background-image: var(--custom-bg-image, none) !important;
+      background-blend-mode: normal !important;
+      background-size: cover !important;
+      background-position: center center !important;
+    }
+
     * { 
       box-sizing: border-box; 
       margin: 0; 
       padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; 
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
+
     body { 
-      background: var(--bg); 
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
       color: var(--text); 
-      padding-bottom: 110px; 
-      min-height: 100vh;
+      padding-bottom: 140px; 
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      transition: background 0.2s ease, color 0.2s ease;
     }
+
     header { 
+      padding: 10px 14px; 
+      border-bottom: 1px solid var(--border); 
       position: sticky; 
       top: 0; 
-      background: rgba(9, 10, 15, 0.94); 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px);
-      padding: 8px 12px; 
-      border-bottom: 1px solid var(--border); 
-      z-index: 50; 
+      background: var(--header-bg); 
+      backdrop-filter: blur(var(--card-blur)) saturate(130%); 
+      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(130%);
+      z-index: 40; 
     }
-    .top-bar { 
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .title { 
+      font-size: 14px; 
+      font-weight: 800; 
+      letter-spacing: 0.8px; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+    }
+    .header-actions { display: flex; gap: 6px; }
+    
+    .btn-glass {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      min-height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-glass:active { opacity: 0.8; }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .nav-scroll { 
       display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 6px; 
-    }
-    .brand { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; color: var(--muted); }
-    .top-btn { 
-      background: var(--btn); 
-      border: 1px solid var(--border); 
-      color: var(--text); 
-      padding: 5px 12px; 
-      border-radius: 99px; 
-      font-size: 11px; 
-      font-weight: 700; 
-      cursor: pointer; 
-    }
-    .nav-row { 
-      display: flex; 
-      gap: 5px; 
+      gap: 6px; 
       overflow-x: auto; 
       padding: 2px 0; 
-      margin-bottom: 4px; 
+      flex: 1; 
+      -webkit-overflow-scrolling: touch; 
     }
-    .nav-row::-webkit-scrollbar { display: none; }
-    .pill { 
-      background: var(--btn); 
+    .nav-scroll::-webkit-scrollbar { display: none; }
+    
+    button.pill { 
+      background: var(--btn-bg); 
       border: 1px solid var(--border); 
-      color: var(--muted); 
+      color: var(--text-muted); 
       padding: 6px 14px; 
-      border-radius: 99px; 
-      font-size: 12px; 
-      font-weight: 700; 
+      min-height: 36px;
+      border-radius: 999px; 
+      font-size: 13px; 
+      font-weight: 600; 
       white-space: nowrap; 
       cursor: pointer; 
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
     }
-    .pill.active { background: #fff; color: #000; border-color: #fff; }
+    button.pill.active { 
+      background: var(--active-pill-bg); 
+      color: var(--active-pill-color); 
+      border-color: var(--active-pill-bg); 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .container { padding: 12px 14px; max-width: 650px; margin: 0 auto; }
     
-    .container { max-width: 580px; margin: 0 auto; padding: 10px; }
-    
-    .stats-strip { 
-      background: var(--card); 
+    .stats-card { 
+      background: var(--card-bg); 
       border: 1px solid var(--border); 
-      border-radius: 12px; 
-      padding: 10px 14px; 
+      border-radius: 16px; 
+      padding: 12px 16px; 
       display: flex; 
       justify-content: space-between; 
+      margin-bottom: 12px; 
       font-size: 12px; 
-      color: var(--muted); 
-      margin-bottom: 8px; 
+      color: var(--text-muted);
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     }
-    .stats-strip strong { color: var(--text); }
+    .stats-card strong { color: var(--text); font-weight: 800; }
+
+    .bulk-copy-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .btn-bulk-copy {
+      flex: 1;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+    }
+    .btn-bulk-copy:active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    #summaryPanel {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .summary-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .exercise-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 12px;
+      position: relative;
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+    .exercise-block.superset-parent {
+      border-left: 4px solid var(--accent);
+      margin-bottom: 4px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+    .exercise-block.superset-child {
+      border-left: 4px solid var(--accent);
+      margin-top: 4px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+    .exercise-block.all-done {
+      border-color: var(--accent);
+    }
     
-    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-    .action-btn { 
-      background: var(--card-inner); 
-      border: 1px solid var(--border); 
-      color: var(--text); 
-      padding: 8px; 
-      border-radius: 10px; 
+    .exercise-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 4px;
+      user-select: none;
+    }
+    .exercise-title-summary {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(48, 209, 88, 0.18);
+      color: var(--accent);
+    }
+    .collapse-icon {
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 4px;
+    }
+    .exercise-block.collapsed .collapse-icon {
+      transform: rotate(-90deg);
+    }
+    .exercise-block.collapsed .exercise-body {
+      display: none;
+    }
+
+    .superset-tag {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: inline-block;
+      background: rgba(48, 209, 88, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .exercise-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .muscle-selectors-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .overlap-toggle-btn {
+      background: var(--btn-bg);
+      border: 1px dashed var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .overlap-chips-wrapper {
+      display: none;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .overlap-chips-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .chip-overlap {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .chip-overlap.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .exercise-tools {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    
+    .btn-action-tool {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 10px;
+      min-height: 36px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-action-tool:active { opacity: 0.75; }
+    .btn-action-tool.active-superset { 
+      border-color: var(--accent); 
+      color: var(--accent); 
+    }
+
+    .note-input {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      width: 100%;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .set-row {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .set-row.is-pr {
+      border: 1px solid var(--accent);
+    }
+    .set-row.completed {
+      opacity: 0.88;
+    }
+    .set-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .badge-pr {
+      background: var(--accent);
+      color: #000;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .rir-segment-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.12);
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      border-radius: 10px;
+      margin-top: 3px;
+    }
+    .rir-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+    }
+    .rir-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-muted);
+      width: 48px;
+      text-transform: uppercase;
+    }
+    .rir-btns {
+      display: flex;
+      gap: 3px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .btn-rir {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 0;
+      min-width: 32px;
+      min-height: 36px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-rir.active {
+      background: var(--accent);
+      color: #000;
+      font-weight: 900;
+      border-color: var(--accent);
+    }
+    .btn-rir.active.fail {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }
+
+    .hints-wrapper { display: flex; flex-direction: column; gap: 4px; }
+    .hint-chip { 
+      background: rgba(255, 255, 255, 0.05); 
+      border-radius: 8px; 
+      padding: 5px 8px; 
       font-size: 11px; 
-      font-weight: 700; 
-      cursor: pointer; 
-    }
-    
-    .card { 
-      background: var(--card); 
-      border: 1px solid var(--border); 
-      border-radius: 14px; 
-      padding: 10px; 
-      margin-bottom: 10px; 
-    }
-    .card-head { 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      cursor: pointer; 
-      padding: 2px 4px 6px 4px; 
+      border: 1px solid var(--border);
     }
-    .card.collapsed .card-body { display: none; }
-    .card.collapsed .arrow { transform: rotate(-90deg); }
-    .arrow { font-size: 10px; color: var(--muted); transition: 0.2s; }
-    
-    .row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+    .hint-chip.last-week { border-left: 3px solid var(--accent); }
+    .hint-chip button { 
+      background: var(--btn-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      padding: 4px 8px; 
+      min-height: 26px;
+      border-radius: 5px; 
+      font-size: 10px; 
+      font-weight: 700;
+      cursor: pointer; 
+    }
+
     input, select { 
       background: var(--card-inner); 
       border: 1px solid var(--border); 
       color: var(--text); 
-      border-radius: 8px; 
-      padding: 8px; 
-      font-size: 13px; 
-      font-weight: 600; 
-      outline: none; 
-    }
-    input[type="number"], input.num { text-align: center; }
-    
-    .set-box { 
-      background: var(--card-inner); 
-      border: 1px solid var(--border); 
       border-radius: 10px; 
-      padding: 8px; 
-      margin-top: 6px; 
+      padding: 8px 6px; 
+      min-height: 42px;
+      font-size: 13px; 
+      width: 100%; 
+      outline: none; 
+      text-align: center;
+      font-weight: 600;
     }
-    .set-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr 1fr 42px; 
-      gap: 5px; 
-      align-items: center; 
-    }
-    .lbl { 
+    input[type="text"] { text-align: left; }
+    input:focus, select:focus { border-color: var(--accent); }
+    .label-col { 
       font-size: 9px; 
-      font-weight: 800; 
-      color: var(--muted); 
+      color: var(--text-muted); 
       text-align: center; 
       text-transform: uppercase; 
-      margin-bottom: 2px; 
+      font-weight: 800; 
+      margin-bottom: 3px; 
     }
-    .check { 
-      width: 42px; 
-      height: 38px; 
-      border-radius: 8px; 
+
+    .check-btn { 
+      width: 44px; 
+      height: 42px; 
+      border-radius: 10px; 
       border: 1px solid var(--border); 
-      background: var(--btn); 
-      color: var(--muted); 
-      font-size: 15px; 
-      font-weight: 900; 
-      cursor: pointer; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .check.done { background: var(--accent); color: #000; border-color: var(--accent); }
-    
-    .rir-box { 
-      margin-top: 6px; 
+      background: var(--btn-bg); 
+      color: var(--text-muted); 
       display: flex; 
-      flex-direction: column; 
-      gap: 3px; 
-      padding-top: 5px; 
-      border-top: 1px solid rgba(255,255,255,0.05); 
-    }
-    .rir-line { display: flex; justify-content: space-between; align-items: center; }
-    .rir-title { font-size: 9px; font-weight: 800; color: var(--muted); width: 42px; }
-    .rir-btns { display: flex; gap: 2px; flex: 1; justify-content: flex-end; }
-    .r-btn { 
-      min-width: 27px; 
-      height: 25px; 
-      border-radius: 5px; 
-      border: 1px solid var(--border); 
-      background: var(--btn); 
-      color: var(--muted); 
-      font-size: 11px; 
-      font-weight: 700; 
+      align-items: center; 
+      justify-content: center; 
       cursor: pointer; 
+      font-size: 16px;
+      font-weight: bold;
     }
-    .r-btn.act { background: var(--accent); color: #000; font-weight: 900; }
-    
-    .footer { 
+    .check-btn.checked { 
+      background: var(--accent); 
+      color: #000; 
+      border-color: var(--accent); 
+    }
+
+    .bottom-bar { 
       position: fixed; 
       bottom: 0; 
       left: 0; 
       right: 0; 
-      background: rgba(9, 10, 15, 0.96); 
+      background: var(--bottom-bg); 
       border-top: 1px solid var(--border); 
-      padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); 
+      padding: 10px 14px env(safe-area-inset-bottom, 12px); 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
       z-index: 50; 
+      backdrop-filter: blur(var(--card-blur)) saturate(130%); 
+      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(130%);
     }
-    .timer-left { display: flex; flex-direction: column; }
-    .timer-txt { font-size: 19px; font-weight: 800; letter-spacing: 0.5px; }
-    .footer-tools { display: flex; gap: 5px; align-items: center; }
-    
-    .toast { 
-      position: fixed; 
-      top: 12px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      background: #fff; 
-      color: #000; 
-      padding: 6px 16px; 
-      border-radius: 99px; 
+    .timer-info { display: flex; flex-direction: column; min-width: 75px; }
+    .timer-sub { font-size: 9px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; }
+    .timer-display { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .timer-controls { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .timer-controls button, .timer-controls select { 
+      background: var(--btn-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      padding: 7px 10px; 
+      min-height: 38px; 
+      border-radius: 999px; 
       font-size: 11px; 
-      font-weight: 800; 
-      display: none; 
-      z-index: 999; 
+      font-weight: 700; 
+      cursor: pointer; 
+      white-space: nowrap;
     }
-    .haptic-trigger { position: absolute; opacity: 0; pointer-events: none; }
+    .timer-controls button.stop { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      max-width: 380px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      text-align: left;
+      backdrop-filter: blur(20px);
+    }
+    .modal-box h3 { font-size: 16px; margin-bottom: 12px; font-weight: 800; text-align: center; }
+    .setting-section {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .setting-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 13px; }
+    .setting-row:last-child { margin-bottom: 0; }
+    .setting-row select, .setting-row input[type="text"] { font-size: 12px; min-height: 32px; padding: 4px 6px; }
+    .btn-config {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg-color);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      z-index: 300;
+      display: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
-<body>
+<body class="theme-glass">
 
-  <div id="toast" class="toast"></div>
-  <input type="checkbox" id="hapticSwitch" class="haptic-trigger">
+  <div id="toast"></div>
+
+  <!-- Verborgen native checkbox voor fysieke iPhone Taptic Engine haptics -->
+  <label style="position:fixed; top:-100px; left:-100px; opacity:0; pointer-events:none;">
+    <input type="checkbox" id="iosHapticNativeSwitch">
+  </label>
+
+  <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
+  <datalist id="exerciseSuggestions"></datalist>
 
   <header>
-    <div class="top-bar">
-      <span class="brand">WORKOUT</span>
-      <button class="top-btn" onclick="undo()">↶ Herstel</button>
+    <div class="top-row">
+      <div class="title">Workout Log</div>
+      <div class="header-actions">
+        <button class="btn-glass" onclick="undoLastAction()">Herstel</button>
+        <button class="btn-glass" onclick="toggleSummary()">Volume W<span id="summaryWeekLabel">1</span></button>
+        <button class="btn-glass" onclick="openSettingsModal()">⚙️ Instellingen</button>
+      </div>
     </div>
-    <div class="nav-row" id="daysNav"></div>
-    <div class="nav-row" id="weeksNav"></div>
+
+    <div class="nav-group">
+      <div class="nav-scroll" id="daysList"></div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-scroll" id="weeksList"></div>
+    </div>
   </header>
 
   <div class="container">
-    <div class="stats-strip">
-      <span>Voltooid: <strong id="statSets">0</strong> sets</span>
-      <span>Volume: <strong id="statKg">0 kg</strong></span>
+    <div id="summaryPanel">
+      <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800;">
+        <span>WEEKVOLUME (<span id="summaryModeLabel">SIMPEL</span>)</span>
+        <span style="color: var(--text-muted); font-size: 10px;">Sets (Direct + Overlap)</span>
+      </div>
+      <div class="summary-grid" id="summaryGrid"></div>
     </div>
 
-    <div class="action-grid">
-      <button class="action-btn" onclick="copyDayToAllWeeks()">📋 Dag kopiëren naar W1-8</button>
-      <button class="action-btn" onclick="copyWeekToAllWeeks()">📦 Week kopiëren naar W1-8</button>
+    <div class="stats-card">
+      <div>Sets: <strong id="completedStat">0</strong> voltooid</div>
+      <div>Dagvolume: <strong id="tonnageStat">0 kg</strong></div>
     </div>
 
-    <div id="exerciseList"></div>
+    <div class="bulk-copy-bar">
+      <button class="btn-bulk-copy" onclick="copyCurrentDayToAllWeeks()">
+        <span>📋 Kopieer dag naar alle weken</span>
+      </button>
+      <button class="btn-bulk-copy" onclick="copyCurrentWeekToAllWeeks()">
+        <span>📦 Kopieer hele week naar alle weken</span>
+      </button>
+    </div>
 
-    <button onclick="addExercise()" class="action-btn" style="width:100%; padding:11px; font-size:12px; margin-top:4px;">
+    <div id="exercisesContainer"></div>
+
+    <button onclick="addNewExercise()" class="btn-action-tool" style="width: 100%; min-height: 44px; margin-top: 6px; font-weight: 800; border-radius: 14px;">
       + Oefening Toevoegen
     </button>
   </div>
 
-  <div class="footer">
-    <div class="timer-left">
-      <span style="font-size:9px; font-weight:800; color:var(--muted);">RUSTTIMER</span>
-      <span class="timer-txt" id="timerDisplay">00:00</span>
+  <div class="bottom-bar">
+    <div class="timer-info">
+      <span class="timer-sub" id="timerModeLabel">Rusttimer</span>
+      <span class="timer-display" id="timerText">00:00</span>
     </div>
-    <div class="footer-tools">
-      <select id="soundSelect" onchange="changeSound(this.value)" style="padding:5px 6px; font-size:11px;">
-        <option value="beep">Toon: Beep</option>
-        <option value="bong">Toon: Bong</option>
-        <option value="chime">Toon: Chime</option>
-      </select>
-      <select id="autoTimer" onchange="setAutoTimer(this.value)" style="padding:5px 6px; font-size:11px;">
+    <div class="timer-controls">
+      <select id="autoTimerSelect" onchange="changeAutoTimerSetting(this.value)" style="width:auto; padding:6px 8px; font-size:11px;">
         <option value="0">Auto: Uit</option>
-        <option value="60">60s</option>
-        <option value="90" selected>90s</option>
-        <option value="120">2m</option>
+        <option value="30">Auto: 30s</option>
+        <option value="60">Auto: 60s</option>
+        <option value="90">Auto: 90s</option>
+        <option value="120">Auto: 2m</option>
+        <option value="180">Auto: 3m</option>
+        <option value="240">Auto: 4m</option>
+        <option value="300">Auto: 5m</option>
       </select>
-      <button class="top-btn" onclick="addTimerSec(60)">+60s</button>
-      <button class="top-btn" onclick="resetTimer()" style="color:#ef4444;">Stop</button>
+      <select id="volumeControlSelect" onchange="changeVolumeLevel(this.value)" style="width:auto; padding:6px 6px; font-size:11px;">
+        <option value="1.0">Vol: 100%</option>
+        <option value="0.75">Vol: 75%</option>
+        <option value="0.5">Vol: 50%</option>
+        <option value="0.25">Vol: 25%</option>
+      </select>
+      <button onclick="addTimer(60)">+60s</button>
+      <button onclick="promptCustomTimer()">+ Tijd</button>
+      <button id="loopBtn" onclick="toggleStopwatch()">Loop</button>
+      <button class="stop" onclick="stopTimer()">Stop</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <h3>⚙️ Instellingen</h3>
+
+      <div class="setting-section">
+        <div class="setting-title">Spiercategorisering</div>
+        <div class="setting-row">
+          <span>Modus:</span>
+          <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)" style="max-width: 150px; font-weight: 700;">
+            <option value="simple">Simpel (Hoofdgroepen)</option>
+            <option value="advanced">Geavanceerd (Specifiek + Overlap)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <div class="setting-title">Thema & Stijl</div>
+        <div class="setting-row">
+          <span>Kies thema:</span>
+          <select id="themeSelectModal" onchange="changeTheme(this.value)" style="max-width: 160px;">
+            <option value="glass">Zwart</option>
+            <option value="bright">Wit</option>
+            <option value="light-color">Lichtblauw</option>
+            <option value="medium-color">Amber</option>
+            <option value="dark-color">Indigo</option>
+          </select>
+        </div>
+        
+        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+          <div style="font-size:11px; font-weight:700; margin-bottom:6px; color:var(--text-muted);">CUSTOM THEMA (TRANSPARANT):</div>
+          <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+            <button class="btn-config" style="flex:1;" onclick="triggerBgUpload()">📷 Foto</button>
+            <button class="btn-config" style="flex:1;" onclick="autoExtractColorsFromCurrentBg()">🪄 Auto Kleur</button>
+          </div>
+          <div class="setting-row">
+            <span>Vlakken (Transparant):</span>
+            <input type="color" id="cardColorPicker" value="#161922" oninput="updateCardBgColor(this.value)" style="width:30px; height:30px; border:none; background:none; cursor:pointer;">
+          </div>
+          <div class="setting-row">
+            <span>Tekst & Accent:</span>
+            <input type="color" id="accentColorPicker" value="#30d158" oninput="updateAccentColor(this.value)" style="width:30px; height:30px; border:none; background:none; cursor:pointer;">
+          </div>
+          <div style="display:flex; gap:6px; margin-top:8px;">
+            <button class="btn-config" style="flex:2; background:var(--accent); color:#000;" onclick="saveCustomThemePrompt()">💾 Thema Opslaan</button>
+            <button class="btn-config" id="deleteThemeBtn" style="flex:1; color:#ef4444;" onclick="deleteCurrentCustomTheme()">Wis</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <div class="setting-title">Geluiden & Haptics</div>
+        <div class="setting-row">
+          <span>Set Voltooid Toon:</span>
+          <div style="display: flex; gap: 4px; align-items: center;">
+            <select id="doneAudioSelect" onchange="changeAudioSetting('done', this.value)" style="max-width: 140px;">
+              <option value="beep">Luide Piep</option>
+              <option value="doubleclick">Dubbele Klik</option>
+              <option value="chime">Krachtige Chime</option>
+            </select>
+            <button class="btn-config" onclick="playDoneAudio()">▶ Test</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Timer Alarm:</span>
+          <div style="display: flex; gap: 4px; align-items: center;">
+            <select id="alarmAudioSelect" onchange="changeAudioSetting('alarm', this.value)" style="max-width: 140px;">
+              <option value="classic">Luid Alarm (Klassiek)</option>
+              <option value="boxing">Boksbel (Doordringend)</option>
+              <option value="triplebeep">3x Snelle Piep</option>
+            </select>
+            <button class="btn-config" onclick="playAlarmAudio()">▶ Test</button>
+          </div>
+        </div>
+        <div class="setting-row" style="margin-top: 6px;">
+          <span>Audio Inschakelen:</span>
+          <button class="btn-config" id="soundToggleBtn" onclick="toggleSound()">Audio Aan</button>
+        </div>
+        <div class="setting-row">
+          <span>Trillen (Haptics):</span>
+          <button class="btn-config" id="hapticToggleBtn" onclick="toggleHaptics()">Haptic Aan</button>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <div class="setting-title">Cyclus & Data</div>
+        <div class="setting-row">
+          <span>Dagen (<strong id="activeDaysCountLabel">5</strong> actueel):</span>
+          <div>
+            <button class="btn-config" onclick="addDay()">+ D</button>
+            <button class="btn-config" onclick="removeDay()">- D</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Weken (<strong id="activeWeeksCountLabel">8</strong> actueel):</span>
+          <div>
+            <button class="btn-config" onclick="addWeek()">+ W</button>
+            <button class="btn-config" onclick="removeWeek()">- W</button>
+          </div>
+        </div>
+        <div class="setting-row" style="margin-top: 8px;">
+          <span>Scherm altijd aan:</span>
+          <button class="btn-config" id="wakeLockModalBtn" onclick="toggleWakeLock()">Scherm Actief</button>
+        </div>
+        <div class="setting-row">
+          <span>Back-up data:</span>
+          <button class="btn-config" onclick="exportCSV()">Exporteer CSV</button>
+        </div>
+      </div>
+
+      <button class="btn-glass" style="width: 100%; min-height: 40px; margin-top: 6px; font-weight:800;" onclick="closeSettingsModal()">Sluiten</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="warmupModal">
+    <div class="modal-box" style="max-width: 360px;">
+      <h3 style="margin-bottom: 4px;">Opwarmsets</h3>
+      <p id="warmupSubtitle" style="text-align: center; color: var(--text-muted); font-size: 11px; margin-bottom: 12px;"></p>
+      <div id="warmupList" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;"></div>
+      <button class="btn-glass" style="width: 100%; min-height: 40px;" onclick="closeWarmupModal()">Gereed</button>
     </div>
   </div>
 
   <script>
-    const mem = {};
-    const Store = {
-      get(k) { try { return localStorage.getItem(k) || mem[k] || null; } catch(e) { return mem[k] || null; } },
-      set(k, v) { mem[k] = String(v); try { localStorage.setItem(k, String(v)); } catch(e) {} }
+    const memoryStore = {};
+    const SafeStore = {
+      getItem(key) {
+        try {
+          if (typeof window.localStorage !== 'undefined') {
+            const val = window.localStorage.getItem(key);
+            if (val !== null) return val;
+          }
+        } catch (e) {}
+        return memoryStore[key] || null;
+      },
+      setItem(key, val) {
+        memoryStore[key] = String(val);
+        try {
+          if (typeof window.localStorage !== 'undefined') {
+            window.localStorage.setItem(key, String(val));
+          }
+        } catch (e) {}
+      }
     };
 
-    const MUSCLES = ['Borst', 'Rug', 'Quadriceps', 'Hamstrings/Glutes', 'Schouders', 'Biceps', 'Triceps', 'Kuiten/Buik'];
-    const DAYS = ['Dag 1', 'Dag 2', 'Dag 3', 'Dag 4', 'Dag 5'];
-    let curWeek = 1;
-    let curDay = DAYS[0];
-    let appData = {};
-    let undoHistory = [];
-    let autoSec = parseInt(Store.get('wk_auto_timer') || '90');
-    let chosenTone = Store.get('wk_chosen_tone') || 'beep';
-    let audioCtx = null;
+    const SIMPLE_MUSCLE_GROUPS = [
+      'Borst', 'Rug', 'Quadriceps', 'Hamstrings/Glutes', 
+      'Schouders', 'Biceps', 'Triceps', 'Calves/Abs'
+    ];
+
+    const ADVANCED_MUSCLES = [
+      { id: 'chest_upper', label: 'Bovenkant (Incline focus)', parent: 'Borst' },
+      { id: 'chest_mid_lower', label: 'Midden / Onder (Flat/Dips)', parent: 'Borst' },
+      { id: 'back_lats', label: 'Lats (Verticale trek / Pulldown)', parent: 'Rug' },
+      { id: 'back_upper', label: 'Bovenrug / Traps (Horizontale trek / Rows)', parent: 'Rug' },
+      { id: 'quads', label: 'Quadriceps (Kniestrekking / Squat)', parent: 'Quadriceps' },
+      { id: 'hams_curl', label: 'Hamstrings (Kniebuiging / Leg Curl)', parent: 'Hamstrings/Glutes' },
+      { id: 'hams_hinge', label: 'Hamstrings (Heupstrekking / RDL focus)', parent: 'Hamstrings/Glutes' },
+      { id: 'glutes', label: 'Glutes (Thrust / Heupstrekking)', parent: 'Hamstrings/Glutes' },
+      { id: 'delts_front', label: 'Voorste kop (Overhead Press)', parent: 'Schouders' },
+      { id: 'delts_side', label: 'Zijkant (Lateral Raise focus)', parent: 'Schouders' },
+      { id: 'delts_rear', label: 'Achterkant (Face Pulls / Rear Delt)', parent: 'Schouders' },
+      { id: 'biceps', label: 'Biceps (Biceps Brachii)', parent: 'Biceps' },
+      { id: 'brachialis_forearms', label: 'Brachialis / Onderarmen (Hammer grip)', parent: 'Biceps' },
+      { id: 'triceps_long', label: 'Lange kop (Overhead extensie)', parent: 'Triceps' },
+      { id: 'triceps_lateral_medial', label: 'Laterale / Mediale kop (Pushdown)', parent: 'Triceps' },
+      { id: 'calves', label: 'Kuiten (Calf Raise)', parent: 'Calves/Abs' },
+      { id: 'abs_core', label: 'Core / Abs (Crunches / Bracing)', parent: 'Calves/Abs' }
+    ];
+
+    let muscleMode = SafeStore.getItem('wk_muscle_mode_v27') || 'simple';
+    let currentTheme = SafeStore.getItem('wk_theme_v27') || 'glass';
+    if (currentTheme === 'beast') currentTheme = 'glass';
+
+    let days = JSON.parse(SafeStore.getItem('wk_days_v27')) || ['Dag 1', 'Dag 2', 'Dag 3', 'Dag 4', 'Dag 5'];
+    let totalWeeks = parseInt(SafeStore.getItem('wk_total_weeks_v27')) || 8;
+    let currentWeek = parseInt(SafeStore.getItem('wk_active_week_v27')) || 1;
+    let currentDay = SafeStore.getItem('wk_active_day_v27') || days[0];
+    
+    let data = JSON.parse(SafeStore.getItem('workout_data_v27')) || {};
+    let soundEnabled = JSON.parse(SafeStore.getItem('wk_sound_v27') ?? 'true');
+    let hapticsEnabled = JSON.parse(SafeStore.getItem('wk_haptic_v27') ?? 'true');
+    let autoTimerSeconds = parseInt(SafeStore.getItem('wk_autotimer_sec_v27') ?? '90');
+    let soundVolume = parseFloat(SafeStore.getItem('wk_sound_volume_v27') ?? '1.0');
+
+    let currentDoneAudioId = SafeStore.getItem('wk_active_done_audio_id_v27') || 'beep';
+    let currentAlarmAudioId = SafeStore.getItem('wk_active_alarm_audio_id_v27') || 'classic';
+
+    let savedCustomThemes = JSON.parse(SafeStore.getItem('wk_custom_themes_list_v27')) || [];
+    let activeCustomBg = SafeStore.getItem('wk_active_custom_bg_v27') || '';
+    let activeCardColor = SafeStore.getItem('wk_active_card_color_v27') || '#161922';
+    let activeAccentColor = SafeStore.getItem('wk_active_accent_color_v27') || '#30d158';
+
+    let historyStack = [];
     let wakeLock = null;
+    let wakeLockEnabled = false;
 
-    let timerTargetEnd = null;
-    let timerTick = null;
-
-    try { appData = JSON.parse(Store.get('wk_app_data') || '{}'); } catch(e) { appData = {}; }
+    let timerInterval = null;
+    let timerTargetTime = 0;
+    let timerSeconds = 0;
+    let isStopwatch = false;
+    let audioCtx = null;
+    let silentAudioLoop = null;
 
     function triggerHaptic() {
+      if (!hapticsEnabled) return;
       try {
-        const sw = document.getElementById('hapticSwitch');
-        if (sw) sw.checked = !sw.checked;
-        if (navigator.vibrate) navigator.vibrate(25);
+        const sw = document.getElementById('iosHapticNativeSwitch');
+        if (sw) sw.click();
+        if (navigator.vibrate) navigator.vibrate([40]);
       } catch (e) {}
     }
 
@@ -321,371 +1037,1395 @@
       if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
-    function playTone(type = chosenTone) {
-      initAudio();
-      const now = audioCtx.currentTime;
-
-      if (type === 'beep') {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(850, now);
-        osc.frequency.setValueAtTime(950, now + 0.1);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        osc.start(now);
-        osc.stop(now + 0.25);
-      } else if (type === 'bong') {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(320, now);
-        osc.frequency.exponentialRampToValueAtTime(120, now + 0.7);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-        osc.start(now);
-        osc.stop(now + 0.7);
-      } else if (type === 'chime') {
-        [523.25, 659.25, 783.99].forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
-          gain.gain.setValueAtTime(0.18, now + idx * 0.12);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.3);
-          osc.start(now + idx * 0.12);
-          osc.stop(now + idx * 0.12 + 0.3);
-        });
-      }
+    function changeVolumeLevel(val) {
+      soundVolume = parseFloat(val);
+      SafeStore.setItem('wk_sound_volume_v27', soundVolume);
+      playSynthTone(750, 0.15, 'sawtooth');
+      showToast(`Volume: ${Math.round(soundVolume * 100)}%`);
     }
 
-    function changeSound(v) {
-      chosenTone = v;
-      Store.set('wk_chosen_tone', v);
-      playTone(v);
-    }
-
-    async function requestWake() {
+    function startBackgroundAudioKeepAlive() {
       try {
-        if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
-      } catch(e) {}
-    }
-    function releaseWake() {
-      if (wakeLock) { wakeLock.release(); wakeLock = null; }
+        if (!silentAudioLoop) {
+          silentAudioLoop = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
+          silentAudioLoop.loop = true;
+        }
+        silentAudioLoop.play().catch(() => {});
+      } catch (e) {}
     }
 
-    function startTimer(sec) {
+    function stopBackgroundAudioKeepAlive() {
+      try {
+        if (silentAudioLoop) {
+          silentAudioLoop.pause();
+          silentAudioLoop.currentTime = 0;
+        }
+      } catch (e) {}
+    }
+
+    function playSynthTone(freq, dur, wave = 'sawtooth') {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const ctx = audioCtx;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = wave;
+        osc.frequency.setValueAtTime(freq, now);
+
+        const targetGain = Math.min(1.0, 0.9 * soundVolume);
+        gain.gain.setValueAtTime(targetGain, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + dur);
+      } catch (e) {}
+    }
+
+    function playAlarmAudio() {
+      if (!soundEnabled) return;
+      if (currentAlarmAudioId === 'boxing') {
+        playSynthTone(580, 0.5, 'triangle');
+        setTimeout(() => playSynthTone(580, 0.5, 'triangle'), 300);
+      } else if (currentAlarmAudioId === 'triplebeep') {
+        playSynthTone(980, 0.12, 'square');
+        setTimeout(() => playSynthTone(980, 0.12, 'square'), 180);
+        setTimeout(() => playSynthTone(1100, 0.35, 'square'), 360);
+      } else {
+        playSynthTone(880, 0.25, 'sawtooth');
+        setTimeout(() => playSynthTone(1050, 0.45, 'sawtooth'), 220);
+      }
+    }
+
+    function playDoneAudio() {
+      if (!soundEnabled) return;
+      if (currentDoneAudioId === 'doubleclick') {
+        playSynthTone(950, 0.05, 'square');
+        setTimeout(() => playSynthTone(1350, 0.08, 'square'), 70);
+      } else if (currentDoneAudioId === 'chime') {
+        playSynthTone(600, 0.1, 'sawtooth');
+        setTimeout(() => playSynthTone(750, 0.1, 'sawtooth'), 80);
+        setTimeout(() => playSynthTone(900, 0.22, 'sawtooth'), 160);
+      } else {
+        playSynthTone(900, 0.15, 'sawtooth');
+      }
+    }
+
+    function pushHistory() {
+      historyStack.push(JSON.stringify(data));
+      if (historyStack.length > 20) historyStack.shift();
+    }
+
+    function undoLastAction() {
+      if (historyStack.length === 0) {
+        showToast('Niets om te herstellen');
+        return;
+      }
+      const previousState = historyStack.pop();
+      data = JSON.parse(previousState);
+      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast('Laatste wijziging hersteld');
+    }
+
+    function changeMuscleMode(val) {
+      muscleMode = val;
+      SafeStore.setItem('wk_muscle_mode_v27', val);
+      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('muscleModeSelect').value = muscleMode;
+      document.getElementById('doneAudioSelect').value = currentDoneAudioId;
+      document.getElementById('alarmAudioSelect').value = currentAlarmAudioId;
+      renderThemeDropdown();
+      updateCycleCountLabels();
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function updateCycleCountLabels() {
+      const dEl = document.getElementById('activeDaysCountLabel');
+      const wEl = document.getElementById('activeWeeksCountLabel');
+      if (dEl) dEl.innerText = days.length;
+      if (wEl) wEl.innerText = totalWeeks;
+    }
+
+    function changeAudioSetting(type, val) {
+      if (type === 'done') {
+        currentDoneAudioId = val;
+        SafeStore.setItem('wk_active_done_audio_id_v27', val);
+      } else {
+        currentAlarmAudioId = val;
+        SafeStore.setItem('wk_active_alarm_audio_id_v27', val);
+      }
+      showToast('Geluid ingesteld');
+    }
+
+    function triggerBgUpload() {
+      document.getElementById('customBgInput').click();
+    }
+
+    function handleCustomBgUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Img = e.target.result;
+        activeCustomBg = base64Img;
+        SafeStore.setItem('wk_active_custom_bg_v27', base64Img);
+        document.body.style.setProperty('--custom-bg-image', `url(${base64Img})`);
+
+        if (!currentTheme.startsWith('custom_')) {
+          currentTheme = 'custom_temp';
+        }
+        applyTheme(currentTheme);
+        showToast('Foto geladen! Kleuren analyseren...');
+        autoExtractColorsFromCurrentBg();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function autoExtractColorsFromCurrentBg() {
+      if (!activeCustomBg) {
+        showToast('Kies eerst een foto');
+        return;
+      }
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 32;
+        canvas.height = 32;
+        ctx.drawImage(img, 0, 0, 32, 32);
+
+        const imgData = ctx.getImageData(0, 0, 32, 32).data;
+        let rSum = 0, gSum = 0, bSum = 0, count = 0;
+        let bestAccent = '#30d158';
+        let maxSaturation = -1;
+
+        for (let i = 0; i < imgData.length; i += 16) {
+          const r = imgData[i], g = imgData[i + 1], b = imgData[i + 2];
+          rSum += r; gSum += g; bSum += b; count++;
+
+          const max = Math.max(r, g, b), min = Math.min(r, g, b);
+          const sat = max === 0 ? 0 : (max - min) / max;
+
+          if (sat > maxSaturation && max > 60 && max < 240) {
+            maxSaturation = sat;
+            bestAccent = rgbToHex(r, g, b);
+          }
+        }
+
+        const avgBrightness = (0.299 * (rSum / count) + 0.587 * (gSum / count) + 0.114 * (bSum / count));
+        const calculatedCard = avgBrightness > 130 ? '#10121a' : '#181b24';
+        
+        updateCardBgColor(calculatedCard);
+        updateAccentColor(bestAccent);
+        showToast('Bijpassende kleuren ingesteld!');
+      };
+      img.src = activeCustomBg;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function updateCardBgColor(val) {
+      activeCardColor = val;
+      SafeStore.setItem('wk_active_card_color_v27', val);
+      document.body.style.setProperty('--card-bg', hexToRgba(val, 0.22));
+      document.body.style.setProperty('--card-inner', hexToRgba(val, 0.28));
+      document.getElementById('cardColorPicker').value = val;
+    }
+
+    function updateAccentColor(val) {
+      activeAccentColor = val;
+      SafeStore.setItem('wk_active_accent_color_v27', val);
+      document.body.style.setProperty('--accent', val);
+      document.getElementById('accentColorPicker').value = val;
+    }
+
+    function hexToRgba(hex, alpha) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      const num = parseInt(hex, 16);
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
+
+    function saveCustomThemePrompt() {
+      const name = prompt('Geef je thema een naam:', 'Thema ' + (savedCustomThemes.length + 1));
+      if (!name || name.trim() === '') return;
+
+      const themeId = 'custom_' + Date.now();
+      savedCustomThemes.push({
+        id: themeId,
+        name: name.trim(),
+        bg: activeCustomBg,
+        cardColor: activeCardColor,
+        accent: activeAccentColor
+      });
+      SafeStore.setItem('wk_custom_themes_list_v27', JSON.stringify(savedCustomThemes));
+      
+      renderThemeDropdown();
+      changeTheme(themeId);
+      showToast(`Thema '${name}' opgeslagen!`);
+    }
+
+    function deleteCurrentCustomTheme() {
+      if (!currentTheme.startsWith('custom_')) return;
+      if (!confirm('Weet je zeker dat je dit thema wilt wissen?')) return;
+
+      savedCustomThemes = savedCustomThemes.filter(t => t.id !== currentTheme);
+      SafeStore.setItem('wk_custom_themes_list_v27', JSON.stringify(savedCustomThemes));
+      
+      renderThemeDropdown();
+      changeTheme('glass');
+      showToast('Thema gewist');
+    }
+
+    function renderThemeDropdown() {
+      const select = document.getElementById('themeSelectModal');
+      let html = `
+        <option value="glass">Zwart</option>
+        <option value="bright">Wit</option>
+        <option value="light-color">Lichtblauw</option>
+        <option value="medium-color">Amber</option>
+        <option value="dark-color">Indigo</option>
+      `;
+
+      savedCustomThemes.forEach(t => {
+        html += `<option value="${t.id}">${escapeHtml(t.name)}</option>`;
+      });
+
+      select.innerHTML = html;
+      select.value = currentTheme;
+    }
+
+    function applyTheme(themeName) {
+      document.body.className = '';
+      const deleteBtn = document.getElementById('deleteThemeBtn');
+      const foundCustom = savedCustomThemes.find(t => t.id === themeName);
+
+      if (foundCustom || themeName === 'custom_temp') {
+        document.body.classList.add('theme-custom');
+        
+        if (foundCustom) {
+          deleteBtn.style.display = 'inline-flex';
+          activeCustomBg = foundCustom.bg;
+          activeCardColor = foundCustom.cardColor || '#161922';
+          activeAccentColor = foundCustom.accent || '#30d158';
+        } else {
+          deleteBtn.style.display = 'none';
+        }
+
+        updateCardBgColor(activeCardColor);
+        updateAccentColor(activeAccentColor);
+
+        if (activeCustomBg) {
+          document.body.style.setProperty('--custom-bg-image', `url(${activeCustomBg})`);
+        }
+      } else {
+        deleteBtn.style.display = 'none';
+        document.body.style.removeProperty('--accent');
+        document.body.style.removeProperty('--card-bg');
+        document.body.style.removeProperty('--card-inner');
+        document.body.style.removeProperty('--custom-bg-image');
+
+        if (themeName !== 'glass') {
+          document.body.classList.add(`theme-${themeName}`);
+        }
+      }
+
+      document.getElementById('themeSelectModal').value = themeName;
+      SafeStore.setItem('wk_theme_v27', themeName);
+    }
+
+    function changeTheme(themeName) {
+      currentTheme = themeName;
+      applyTheme(themeName);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }
+
+    function toggleHaptics() {
+      hapticsEnabled = !hapticsEnabled;
+      SafeStore.setItem('wk_haptic_v27', JSON.stringify(hapticsEnabled));
+      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
+      triggerHaptic();
+      showToast(hapticsEnabled ? 'Haptics Aan' : 'Haptics Uit');
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      SafeStore.setItem('wk_sound_v27', JSON.stringify(soundEnabled));
+      document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
+      showToast(soundEnabled ? 'Geluid Aan' : 'Geluid Uit');
+    }
+
+    function changeAutoTimerSetting(val) {
+      autoTimerSeconds = parseInt(val);
+      SafeStore.setItem('wk_autotimer_sec_v27', autoTimerSeconds);
+      showToast(autoTimerSeconds === 0 ? 'Auto-timer Uit' : `Auto-timer: ${autoTimerSeconds}s`);
+    }
+
+    async function toggleWakeLock() {
+      const btn = document.getElementById('wakeLockModalBtn');
+      if (!('wakeLock' in navigator)) {
+        showToast('Wake Lock niet ondersteund op deze browser');
+        return;
+      }
+      try {
+        if (!wakeLockEnabled) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLockEnabled = true;
+          btn.innerText = 'Scherm Continu Aan';
+          showToast('Scherm blijft nu aan tijdens de training');
+        } else {
+          if (wakeLock) await wakeLock.release();
+          wakeLock = null;
+          wakeLockEnabled = false;
+          btn.innerText = 'Scherm Normaal';
+          showToast('Schermvergrendeling weer normaal');
+        }
+      } catch (err) {
+        showToast('Wake lock fout: ' + err.message);
+      }
+    }
+
+    function promptCustomTimer() {
+      const sec = prompt('Hoeveel seconden rust wil je?', '45');
+      const val = parseInt(sec);
+      if (!isNaN(val) && val > 0) {
+        startTimer(val);
+      }
+    }
+
+    function startTimer(seconds) {
       initAudio();
-      requestWake();
-      timerTargetEnd = Date.now() + (sec * 1000);
-      updateTimerUI();
-      clearInterval(timerTick);
-      timerTick = setInterval(tickTimer, 250);
+      stopTimer();
+      startBackgroundAudioKeepAlive();
+      timerTargetTime = Date.now() + (seconds * 1000);
+      timerSeconds = seconds;
+      renderTimer();
+
+      timerInterval = setInterval(() => {
+        const remaining = Math.round((timerTargetTime - Date.now()) / 1000);
+        if (remaining <= 0) {
+          stopTimer();
+          playAlarmAudio();
+          triggerHaptic();
+        } else {
+          timerSeconds = remaining;
+          renderTimer();
+        }
+      }, 500);
     }
 
-    function tickTimer() {
-      const remaining = Math.max(0, Math.round((timerTargetEnd - Date.now()) / 1000));
-      updateTimerUI(remaining);
-      if (remaining <= 0) {
-        resetTimer();
-        playTone();
-        triggerHaptic();
+    function addTimer(sec) {
+      if (isStopwatch) stopTimer();
+      if (!timerInterval) {
+        startTimer(sec);
+      } else {
+        timerTargetTime += (sec * 1000);
+        timerSeconds = Math.round((timerTargetTime - Date.now()) / 1000);
+        renderTimer();
       }
     }
 
-    function addTimerSec(sec) {
-      if (!timerTargetEnd || Date.now() >= timerTargetEnd) startTimer(sec);
-      else {
-        timerTargetEnd += (sec * 1000);
-        tickTimer();
+    function toggleStopwatch() {
+      const loopBtn = document.getElementById('loopBtn');
+      if (isStopwatch) {
+        stopTimer();
+      } else {
+        stopTimer();
+        isStopwatch = true;
+        loopBtn.style.color = 'var(--accent)';
+        document.getElementById('timerModeLabel').innerText = 'Loop';
+        const start = Date.now();
+        timerInterval = setInterval(() => {
+          timerSeconds = Math.floor((Date.now() - start) / 1000);
+          renderTimer();
+        }, 500);
       }
     }
 
-    function resetTimer() {
-      clearInterval(timerTick);
-      timerTick = null;
-      timerTargetEnd = null;
-      releaseWake();
-      updateTimerUI(0);
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 0;
+      isStopwatch = false;
+      stopBackgroundAudioKeepAlive();
+      document.getElementById('loopBtn').style.color = '';
+      document.getElementById('timerModeLabel').innerText = 'Rusttimer';
+      renderTimer();
     }
 
-    function updateTimerUI(rem = 0) {
-      const m = Math.floor(rem / 60);
-      const s = rem % 60;
-      document.getElementById('timerDisplay').innerText = 
-        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    function renderTimer() {
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      document.getElementById('timerText').innerText = 
+        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && timerTargetEnd) tickTimer();
+      if (!document.hidden && timerInterval && !isStopwatch) {
+        const remaining = Math.round((timerTargetTime - Date.now()) / 1000);
+        if (remaining <= 0) {
+          stopTimer();
+          playAlarmAudio();
+          triggerHaptic();
+        } else {
+          timerSeconds = remaining;
+          renderTimer();
+        }
+      }
     });
 
-    function getKey(w = curWeek, d = curDay) { return `W${w}_${d}`; }
-
-    function getDayList(w = curWeek, d = curDay) {
-      const k = getKey(w, d);
-      if (!appData[k]) {
-        appData[k] = [{
-          name: '', muscle: '',
-          sets: [{ plates: '', kg: '', reps: '', targetRir: '2', actualRir: '2', done: false }]
-        }];
+    function exportCSV() {
+      let csv = 'Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities\n';
+      for (let w = 1; w <= totalWeeks; w++) {
+        for (let d of days) {
+          const k = getKey(w, d);
+          const exercises = data[k] || [];
+          exercises.forEach(ex => {
+            if (ex.exercise) {
+              const overlapStr = (ex.overlapMuscles || []).join(';');
+              ex.sets.forEach((s, sIdx) => {
+                csv += `"${w}","${d}","${ex.exercise.replace(/"/g, '""')}","${ex.muscle || ''}","${ex.advMuscle || ''}","${overlapStr}","${sIdx + 1}","${s.plates || ''}","${s.weight || ''}","${s.reps || ''}","${s.targetRir || ''}","${s.actualRir || ''}","${s.completed ? 'Ja' : 'Nee'}","${(ex.note || '').replace(/"/g, '""')}"\n`;
+              });
+            }
+          });
+        }
       }
-      return appData[k];
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `workout_export.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('CSV gedownload');
     }
 
-    function save() {
-      Store.set('wk_app_data', JSON.stringify(appData));
+    function init() {
+      document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
+      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
+      document.getElementById('autoTimerSelect').value = autoTimerSeconds;
+      document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
+      document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+
+      renderThemeDropdown();
+      applyTheme(currentTheme);
+
+      if (!days.includes(currentDay)) currentDay = days[0] || 'Dag 1';
+      if (currentWeek > totalWeeks) currentWeek = totalWeeks;
+
+      ensureInitialData();
+      updateSuggestionsDatalist();
+      renderNav();
+      renderExercises();
+      updateStats();
+      updateCycleCountLabels();
+    }
+
+    function ensureInitialData() {
+      const k = getKey();
+      if (!data[k] || data[k].length === 0) {
+        data[k] = [
+          { exercise: '', muscle: '', advMuscle: '', overlapMuscles: [], note: '', linkedSuperset: false, sets: [{ weight: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }] }
+        ];
+      }
+    }
+
+    function updateSuggestionsDatalist() {
+      const setOfNames = new Set();
+      for (let w = 1; w <= totalWeeks; w++) {
+        for (let d of days) {
+          const exercises = data[getKey(w, d)] || [];
+          exercises.forEach(e => {
+            if (e.exercise && e.exercise.trim().length > 1) {
+              setOfNames.add(e.exercise.trim());
+            }
+          });
+        }
+      }
+      document.getElementById('exerciseSuggestions').innerHTML = Array.from(setOfNames).map(name => `<option value="${escapeHtml(name)}">`).join('');
+    }
+
+    function renderNav() {
+      document.getElementById('daysList').innerHTML = days.map(d => 
+        `<button class="pill ${d === currentDay ? 'active' : ''}" onclick="selectDay('${d}')">${d}</button>`
+      ).join('');
+
+      document.getElementById('weeksList').innerHTML = Array.from({length: totalWeeks}, (_, i) => i + 1).map(w => 
+        `<button class="pill ${w === currentWeek ? 'active' : ''}" onclick="selectWeek(${w})">W${w}</button>`
+      ).join('');
+
+      document.getElementById('summaryWeekLabel').innerText = currentWeek;
+    }
+
+    function selectDay(day) {
+      currentDay = day;
+      SafeStore.setItem('wk_active_day_v27', day);
+      ensureInitialData();
+      renderNav();
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+    }
+
+    function selectWeek(week) {
+      currentWeek = week;
+      SafeStore.setItem('wk_active_week_v27', week);
+      ensureInitialData();
+      renderNav();
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+    }
+
+    function addDay() {
+      days.push(`Dag ${days.length + 1}`);
+      SafeStore.setItem('wk_days_v27', JSON.stringify(days));
+      renderNav();
+      updateCycleCountLabels();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function removeDay() {
+      if (days.length <= 1) return;
+      const removed = days.pop();
+      if (currentDay === removed) currentDay = days[days.length - 1];
+      SafeStore.setItem('wk_days_v27', JSON.stringify(days));
+      SafeStore.setItem('wk_active_day_v27', currentDay);
+      ensureInitialData();
+      renderNav();
+      renderExercises();
+      updateStats();
+      updateCycleCountLabels();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function addWeek() {
+      totalWeeks++;
+      SafeStore.setItem('wk_total_weeks_v27', totalWeeks);
+      renderNav();
+      updateCycleCountLabels();
+    }
+
+    function removeWeek() {
+      if (totalWeeks <= 1) return;
+      totalWeeks--;
+      if (currentWeek > totalWeeks) currentWeek = totalWeeks;
+      SafeStore.setItem('wk_total_weeks_v27', totalWeeks);
+      SafeStore.setItem('wk_active_week_v27', currentWeek);
+      ensureInitialData();
+      renderNav();
+      renderExercises();
+      updateStats();
+      updateCycleCountLabels();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function getKey(week = currentWeek, day = currentDay) {
+      return `W${week}_${day}`;
+    }
+
+    function addNewExercise() {
+      pushHistory();
+      const k = getKey();
+      if (!data[k]) data[k] = [];
+      data[k].push({
+        exercise: '',
+        muscle: '',
+        advMuscle: '',
+        overlapMuscles: [],
+        note: '',
+        linkedSuperset: false,
+        sets: [{ weight: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }]
+      });
+      saveData();
+      renderExercises();
+    }
+
+    function removeExercise(exIdx) {
+      pushHistory();
+      const k = getKey();
+      if (data[k] && data[k].length > 1) {
+        data[k].splice(exIdx, 1);
+        saveData();
+        renderExercises();
+        updateStats();
+        if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+      }
+    }
+
+    function toggleSupersetLink(exIdx) {
+      pushHistory();
+      const k = getKey();
+      data[k][exIdx].linkedSuperset = !data[k][exIdx].linkedSuperset;
+      saveData();
+      renderExercises();
+      if (data[k][exIdx].linkedSuperset) {
+        showToast('Gekoppeld met onderstaande oefening');
+      }
+    }
+
+    function toggleNote(exIdx) {
+      const el = document.getElementById(`note_field_${exIdx}`);
+      if (el) el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function updateNote(exIdx, val) {
+      const k = getKey();
+      data[k][exIdx].note = val;
+      saveData();
+    }
+
+    function toggleCollapse(exIdx) {
+      const el = document.getElementById(`exercise_block_${exIdx}`);
+      if (el) el.classList.toggle('collapsed');
+    }
+
+    function addSetToExercise(exIdx) {
+      pushHistory();
+      const k = getKey();
+      const ex = data[k][exIdx];
+      const prevSet = ex.sets[ex.sets.length - 1] || {};
+      ex.sets.push({
+        weight: prevSet.weight || '',
+        plates: prevSet.plates || '',
+        reps: prevSet.reps || '',
+        targetRir: prevSet.targetRir || '2',
+        actualRir: prevSet.targetRir || '2',
+        completed: false
+      });
+      saveData();
+      renderExercises();
       updateStats();
     }
 
-    function saveState() {
-      undoHistory.push(JSON.stringify(appData));
-      if (undoHistory.length > 20) undoHistory.shift();
-    }
-
-    function undo() {
-      if (!undoHistory.length) { showToast('Niets om te herstellen'); return; }
-      appData = JSON.parse(undoHistory.pop());
-      save();
-      renderAll();
-      showToast('Hersteld');
-    }
-
-    function showToast(txt) {
-      const t = document.getElementById('toast');
-      t.innerText = txt;
-      t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 1800);
-    }
-
-    function setDay(d) { curDay = d; renderNav(); renderExercises(); updateStats(); }
-    function setWeek(w) { curWeek = w; renderNav(); renderExercises(); updateStats(); }
-
-    function renderNav() {
-      document.getElementById('daysNav').innerHTML = DAYS.map(d =>
-        `<button class="pill ${d === curDay ? 'active' : ''}" onclick="setDay('${d}')">${d}</button>`
-      ).join('');
-      document.getElementById('weeksNav').innerHTML = Array.from({length: 8}, (_, i) => i + 1).map(w =>
-        `<button class="pill ${w === curWeek ? 'active' : ''}" onclick="setWeek(${w})">W${w}</button>`
-      ).join('');
-    }
-
-    function addExercise() {
-      saveState();
-      getDayList().push({
-        name: '', muscle: '',
-        sets: [{ plates: '', kg: '', reps: '', targetRir: '2', actualRir: '2', done: false }]
-      });
-      save();
-      renderExercises();
-    }
-
-    function delExercise(idx) {
-      saveState();
-      const list = getDayList();
-      if (list.length > 1) {
-        list.splice(idx, 1);
-        save();
-        renderExercises();
-      }
-    }
-
-    function addSet(exIdx) {
-      saveState();
-      const ex = getDayList()[exIdx];
-      const prev = ex.sets[ex.sets.length - 1] || {};
-      ex.sets.push({
-        plates: prev.plates || '', kg: prev.kg || '', reps: prev.reps || '',
-        targetRir: prev.targetRir || '2', actualRir: prev.targetRir || '2', done: false
-      });
-      save();
-      renderExercises();
-    }
-
-    function delSet(exIdx) {
-      saveState();
-      const ex = getDayList()[exIdx];
+    function removeSetFromExercise(exIdx) {
+      pushHistory();
+      const k = getKey();
+      const ex = data[k][exIdx];
       if (ex.sets.length > 1) {
         ex.sets.pop();
-        save();
+        saveData();
         renderExercises();
+        updateStats();
+        if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
       }
     }
 
-    function toggleDone(exIdx, setIdx) {
-      initAudio();
-      saveState();
-      const s = getDayList()[exIdx].sets[setIdx];
-      s.done = !s.done;
-      save();
-      triggerHaptic();
-      if (s.done && autoSec > 0) startTimer(autoSec);
-      renderExercises();
+    function handleExerciseNameChange(exIdx, name) {
+      const k = getKey();
+      data[k][exIdx].exercise = name;
+      saveData();
+      updateSuggestionsDatalist();
     }
 
-    function updateKg(exIdx, setIdx, val) {
-      const s = getDayList()[exIdx].sets[setIdx];
-      s.kg = val;
-      const num = parseFloat(val.replace(',', '.'));
-      if (!isNaN(num)) s.plates = Math.round((num / 20) * 100) / 100;
-      save();
-    }
+    function handleParentMuscleChange(exIdx, parentVal) {
+      pushHistory();
+      const k = getKey();
+      data[k][exIdx].muscle = parentVal;
 
-    function updatePlates(exIdx, setIdx, val) {
-      const s = getDayList()[exIdx].sets[setIdx];
-      s.plates = val;
-      const num = parseFloat(val.replace(',', '.'));
-      if (!isNaN(num)) s.kg = Math.round(num * 20 * 10) / 10;
-      save();
-      renderExercises();
-    }
-
-    function setRir(exIdx, setIdx, key, val) {
-      saveState();
-      getDayList()[exIdx].sets[setIdx][key] = String(val);
-      save();
-      triggerHaptic();
-      renderExercises();
-    }
-
-    function copyDayToAllWeeks() {
-      saveState();
-      const src = JSON.stringify(getDayList().map(cleanForCopy));
-      for (let w = 1; w <= 8; w++) {
-        if (w !== curWeek) appData[getKey(w, curDay)] = JSON.parse(src);
-      }
-      save();
-      showToast(`${curDay} gekopieerd naar alle weken`);
-    }
-
-    function copyWeekToAllWeeks() {
-      saveState();
-      DAYS.forEach(d => {
-        const src = JSON.stringify(getDayList(curWeek, d).map(cleanForCopy));
-        for (let w = 1; w <= 8; w++) {
-          if (w !== curWeek) appData[getKey(w, d)] = JSON.parse(src);
+      if (parentVal) {
+        const matchingSubs = ADVANCED_MUSCLES.filter(m => m.parent === parentVal);
+        if (matchingSubs.length > 0) {
+          data[k][exIdx].advMuscle = matchingSubs[0].id;
+        } else {
+          data[k][exIdx].advMuscle = '';
         }
-      });
-      save();
-      showToast(`Week ${curWeek} gekopieerd naar alle weken`);
+      } else {
+        data[k][exIdx].advMuscle = '';
+      }
+
+      saveData();
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
     }
 
-    function cleanForCopy(ex) {
+    function handleAdvSubMuscleChange(exIdx, advId) {
+      pushHistory();
+      const k = getKey();
+      data[k][exIdx].advMuscle = advId;
+      saveData();
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function toggleOverlapPanel(exIdx) {
+      const el = document.getElementById(`overlap_panel_${exIdx}`);
+      if (el) {
+        const isHidden = window.getComputedStyle(el).display === 'none';
+        el.style.display = isHidden ? 'flex' : 'none';
+      }
+    }
+
+    function toggleOverlapMuscle(exIdx, overlapId) {
+      pushHistory();
+      const k = getKey();
+      const ex = data[k][exIdx];
+      if (!ex.overlapMuscles) ex.overlapMuscles = [];
+
+      const idx = ex.overlapMuscles.indexOf(overlapId);
+      if (idx > -1) {
+        ex.overlapMuscles.splice(idx, 1);
+      } else {
+        ex.overlapMuscles.push(overlapId);
+      }
+      saveData();
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
+    }
+
+    function sanitizeExerciseForCopy(ex, existingTargetEx = null) {
+      const existingSets = existingTargetEx?.sets || [];
+      const cleanSets = ex.sets.map((s, idx) => {
+        const exSet = existingSets[idx] || {};
+        return {
+          weight: exSet.weight || '',
+          plates: exSet.plates || '',
+          reps: exSet.reps || '',
+          targetRir: s.targetRir || '2',
+          actualRir: exSet.actualRir || s.targetRir || '2',
+          completed: exSet.completed || false
+        };
+      });
+
       return {
-        name: ex.name || '', muscle: ex.muscle || '',
-        sets: (ex.sets || []).map(s => ({
-          plates: '', kg: '', reps: '',
-          targetRir: s.targetRir || '2', actualRir: s.targetRir || '2', done: false
-        }))
+        exercise: ex.exercise || '',
+        muscle: ex.muscle || '',
+        advMuscle: ex.advMuscle || '',
+        overlapMuscles: [...(ex.overlapMuscles || [])],
+        note: ex.note || '',
+        linkedSuperset: ex.linkedSuperset || false,
+        sets: cleanSets
       };
     }
 
-    function updateStats() {
-      let count = 0, kg = 0;
-      getDayList().forEach(ex => {
-        ex.sets.forEach(s => {
-          if (s.done) {
-            count++;
-            kg += (parseFloat(s.kg) || 0) * (parseFloat(s.reps) || 0);
-          }
-        });
-      });
-      document.getElementById('statSets').innerText = count;
-      document.getElementById('statKg').innerText = Math.round(kg) + ' kg';
+    function copyExerciseToAllWeeks(sourceExIdx) {
+      pushHistory();
+      const sourceKey = getKey();
+      const sourceEx = data[sourceKey][sourceExIdx];
+
+      if (!sourceEx.exercise || sourceEx.exercise.trim() === '') {
+        alert('Vul eerst de naam van de oefening in.');
+        return;
+      }
+
+      for (let w = 1; w <= totalWeeks; w++) {
+        if (w === currentWeek) continue;
+        const targetKey = getKey(w, currentDay);
+        if (!data[targetKey]) data[targetKey] = [];
+        data[targetKey][sourceExIdx] = sanitizeExerciseForCopy(sourceEx, data[targetKey][sourceExIdx]);
+      }
+
+      saveData();
+      showToast(`'${sourceEx.exercise}' en alle spieren gekopieerd naar alle weken!`);
     }
 
-    function setAutoTimer(v) { autoSec = parseInt(v); Store.set('wk_auto_timer', v); }
+    function copyCurrentDayToAllWeeks() {
+      const sourceKey = getKey();
+      const sourceExercises = data[sourceKey] || [];
+      const validExercises = sourceExercises.filter(e => e.exercise && e.exercise.trim() !== '');
+
+      if (validExercises.length === 0) {
+        alert('Er staan nog geen ingevulde oefeningen op deze dag om te kopiëren.');
+        return;
+      }
+
+      if (!confirm(`Weet je zeker dat je alle oefeningen van ${currentDay} wilt kopiëren naar alle andere weken?`)) {
+        return;
+      }
+
+      pushHistory();
+      for (let w = 1; w <= totalWeeks; w++) {
+        if (w === currentWeek) continue;
+        const targetKey = getKey(w, currentDay);
+        const existingTargetDay = data[targetKey] || [];
+
+        data[targetKey] = sourceExercises.map((ex, idx) => {
+          return sanitizeExerciseForCopy(ex, existingTargetDay[idx]);
+        });
+      }
+
+      saveData();
+      showToast(`Alle oefeningen van ${currentDay} gekopieerd naar alle weken!`);
+    }
+
+    function copyCurrentWeekToAllWeeks() {
+      let hasAnyExercise = false;
+      for (let d of days) {
+        const exs = data[getKey(currentWeek, d)] || [];
+        if (exs.some(e => e.exercise && e.exercise.trim() !== '')) {
+          hasAnyExercise = true;
+          break;
+        }
+      }
+
+      if (!hasAnyExercise) {
+        alert(`Er staan nog geen ingevulde oefeningen in Week ${currentWeek} om te kopiëren.`);
+        return;
+      }
+
+      if (!confirm(`Weet je zeker dat je het COMPLETE trainingsschema van Week ${currentWeek} (alle dagen) wilt kopiëren naar alle andere weken?`)) {
+        return;
+      }
+
+      pushHistory();
+      for (let w = 1; w <= totalWeeks; w++) {
+        if (w === currentWeek) continue;
+        for (let d of days) {
+          const sourceKey = getKey(currentWeek, d);
+          const targetKey = getKey(w, d);
+          const sourceExercises = data[sourceKey] || [];
+          const existingTargetDay = data[targetKey] || [];
+
+          data[targetKey] = sourceExercises.map((ex, idx) => {
+            return sanitizeExerciseForCopy(ex, existingTargetDay[idx]);
+          });
+        }
+      }
+
+      saveData();
+      showToast(`Hele trainingsschema van Week ${currentWeek} gekopieerd naar alle weken!`);
+    }
+
+    function updatePlatesInput(exIdx, setIdx, rawVal) {
+      const k = getKey();
+      const cleanVal = (rawVal || '').replace(',', '.');
+      data[k][exIdx].sets[setIdx].plates = rawVal;
+
+      const p = parseFloat(cleanVal);
+      if (!isNaN(p)) {
+        const calculatedKg = Math.round(p * 20 * 10) / 10;
+        data[k][exIdx].sets[setIdx].weight = calculatedKg;
+        const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
+        if (kgInput) kgInput.value = calculatedKg;
+      } else if (rawVal === '') {
+        data[k][exIdx].sets[setIdx].weight = '';
+        const kgInput = document.getElementById(`weight_${exIdx}_${setIdx}`);
+        if (kgInput) kgInput.value = '';
+      }
+      saveData();
+      updateStats();
+    }
+
+    function updateKgInput(exIdx, setIdx, rawVal) {
+      const k = getKey();
+      const cleanVal = (rawVal || '').replace(',', '.');
+      data[k][exIdx].sets[setIdx].weight = rawVal;
+
+      const kg = parseFloat(cleanVal);
+      if (!isNaN(kg)) {
+        const calculatedPlates = Math.round((kg / 20) * 100) / 100;
+        data[k][exIdx].sets[setIdx].plates = calculatedPlates;
+        const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
+        if (plateInput) plateInput.value = calculatedPlates;
+      } else if (rawVal === '') {
+        data[k][exIdx].sets[setIdx].plates = '';
+        const plateInput = document.getElementById(`plates_${exIdx}_${setIdx}`);
+        if (plateInput) plateInput.value = '';
+      }
+      saveData();
+      updateStats();
+    }
+
+    function updateRirQuick(exIdx, setIdx, field, val) {
+      pushHistory();
+      const k = getKey();
+      data[k][exIdx].sets[setIdx][field] = String(val);
+      saveData();
+      triggerHaptic();
+      renderExercises();
+    }
+
+    function updateSetField(exIdx, setIdx, field, val) {
+      const k = getKey();
+      data[k][exIdx].sets[setIdx][field] = val;
+      saveData();
+      updateStats();
+    }
+
+    function checkIsPR(exerciseName, weight, reps) {
+      const wVal = parseFloat(weight);
+      const rVal = parseFloat(reps);
+      if (!exerciseName || !wVal || !rVal || currentWeek === 1) return false;
+
+      const target = exerciseName.trim().toLowerCase();
+      let maxHistoricalWeight = 0;
+
+      for (let w = 1; w < currentWeek; w++) {
+        for (let d of days) {
+          const dayExercises = data[getKey(w, d)] || [];
+          dayExercises.forEach(ex => {
+            if (ex.exercise && ex.exercise.trim().toLowerCase() === target) {
+              ex.sets.forEach(s => {
+                if (s.completed) {
+                  const sw = parseFloat(s.weight) || 0;
+                  if (sw > maxHistoricalWeight) maxHistoricalWeight = sw;
+                }
+              });
+            }
+          });
+        }
+      }
+      return maxHistoricalWeight > 0 && wVal > maxHistoricalWeight;
+    }
+
+    function toggleComplete(exIdx, setIdx) {
+      pushHistory();
+      const k = getKey();
+      const ex = data[k][exIdx];
+      const s = ex.sets[setIdx];
+      s.completed = !s.completed;
+      saveData();
+
+      triggerHaptic();
+
+      if (s.completed) {
+        playDoneAudio();
+        if (!isStopwatch && !ex.linkedSuperset && autoTimerSeconds > 0) {
+          startTimer(autoTimerSeconds);
+        }
+      }
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+    }
+
+    function applyValues(exIdx, setIdx, weight, reps, actualRir) {
+      pushHistory();
+      const k = getKey();
+      const s = data[k][exIdx].sets[setIdx];
+      s.weight = weight;
+      s.plates = weight ? (Math.round((parseFloat(weight) / 20) * 100) / 100) : '';
+      s.reps = reps;
+      s.actualRir = String(actualRir);
+      saveData();
+      triggerHaptic();
+      renderExercises();
+      updateStats();
+    }
+
+    function saveData() {
+      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
+    }
+
+    function getLastWeekSet(exIdx, setIdx) {
+      if (currentWeek <= 1) return null;
+      const prevSets = data[getKey(currentWeek - 1, currentDay)];
+      if (prevSets && prevSets[exIdx] && prevSets[exIdx].sets && prevSets[exIdx].sets[setIdx]) {
+        const s = prevSets[exIdx].sets[setIdx];
+        if (s.weight && s.reps) return s;
+      }
+      return null;
+    }
+
+    function getThisWeekSet(exerciseName, currentExIdx, currentSetIdx) {
+      if (!exerciseName || exerciseName.trim().length < 2) return null;
+      const target = exerciseName.trim().toLowerCase();
+
+      for (let d of days) {
+        const dayExercises = data[getKey(currentWeek, d)] || [];
+        for (let eIdx = 0; eIdx < dayExercises.length; eIdx++) {
+          const ex = dayExercises[eIdx];
+          if (ex.exercise && ex.exercise.trim().toLowerCase() === target) {
+            for (let sIdx = 0; sIdx < ex.sets.length; sIdx++) {
+              if (d === currentDay && eIdx === currentExIdx && sIdx >= currentSetIdx) continue;
+              const s = ex.sets[sIdx];
+              if (s.weight && s.reps) return { day: d, ...s };
+            }
+          }
+        }
+      }
+      return null;
+    }
 
     function renderExercises() {
-      const list = getDayList();
-      const rirOpts = ['-1', '0', '1', '2', '3', '4'];
+      const container = document.getElementById('exercisesContainer');
+      const exercises = data[getKey()] || [];
       let html = '';
+      const rirOptions = ['-1', '0', '1', '2', '3', '4'];
 
-      list.forEach((ex, eIdx) => {
-        const allDone = ex.sets.length > 0 && ex.sets.every(s => s.done);
+      exercises.forEach((ex, exIdx) => {
+        const isParent = ex.linkedSuperset;
+        const isChild = exIdx > 0 && exercises[exIdx - 1]?.linkedSuperset;
+        const allCompleted = ex.sets.length > 0 && ex.sets.every(s => s.completed);
+
+        let parentMuscle = ex.muscle;
+        if (!parentMuscle && ex.advMuscle) {
+          const match = ADVANCED_MUSCLES.find(m => m.id === ex.advMuscle);
+          if (match) parentMuscle = match.parent;
+        }
+
+        let activeAdv = ex.advMuscle;
+        if (!activeAdv && parentMuscle) {
+          const m = ADVANCED_MUSCLES.find(item => item.parent === parentMuscle);
+          if (m) activeAdv = m.id;
+        }
+
+        const availableSubOptions = parentMuscle 
+          ? ADVANCED_MUSCLES.filter(m => m.parent === parentMuscle) 
+          : [];
+
+        const overlapList = ex.overlapMuscles || [];
+
         html += `
-          <div class="card">
-            <div class="card-head" onclick="this.parentElement.classList.toggle('collapsed')">
-              <span style="font-weight:700; font-size:13px;">${ex.name || 'Oefening ' + (eIdx + 1)} ${allDone ? '✓' : ''}</span>
-              <span class="arrow">▼</span>
+          <div class="exercise-block ${isParent ? 'superset-parent' : ''} ${isChild ? 'superset-child' : ''} ${allCompleted ? 'all-done' : ''}" id="exercise_block_${exIdx}">
+            ${isParent ? `<div class="superset-tag">Gekoppeld met onderstaande oefening</div>` : ''}
+            ${isChild ? `<div class="superset-tag">Tweede deel van superset</div>` : ''}
+            
+            <div class="exercise-top-bar" onclick="toggleCollapse(${exIdx})">
+              <div class="exercise-title-summary">
+                <span>${escapeHtml(ex.exercise) || `Oefening ${exIdx + 1}`}</span>
+                ${allCompleted ? '<span class="status-pill">✓</span>' : ''}
+              </div>
+              <span class="collapse-icon">▼</span>
             </div>
-            <div class="card-body">
-              <div class="row">
-                <input type="text" style="flex:1;" placeholder="Naam oefening..." value="${ex.name || ''}"
-                  oninput="getDayList()[${eIdx}].name = this.value; save();">
-                <button class="top-btn" onclick="delExercise(${eIdx})">✕</button>
+
+            <div class="exercise-body">
+              <div class="exercise-header">
+                <input type="text" list="exerciseSuggestions" placeholder="Oefening naam..." value="${escapeHtml(ex.exercise || '')}" 
+                  onfocus="this.select()"
+                  oninput="handleExerciseNameChange(${exIdx}, this.value)" />
+                <button class="btn-action-tool" onclick="removeExercise(${exIdx})">✕</button>
               </div>
-              <div class="row">
-                <select style="width:100%;" onchange="getDayList()[${eIdx}].muscle = this.value; save();">
-                  <option value="">Spiergroep...</option>
-                  ${MUSCLES.map(m => `<option value="${m}" ${ex.muscle === m ? 'selected' : ''}>${m}</option>`).join('')}
-                </select>
-              </div>
-              <div class="row">
-                <button class="top-btn" onclick="addSet(${eIdx})">+ Set</button>
-                <button class="top-btn" onclick="delSet(${eIdx})">- Set</button>
-              </div>
-              ${ex.sets.map((s, sIdx) => `
-                <div class="set-box">
-                  <div class="set-grid">
-                    <div>
-                      <div class="lbl">Plates</div>
-                      <input type="text" class="num" value="${s.plates || ''}" onchange="updatePlates(${eIdx},${sIdx}, this.value)">
-                    </div>
-                    <div>
-                      <div class="lbl">KG</div>
-                      <input type="number" class="num" value="${s.kg || ''}" oninput="updateKg(${eIdx},${sIdx}, this.value)">
-                    </div>
-                    <div>
-                      <div class="lbl">Reps</div>
-                      <input type="number" class="num" value="${s.reps || ''}" oninput="getDayList()[${eIdx}].sets[${sIdx}].reps = this.value; save();">
-                    </div>
-                    <button class="check ${s.done ? 'done' : ''}" onclick="toggleDone(${eIdx},${sIdx})">✓</button>
-                  </div>
-                  <div class="rir-box">
-                    <div class="rir-line">
-                      <span class="rir-title">Doel</span>
-                      <div class="rir-btns">
-                        ${rirOpts.filter(r => r !== '-1').map(r => `
-                          <button class="r-btn ${s.targetRir === r ? 'act' : ''}" onclick="setRir(${eIdx}, ${sIdx}, 'targetRir', '${r}')">${r}</button>
-                        `).join('')}
-                      </div>
-                    </div>
-                    <div class="rir-line">
-                      <span class="rir-title">Behaald</span>
-                      <div class="rir-btns">
-                        ${rirOpts.map(r => `
-                          <button class="r-btn ${s.actualRir === r ? 'act' : ''}" onclick="setRir(${eIdx}, ${sIdx}, 'actualRir', '${r}')">${r === '-1' ? 'Fail' : r}</button>
-                        `).join('')}
-                      </div>
-                    </div>
+
+              ${muscleMode === 'simple' ? `
+                <div style="margin-bottom: 8px;">
+                  <select onchange="handleParentMuscleChange(${exIdx}, this.value)">
+                    <option value="">Kies spiergroep...</option>
+                    ${SIMPLE_MUSCLE_GROUPS.map(m => `<option value="${m}" ${parentMuscle === m ? 'selected' : ''}>${m}</option>`).join('')}
+                  </select>
+                </div>
+              ` : `
+                <div class="muscle-selectors-group">
+                  <select onchange="handleParentMuscleChange(${exIdx}, this.value)">
+                    <option value="">1. Hoofdgroep...</option>
+                    ${SIMPLE_MUSCLE_GROUPS.map(m => `<option value="${m}" ${parentMuscle === m ? 'selected' : ''}>${m}</option>`).join('')}
+                  </select>
+
+                  <select onchange="handleAdvSubMuscleChange(${exIdx}, this.value)" ${!parentMuscle ? 'disabled style="opacity:0.6;"' : ''}>
+                    <option value="">2. Specifieke zone...</option>
+                    ${availableSubOptions.map(sub => `<option value="${sub.id}" ${activeAdv === sub.id ? 'selected' : ''}>${sub.label}</option>`).join('')}
+                  </select>
+                </div>
+
+                <button type="button" class="overlap-toggle-btn" onclick="toggleOverlapPanel(${exIdx})">
+                  <span>${overlapList.length === 0 ? '+ Overlap toevoegen' : `Overlap: ${overlapList.length} geselecteerd`}</span>
+                  <span>▾</span>
+                </button>
+
+                <div class="overlap-chips-wrapper" id="overlap_panel_${exIdx}">
+                  <div style="font-weight: 800; font-size: 10px; color: var(--text-muted);">SELECTEER SECUNDAIRE SPIEREN:</div>
+                  <div class="overlap-chips-list">
+                    ${ADVANCED_MUSCLES.map(m => {
+                      if (m.id === activeAdv) return '';
+                      const isSelected = overlapList.includes(m.id);
+                      return `
+                        <span class="chip-overlap ${isSelected ? 'active' : ''}" onclick="toggleOverlapMuscle(${exIdx}, '${m.id}')">
+                          ${isSelected ? '✓ ' : '+ '}${m.parent}: ${m.label.split('(')[0].trim()}
+                        </span>
+                      `;
+                    }).join('')}
                   </div>
                 </div>
-              `).join('')}
+              `}
+
+              <div class="exercise-tools">
+                <button class="btn-action-tool" onclick="addSetToExercise(${exIdx})">+ Set</button>
+                <button class="btn-action-tool" onclick="removeSetFromExercise(${exIdx})">- Set</button>
+                <button class="btn-action-tool" onclick="copyExerciseToAllWeeks(${exIdx})">Naar alle weken</button>
+                <button class="btn-action-tool" onclick="openWarmupCalculator(${exIdx})">Warm-up</button>
+                <button class="btn-action-tool ${isParent ? 'active-superset' : ''}" onclick="toggleSupersetLink(${exIdx})">
+                  ${isParent ? '✓ Superset' : 'Koppel Superset'}
+                </button>
+                <button class="btn-action-tool" onclick="toggleNote(${exIdx})">Notitie</button>
+              </div>
+
+              <input type="text" id="note_field_${exIdx}" class="note-input" 
+                placeholder="Apparaatstand / notitie..." 
+                value="${escapeHtml(ex.note || '')}" 
+                style="display: ${ex.note ? 'block' : 'none'};"
+                oninput="updateNote(${exIdx}, this.value)" />
+
+              ${ex.sets.map((set, setIdx) => {
+                const lastWeek = getLastWeekSet(exIdx, setIdx);
+                const thisWeek = getThisWeekSet(ex.exercise, exIdx, setIdx);
+                const isPR = checkIsPR(ex.exercise, set.weight, set.reps);
+                const lastWeekRir = lastWeek ? (lastWeek.actualRir !== undefined && lastWeek.actualRir !== '' ? lastWeek.actualRir : lastWeek.targetRir) : '';
+
+                return `
+                  <div class="set-row ${set.completed ? 'completed' : ''} ${isPR ? 'is-pr' : ''}">
+                    <div class="set-meta">
+                      <span>SET ${setIdx + 1}</span>
+                      <div style="display: flex; gap: 4px; align-items: center;">
+                        ${isPR ? `<span class="badge-pr">PR</span>` : ''}
+                        ${set.completed ? '<span style="color: var(--accent); font-size:10px;">Gereed</span>' : ''}
+                      </div>
+                    </div>
+
+                    <div class="hints-wrapper">
+                      ${lastWeek ? `
+                        <div class="hint-chip last-week">
+                          <span>Vorige week: <strong>${lastWeek.weight}kg (${lastWeek.plates || (lastWeek.weight/20)} pl) × ${lastWeek.reps}</strong> (RIR ${lastWeekRir})</span>
+                          <button onclick="applyValues(${exIdx}, ${setIdx}, '${lastWeek.weight}', '${lastWeek.reps}', '${lastWeekRir}')">Overnemen</button>
+                        </div>
+                      ` : ''}
+
+                      ${thisWeek && (!lastWeek || thisWeek.weight !== lastWeek.weight || thisWeek.reps !== lastWeek.reps) ? `
+                        <div class="hint-chip this-week">
+                          <span>Eerder (${thisWeek.day}): <strong>${thisWeek.weight}kg × ${thisWeek.reps}</strong></span>
+                          <button onclick="applyValues(${exIdx}, ${setIdx}, '${thisWeek.weight}', '${thisWeek.reps}', '${thisWeek.actualRir || thisWeek.targetRir}')">Overnemen</button>
+                        </div>
+                      ` : ''}
+                    </div>
+
+                    <div class="inputs-grid">
+                      <div>
+                        <div class="label-col">Plates</div>
+                        <input type="text" id="plates_${exIdx}_${setIdx}" placeholder="pl" inputmode="decimal" 
+                          value="${set.plates ?? ''}" 
+                          onfocus="this.select()"
+                          onkeydown="if(event.key==='Enter') document.getElementById('weight_${exIdx}_${setIdx}').focus()"
+                          oninput="updatePlatesInput(${exIdx},${setIdx}, this.value)">
+                      </div>
+                      <div>
+                        <div class="label-col">KG</div>
+                        <input type="number" id="weight_${exIdx}_${setIdx}" placeholder="kg" inputmode="decimal" 
+                          value="${set.weight ?? ''}" 
+                          onfocus="this.select()"
+                          onkeydown="if(event.key==='Enter') document.getElementById('reps_${exIdx}_${setIdx}').focus()"
+                          oninput="updateKgInput(${exIdx},${setIdx}, this.value)">
+                      </div>
+                      <div>
+                        <div class="label-col">Reps</div>
+                        <input type="number" id="reps_${exIdx}_${setIdx}" placeholder="reps" inputmode="numeric" 
+                          value="${set.reps || ''}" 
+                          onfocus="this.select()"
+                          oninput="updateSetField(${exIdx},${setIdx}, 'reps', this.value)">
+                      </div>
+                      <div style="align-self: flex-end;">
+                        <button class="check-btn ${set.completed ? 'checked' : ''}" onclick="toggleComplete(${exIdx},${setIdx})">
+                          ✓
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="rir-segment-container">
+                      <div class="rir-row">
+                        <span class="rir-label">Doel</span>
+                        <div class="rir-btns">
+                          ${rirOptions.filter(r => r !== '-1').map(opt => `
+                            <button class="btn-rir ${String(set.targetRir) === String(opt) ? 'active' : ''}" 
+                              onclick="updateRirQuick(${exIdx}, ${setIdx}, 'targetRir', '${opt}')">${opt === '4' ? '4+' : opt}</button>
+                          `).join('')}
+                        </div>
+                      </div>
+                      <div class="rir-row">
+                        <span class="rir-label">Behaald</span>
+                        <div class="rir-btns">
+                          ${rirOptions.map(opt => `
+                            <button class="btn-rir ${String(set.actualRir) === String(opt) ? ('active' + (opt === '-1' ? ' fail' : '')) : ''}" 
+                              onclick="updateRirQuick(${exIdx}, ${setIdx}, 'actualRir', '${opt}')">${opt === '-1' ? 'Fail' : (opt === '4' ? '4+' : opt)}</button>
+                          `).join('')}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
       });
 
-      document.getElementById('exerciseList').innerHTML = html;
-      updateStats();
+      container.innerHTML = html;
     }
 
-    function renderAll() {
-      renderNav();
-      renderExercises();
-      updateStats();
-      document.getElementById('soundSelect').value = chosenTone;
-      document.getElementById('autoTimer').value = autoSec;
+    function escapeHtml(str) {
+      return (str || '').replace(/"/g, '&quot;');
     }
 
-    renderAll();
+    function updateStats() {
+      const exercises = data[getKey()] || [];
+      let completedCount = 0;
+      let tonnage = 0;
+
+      exercises.forEach(ex => {
+        ex.sets.forEach(s => {
+          if (s.completed) {
+            completedCount++;
+            const w = parseFloat(s.weight) || 0;
+            const r = parseFloat(s.reps) || 0;
+            tonnage += (w * r);
+          }
+        });
+      });
+
+      document.getElementById('completedStat').innerText = completedCount;
+      document.getElementById('tonnageStat').innerText = `${Math.round(tonnage)} kg`;
+    }
+
+    function toggleSummary() {
+      const panel = document.getElementById('summaryPanel');
+      panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+      if (panel.style.display === 'block') renderWeeklySummary();
+    }
+
+    function renderWeeklySummary() {
+      const grid = document.getElementById('summaryGrid');
+      
+      if (muscleMode === 'simple') {
+        const summary = {};
+        SIMPLE_MUSCLE_GROUPS.forEach(m => summary[m] = { direct: 0, days: new Set() });
+
+        days.forEach(d => {
+          const exercises = data[getKey(currentWeek, d)] || [];
+          exercises.forEach(ex => {
+            let group = ex.muscle;
+            if (!group && ex.advMuscle) {
+              const found = ADVANCED_MUSCLES.find(m => m.id === ex.advMuscle);
+              if (found) group = found.parent;
+            }
+
+            if (group && summary[group]) {
+              ex.sets.forEach(s => {
+                if (s.completed) {
+                  summary[group].direct++;
+                  summary[group].days.add(d);
+                }
+              });
+            }
+          });
+        });
+
+        grid.innerHTML = SIMPLE_MUSCLE_GROUPS.map(m => {
+          const item = summary[m];
+          return `
+            <div class="summary-item">
+              <span style="font-weight:700;">${m}</span>
+              <span><strong>${item.direct} sets</strong> <span style="color:var(--text-muted); font-size:10px;">(${item.days.size}d)</span></span>
+            </div>
+          `;
+        }).join('');
+
+      } else {
+        const summary = {};
+        ADVANCED_MUSCLES.forEach(m => summary[m.id] = { direct: 0, overlap: 0, days: new Set() });
+
+        days.forEach(d => {
+          const exercises = data[getKey(currentWeek, d)] || [];
+          exercises.forEach(ex => {
+            let primaryAdv = ex.advMuscle;
+            if (!primaryAdv && ex.muscle) {
+              const found = ADVANCED_MUSCLES.find(m => m.parent === ex.muscle);
+              if (found) primaryAdv = found.id;
+            }
+
+            const overlaps = ex.overlapMuscles || [];
+
+            ex.sets.forEach(s => {
+              if (s.completed) {
+                if (primaryAdv && summary[primaryAdv]) {
+                  summary[primaryAdv].direct++;
+                  summary[primaryAdv].days.add(d);
+                }
+                overlaps.forEach(oId => {
+                  if (summary[oId]) {
+                    summary[oId].overlap++;
+                    summary[oId].days.add(d);
+                  }
+                });
+              }
+            });
+          });
+        });
+
+        grid.innerHTML = ADVANCED_MUSCLES.map(m => {
+          const item = summary[m.id];
+          const hasSets = (item.direct + item.overlap) > 0;
+          return `
+            <div class="summary-item" style="${hasSets ? 'border-color:var(--accent);' : 'opacity:0.75;'}">
+              <span style="font-size:10px; font-weight:700;">${m.parent}: ${m.label.split('(')[0].trim()}</span>
+              <span>
+                <strong>${item.direct}</strong>
+                ${item.overlap > 0 ? `<span style="color:var(--text-muted); font-size:9px;"> +${item.overlap} ov</span>` : ''}
+              </span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function openWarmupCalculator(exIdx) {
+      const k = getKey();
+      const ex = data[k][exIdx];
+      const targetWeight = parseFloat(ex.sets[0]?.weight) || 0;
+      
+      const modal = document.getElementById('warmupModal');
+      const sub = document.getElementById('warmupSubtitle');
+      const list = document.getElementById('warmupList');
+
+      sub.innerText = `Werkgewicht: ${targetWeight > 0 ? targetWeight + ' kg' : 'nog niet ingevuld'}`;
+
+      if (targetWeight <= 10) {
+        list.innerHTML = `<div style="font-size:12px; color:var(--text-muted); text-align:center;">Vul eerst een gewicht in bij Set 1.</div>`;
+      } else {
+        const p1 = Math.round((targetWeight * 0.35) / 2.5) * 2.5;
+        const p2 = Math.round((targetWeight * 0.55) / 2.5) * 2.5;
+        const p3 = Math.round((targetWeight * 0.75) / 2.5) * 2.5;
+        const p4 = Math.round((targetWeight * 0.90) / 2.5) * 2.5;
+
+        list.innerHTML = `
+          <div class="setting-row"><span>1. Zeer licht (35%)</span><strong>${p1} kg × 12 reps</strong></div>
+          <div class="setting-row"><span>2. Opbouwen (55%)</span><strong>${p2} kg × 6 reps</strong></div>
+          <div class="setting-row"><span>3. Activeren (75%)</span><strong>${p3} kg × 3 reps</strong></div>
+          <div class="setting-row"><span>4. Voorbereiding (90%)</span><strong>${p4} kg × 1 rep</strong></div>
+        `;
+      }
+      modal.style.display = 'flex';
+    }
+    function closeWarmupModal() {
+      document.getElementById('warmupModal').style.display = 'none';
+    }
+
+    init();
   </script>
-</body>
-</html>
 </body>
 </html>
