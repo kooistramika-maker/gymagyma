@@ -3,120 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Workout Tracker</title>
   <style>
+    /* iOS HIG Dark Mode (Standaard) */
     :root {
-      --bg-gradient: radial-gradient(at 10% 15%, rgba(30, 58, 95, 0.4) 0px, transparent 55%),
-                     radial-gradient(at 85% 25%, rgba(65, 35, 80, 0.3) 0px, transparent 50%),
-                     radial-gradient(at 50% 80%, rgba(20, 35, 55, 0.35) 0px, transparent 60%);
-      --bg-color: #0b0c10;
-      --card-bg: rgba(22, 25, 34, 0.85);
-      --card-inner: rgba(15, 17, 24, 0.88);
-      --text: #f4f4f7;
-      --text-muted: #9aa0a6;
+      --bg-gradient: none;
+      --bg-color: #000000;
+      --card-bg: rgba(28, 28, 30, 0.85);
+      --card-inner: rgba(44, 44, 46, 0.75);
+      --text: #ffffff;
+      --text-muted: #8e8e93;
       --accent: #30d158;
+      --danger: #ff453a;
       --border: rgba(255, 255, 255, 0.1);
-      --header-bg: rgba(12, 14, 18, 0.9);
-      --bottom-bg: rgba(14, 16, 22, 0.92);
+      --header-bg: rgba(18, 18, 20, 0.82);
+      --bottom-bg: rgba(18, 18, 20, 0.88);
       --btn-bg: rgba(255, 255, 255, 0.08);
       --active-pill-bg: #ffffff;
-      --active-pill-color: #000;
-      --card-blur: 25px;
+      --active-pill-color: #000000;
+      --card-blur: 20px;
     }
 
     body.theme-bright {
-      --bg-gradient: radial-gradient(at 10% 10%, rgba(210, 225, 245, 0.6) 0px, transparent 60%),
-                     radial-gradient(at 85% 85%, rgba(230, 230, 240, 0.8) 0px, transparent 60%);
-      --bg-color: #f2f4f8;
+      --bg-gradient: none;
+      --bg-color: #f2f2f7;
       --card-bg: rgba(255, 255, 255, 0.92);
-      --card-inner: rgba(240, 243, 248, 0.92);
-      --text: #111418;
-      --text-muted: #64748b;
-      --accent: #16a34a;
+      --card-inner: rgba(242, 242, 247, 0.95);
+      --text: #000000;
+      --text-muted: #6c6c70;
+      --accent: #248a3d;
       --border: rgba(0, 0, 0, 0.08);
-      --header-bg: rgba(255, 255, 255, 0.95);
-      --bottom-bg: rgba(255, 255, 255, 0.95);
+      --header-bg: rgba(249, 249, 251, 0.88);
+      --bottom-bg: rgba(249, 249, 251, 0.92);
       --btn-bg: rgba(0, 0, 0, 0.05);
-      --active-pill-bg: #0f172a;
-      --active-pill-color: #fff;
-      --card-blur: 25px;
+      --active-pill-bg: #1c1c1e;
+      --active-pill-color: #ffffff;
+      --card-blur: 20px;
     }
 
     body.theme-light-color {
-      --bg-gradient: radial-gradient(at 15% 20%, rgba(186, 230, 253, 0.7) 0px, transparent 60%),
-                     radial-gradient(at 80% 80%, rgba(167, 243, 208, 0.7) 0px, transparent 60%);
+      --bg-gradient: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%);
       --bg-color: #ecfeff;
-      --card-bg: rgba(255, 255, 255, 0.9);
-      --card-inner: rgba(224, 242, 254, 0.88);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-inner: rgba(224, 242, 254, 0.82);
       --text: #083344;
       --text-muted: #155e75;
       --accent: #0284c7;
-      --border: rgba(14, 116, 144, 0.15);
-      --header-bg: rgba(236, 254, 255, 0.94);
-      --bottom-bg: rgba(236, 254, 255, 0.95);
+      --border: rgba(14, 116, 144, 0.14);
+      --header-bg: rgba(236, 254, 255, 0.88);
+      --bottom-bg: rgba(236, 254, 255, 0.92);
       --btn-bg: rgba(14, 116, 144, 0.08);
       --active-pill-bg: #0e7490;
-      --active-pill-color: #fff;
-      --card-blur: 25px;
+      --active-pill-color: #ffffff;
+      --card-blur: 20px;
     }
 
     body.theme-medium-color {
-      --bg-gradient: radial-gradient(at 15% 15%, rgba(254, 215, 170, 0.6) 0px, transparent 60%),
-                     radial-gradient(at 85% 85%, rgba(251, 191, 36, 0.4) 0px, transparent 60%);
+      --bg-gradient: linear-gradient(180deg, #fef3c7 0%, #fffbeb 100%);
       --bg-color: #fef3c7;
-      --card-bg: rgba(255, 253, 245, 0.92);
-      --card-inner: rgba(240, 243, 199, 0.9);
+      --card-bg: rgba(255, 253, 245, 0.9);
+      --card-inner: rgba(254, 243, 199, 0.85);
       --text: #451a03;
       --text-muted: #78350f;
       --accent: #d97706;
-      --border: rgba(180, 83, 9, 0.15);
-      --header-bg: rgba(254, 243, 199, 0.94);
-      --bottom-bg: rgba(254, 243, 199, 0.95);
+      --border: rgba(180, 83, 9, 0.14);
+      --header-bg: rgba(254, 243, 199, 0.9);
+      --bottom-bg: rgba(254, 243, 199, 0.94);
       --btn-bg: rgba(180, 83, 9, 0.08);
       --active-pill-bg: #b45309;
-      --active-pill-color: #fff;
-      --card-blur: 25px;
+      --active-pill-color: #ffffff;
+      --card-blur: 20px;
     }
 
     body.theme-dark-color {
-      --bg-gradient: radial-gradient(at 15% 15%, rgba(49, 46, 129, 0.5) 0px, transparent 60%),
-                     radial-gradient(at 85% 85%, rgba(67, 56, 202, 0.4) 0px, transparent 60%);
-      --bg-color: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.85);
+      --bg-gradient: radial-gradient(at 50% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 60%);
+      --bg-color: #090d16;
+      --card-bg: rgba(22, 30, 46, 0.86);
       --card-inner: rgba(15, 23, 42, 0.85);
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #38bdf8;
-      --border: rgba(129, 140, 248, 0.2);
-      --header-bg: rgba(15, 23, 42, 0.92);
-      --bottom-bg: rgba(15, 23, 42, 0.94);
-      --btn-bg: rgba(129, 140, 248, 0.12);
-      --active-pill-bg: #4f46e5;
-      --active-pill-color: #fff;
-      --card-blur: 25px;
+      --border: rgba(148, 163, 184, 0.14);
+      --header-bg: rgba(15, 23, 42, 0.88);
+      --bottom-bg: rgba(15, 23, 42, 0.92);
+      --btn-bg: rgba(148, 163, 184, 0.1);
+      --active-pill-bg: #38bdf8;
+      --active-pill-color: #090d16;
+      --card-blur: 20px;
     }
 
+    /* CUSTOM THEMA: Ultra-translucent met minimale blur zodat de foto scherp zichtbaar is */
     body.theme-custom {
       --bg-gradient: none;
-      --bg-color: #0b0c10;
-      --border: rgba(255, 255, 255, 0.18);
-      --header-bg: rgba(10, 12, 18, 0.45);
-      --bottom-bg: rgba(12, 14, 22, 0.55);
+      --bg-color: #000000;
+      --border: rgba(255, 255, 255, 0.22);
+      --header-bg: rgba(10, 12, 16, 0.32);
+      --bottom-bg: rgba(10, 12, 16, 0.42);
       --btn-bg: rgba(255, 255, 255, 0.14);
       --active-pill-bg: var(--accent);
-      --active-pill-color: #000;
+      --active-pill-color: #000000;
       --card-blur: 2px;
       background-image: var(--custom-bg-image, none) !important;
       background-blend-mode: normal !important;
       background-size: cover !important;
       background-position: center center !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
     }
 
     * { 
       box-sizing: border-box; 
       margin: 0; 
       padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif; 
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
@@ -129,20 +129,27 @@
       background-position: center center;
       background-repeat: no-repeat;
       color: var(--text); 
-      padding-bottom: 140px; 
+      padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)); 
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    button, select, input {
+      transition: transform 0.1s ease, opacity 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+    button:active {
+      transform: scale(0.97);
+      opacity: 0.8;
     }
 
     header { 
-      padding: 10px 14px; 
-      border-bottom: 1px solid var(--border); 
+      padding: calc(8px + env(safe-area-inset-top, 0px)) 14px 10px 14px; 
+      border-bottom: 0.5px solid var(--border); 
       position: sticky; 
       top: 0; 
       background: var(--header-bg); 
-      backdrop-filter: blur(var(--card-blur)) saturate(130%); 
-      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(130%);
+      backdrop-filter: blur(var(--card-blur)) saturate(180%); 
+      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(180%);
       z-index: 40; 
     }
 
@@ -150,20 +157,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .title { 
-      font-size: 14px; 
-      font-weight: 800; 
-      letter-spacing: 0.8px; 
-      text-transform: uppercase; 
-      color: var(--text-muted); 
+      font-size: 15px; 
+      font-weight: 700; 
+      letter-spacing: -0.2px; 
+      color: var(--text); 
     }
     .header-actions { display: flex; gap: 6px; }
     
     .btn-glass {
       background: var(--btn-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       color: var(--text);
       font-size: 12px;
       font-weight: 600;
@@ -177,7 +183,6 @@
       align-items: center;
       justify-content: center;
     }
-    .btn-glass:active { opacity: 0.8; }
 
     .nav-group {
       display: flex;
@@ -185,6 +190,7 @@
       gap: 6px;
       margin-bottom: 6px;
     }
+    .nav-group:last-child { margin-bottom: 0; }
     .nav-scroll { 
       display: flex; 
       gap: 6px; 
@@ -192,14 +198,15 @@
       padding: 2px 0; 
       flex: 1; 
       -webkit-overflow-scrolling: touch; 
+      scrollbar-width: none;
     }
     .nav-scroll::-webkit-scrollbar { display: none; }
     
     button.pill { 
       background: var(--btn-bg); 
-      border: 1px solid var(--border); 
+      border: 0.5px solid var(--border); 
       color: var(--text-muted); 
-      padding: 6px 14px; 
+      padding: 7px 15px; 
       min-height: 36px;
       border-radius: 999px; 
       font-size: 13px; 
@@ -212,61 +219,58 @@
     button.pill.active { 
       background: var(--active-pill-bg); 
       color: var(--active-pill-color); 
-      border-color: var(--active-pill-bg); 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-color: transparent; 
+      font-weight: 700;
+      text-shadow: none;
     }
 
-    .container { padding: 12px 14px; max-width: 650px; margin: 0 auto; }
+    .container { padding: 12px 14px; max-width: 640px; margin: 0 auto; }
     
     .stats-card { 
       background: var(--card-bg); 
-      border: 1px solid var(--border); 
-      border-radius: 16px; 
+      border: 0.5px solid var(--border); 
+      border-radius: 14px; 
       padding: 12px 16px; 
       display: flex; 
       justify-content: space-between; 
-      margin-bottom: 12px; 
-      font-size: 12px; 
+      margin-bottom: 10px; 
+      font-size: 13px; 
       color: var(--text-muted);
       backdrop-filter: blur(var(--card-blur));
       -webkit-backdrop-filter: blur(var(--card-blur));
-      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      font-variant-numeric: tabular-nums;
     }
-    .stats-card strong { color: var(--text); font-weight: 800; }
+    .stats-card strong { color: var(--text); font-weight: 700; }
 
     .bulk-copy-bar {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 12px;
     }
     .btn-bulk-copy {
       flex: 1;
-      background: var(--card-inner);
-      border: 1px solid var(--border);
+      background: var(--card-bg);
+      border: 0.5px solid var(--border);
       color: var(--text);
       font-size: 11px;
-      font-weight: 700;
-      padding: 8px 10px;
-      border-radius: 10px;
+      font-weight: 600;
+      padding: 10px;
+      min-height: 40px;
+      border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 5px;
-      transition: all 0.15s ease;
       backdrop-filter: blur(var(--card-blur));
       -webkit-backdrop-filter: blur(var(--card-blur));
-    }
-    .btn-bulk-copy:active {
-      background: var(--accent);
-      color: #000;
     }
 
     #summaryPanel {
       display: none;
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
       padding: 14px;
       margin-bottom: 12px;
       backdrop-filter: blur(var(--card-blur));
@@ -280,34 +284,34 @@
     }
     .summary-item {
       background: var(--card-inner);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       border-radius: 10px;
       padding: 8px 10px;
-      font-size: 11px;
+      font-size: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-variant-numeric: tabular-nums;
     }
 
     .exercise-block {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
       padding: 12px;
       margin-bottom: 12px;
       position: relative;
       backdrop-filter: blur(var(--card-blur));
       -webkit-backdrop-filter: blur(var(--card-blur));
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
     .exercise-block.superset-parent {
-      border-left: 4px solid var(--accent);
+      border-left: 3.5px solid var(--accent);
       margin-bottom: 4px;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
     }
     .exercise-block.superset-child {
-      border-left: 4px solid var(--accent);
+      border-left: 3.5px solid var(--accent);
       margin-top: 4px;
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
@@ -321,12 +325,13 @@
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      padding: 4px;
+      padding: 4px 2px 8px 2px;
       user-select: none;
     }
     .exercise-title-summary {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
+      letter-spacing: -0.2px;
       color: var(--text);
       display: flex;
       align-items: center;
@@ -337,7 +342,7 @@
       font-weight: 700;
       padding: 2px 7px;
       border-radius: 999px;
-      background: rgba(48, 209, 88, 0.18);
+      background: rgba(48, 209, 88, 0.2);
       color: var(--accent);
     }
     .collapse-icon {
@@ -352,16 +357,19 @@
     .exercise-block.collapsed .exercise-body {
       display: none;
     }
+    .exercise-block.collapsed .exercise-top-bar {
+      padding-bottom: 4px;
+    }
 
     .superset-tag {
-      font-size: 9px;
-      font-weight: 800;
+      font-size: 10px;
+      font-weight: 700;
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 6px;
       display: inline-block;
-      background: rgba(48, 209, 88, 0.12);
-      padding: 2px 6px;
+      background: rgba(48, 209, 88, 0.14);
+      padding: 3px 8px;
       border-radius: 6px;
     }
 
@@ -370,7 +378,7 @@
       grid-template-columns: 1fr auto;
       gap: 6px;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .muscle-selectors-group {
@@ -382,12 +390,13 @@
 
     .overlap-toggle-btn {
       background: var(--btn-bg);
-      border: 1px dashed var(--border);
+      border: 0.5px dashed var(--border);
       color: var(--text-muted);
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 700;
+      border-radius: 10px;
+      padding: 8px 12px;
+      min-height: 38px;
+      font-size: 12px;
+      font-weight: 600;
       width: 100%;
       text-align: left;
       cursor: pointer;
@@ -399,9 +408,9 @@
     .overlap-chips-wrapper {
       display: none;
       background: var(--card-inner);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px;
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
       margin-bottom: 8px;
       flex-direction: column;
       gap: 6px;
@@ -409,16 +418,16 @@
     .overlap-chips-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 5px;
       margin-top: 4px;
     }
     .chip-overlap {
       background: var(--btn-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       border-radius: 999px;
-      padding: 3px 8px;
-      font-size: 10px;
-      font-weight: 700;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -426,25 +435,27 @@
     }
     .chip-overlap.active {
       background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
+      color: #000000;
+      border-color: transparent;
+      font-weight: 700;
+      text-shadow: none;
     }
 
     .exercise-tools {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       flex-wrap: wrap;
       margin-bottom: 10px;
     }
     
     .btn-action-tool {
       background: var(--btn-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       color: var(--text);
-      padding: 8px 10px;
-      min-height: 36px;
-      border-radius: 8px;
-      font-size: 11px;
+      padding: 8px 11px;
+      min-height: 38px;
+      border-radius: 10px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -452,7 +463,6 @@
       align-items: center;
       justify-content: center;
     }
-    .btn-action-tool:active { opacity: 0.75; }
     .btn-action-tool.active-superset { 
       border-color: var(--accent); 
       color: var(--accent); 
@@ -460,11 +470,11 @@
 
     .note-input {
       background: var(--card-inner);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       color: var(--text);
       border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 12px;
+      padding: 9px 12px;
+      font-size: 13px;
       width: 100%;
       margin-bottom: 10px;
       outline: none;
@@ -472,20 +482,20 @@
 
     .set-row {
       background: var(--card-inner);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       border-radius: 14px;
       padding: 10px;
       margin-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
       position: relative;
     }
     .set-row.is-pr {
       border: 1px solid var(--accent);
     }
     .set-row.completed {
-      opacity: 0.88;
+      opacity: 0.9;
     }
     .set-meta {
       display: flex;
@@ -494,14 +504,16 @@
       font-size: 11px;
       color: var(--text-muted);
       font-weight: 700;
+      letter-spacing: 0.3px;
     }
     .badge-pr {
       background: var(--accent);
-      color: #000;
-      padding: 2px 7px;
+      color: #000000;
+      padding: 2px 8px;
       border-radius: 999px;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
+      text-shadow: none;
     }
 
     .inputs-grid {
@@ -515,11 +527,11 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
-      background: rgba(0, 0, 0, 0.12);
-      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.14);
+      border: 0.5px solid var(--border);
       padding: 6px 8px;
       border-radius: 10px;
-      margin-top: 3px;
+      margin-top: 2px;
     }
     .rir-row {
       display: flex;
@@ -528,109 +540,114 @@
       gap: 5px;
     }
     .rir-label {
-      font-size: 9px;
-      font-weight: 800;
+      font-size: 10px;
+      font-weight: 700;
       color: var(--text-muted);
       width: 48px;
       text-transform: uppercase;
     }
     .rir-btns {
       display: flex;
-      gap: 3px;
+      gap: 4px;
       flex: 1;
       justify-content: flex-end;
     }
     .btn-rir {
       background: var(--btn-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       color: var(--text-muted);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 6px 0;
-      min-width: 32px;
+      min-width: 34px;
       min-height: 36px;
       text-align: center;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      font-variant-numeric: tabular-nums;
     }
     .btn-rir.active {
       background: var(--accent);
-      color: #000;
-      font-weight: 900;
-      border-color: var(--accent);
+      color: #000000;
+      font-weight: 800;
+      border-color: transparent;
+      text-shadow: none;
     }
     .btn-rir.active.fail {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
+      background: var(--danger);
+      color: #ffffff;
+      border-color: transparent;
     }
 
     .hints-wrapper { display: flex; flex-direction: column; gap: 4px; }
     .hint-chip { 
       background: rgba(255, 255, 255, 0.05); 
-      border-radius: 8px; 
-      padding: 5px 8px; 
+      border-radius: 9px; 
+      padding: 6px 9px; 
       font-size: 11px; 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
+      font-variant-numeric: tabular-nums;
     }
     .hint-chip.last-week { border-left: 3px solid var(--accent); }
     .hint-chip button { 
       background: var(--btn-bg); 
-      border: 1px solid var(--border); 
+      border: 0.5px solid var(--border); 
       color: var(--text); 
-      padding: 4px 8px; 
-      min-height: 26px;
-      border-radius: 5px; 
-      font-size: 10px; 
-      font-weight: 700;
+      padding: 5px 10px; 
+      min-height: 28px;
+      border-radius: 7px; 
+      font-size: 11px; 
+      font-weight: 600;
       cursor: pointer; 
     }
 
     input, select { 
       background: var(--card-inner); 
-      border: 1px solid var(--border); 
+      border: 0.5px solid var(--border); 
       color: var(--text); 
       border-radius: 10px; 
-      padding: 8px 6px; 
-      min-height: 42px;
-      font-size: 13px; 
+      padding: 8px 8px; 
+      min-height: 44px;
+      font-size: 14px; 
       width: 100%; 
       outline: none; 
       text-align: center;
       font-weight: 600;
+      font-variant-numeric: tabular-nums;
     }
     input[type="text"] { text-align: left; }
     input:focus, select:focus { border-color: var(--accent); }
     .label-col { 
-      font-size: 9px; 
+      font-size: 10px; 
       color: var(--text-muted); 
       text-align: center; 
       text-transform: uppercase; 
-      font-weight: 800; 
+      font-weight: 700; 
       margin-bottom: 3px; 
     }
 
     .check-btn { 
-      width: 44px; 
-      height: 42px; 
+      width: 46px; 
+      height: 44px; 
       border-radius: 10px; 
-      border: 1px solid var(--border); 
+      border: 0.5px solid var(--border); 
       background: var(--btn-bg); 
       color: var(--text-muted); 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       cursor: pointer; 
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 17px;
+      font-weight: 700;
     }
     .check-btn.checked { 
       background: var(--accent); 
-      color: #000; 
-      border-color: var(--accent); 
+      color: #000000; 
+      border-color: transparent; 
+      text-shadow: none;
     }
 
     .bottom-bar { 
@@ -639,94 +656,103 @@
       left: 0; 
       right: 0; 
       background: var(--bottom-bg); 
-      border-top: 1px solid var(--border); 
-      padding: 10px 14px env(safe-area-inset-bottom, 12px); 
+      border-top: 0.5px solid var(--border); 
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 4px)) 14px; 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
+      gap: 10px;
       z-index: 50; 
-      backdrop-filter: blur(var(--card-blur)) saturate(130%); 
-      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(130%);
+      backdrop-filter: blur(var(--card-blur)) saturate(180%); 
+      -webkit-backdrop-filter: blur(var(--card-blur)) saturate(180%);
     }
-    .timer-info { display: flex; flex-direction: column; min-width: 75px; }
-    .timer-sub { font-size: 9px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; }
-    .timer-display { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.1; }
-    .timer-controls { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; overflow-x: auto; }
+    .timer-info { display: flex; flex-direction: column; min-width: 72px; }
+    .timer-sub { font-size: 9px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.4px; }
+    .timer-display { font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.15; }
+    .timer-controls { display: flex; gap: 5px; align-items: center; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .timer-controls::-webkit-scrollbar { display: none; }
     .timer-controls button, .timer-controls select { 
       background: var(--btn-bg); 
-      border: 1px solid var(--border); 
+      border: 0.5px solid var(--border); 
       color: var(--text); 
-      padding: 7px 10px; 
-      min-height: 38px; 
+      padding: 7px 11px; 
+      min-height: 40px; 
       border-radius: 999px; 
-      font-size: 11px; 
-      font-weight: 700; 
+      font-size: 12px; 
+      font-weight: 600; 
       cursor: pointer; 
       white-space: nowrap;
     }
-    .timer-controls button.stop { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+    .timer-controls button.stop { color: var(--danger); border-color: rgba(255, 69, 58, 0.35); }
 
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 100;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 18px;
     }
     .modal-box {
       background: var(--card-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       border-radius: 20px;
       padding: 18px;
-      max-width: 380px;
+      max-width: 400px;
       width: 100%;
-      max-height: 90vh;
+      max-height: 88vh;
       overflow-y: auto;
       text-align: left;
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
     }
-    .modal-box h3 { font-size: 16px; margin-bottom: 12px; font-weight: 800; text-align: center; }
+    .modal-box h3 { font-size: 17px; margin-bottom: 14px; font-weight: 700; text-align: center; }
     .setting-section {
       background: var(--card-inner);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
+      border: 0.5px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
       margin-bottom: 10px;
     }
-    .setting-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-    .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 13px; }
+    .setting-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 13px; }
     .setting-row:last-child { margin-bottom: 0; }
-    .setting-row select, .setting-row input[type="text"] { font-size: 12px; min-height: 32px; padding: 4px 6px; }
+    .setting-row select, .setting-row input[type="text"] { font-size: 13px; min-height: 36px; padding: 4px 8px; }
     .btn-config {
       background: var(--btn-bg);
-      border: 1px solid var(--border);
+      border: 0.5px solid var(--border);
       color: var(--text);
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
+      padding: 7px 11px;
+      min-height: 36px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #toast {
       position: fixed;
-      top: 20px;
+      top: calc(16px + env(safe-area-inset-top, 0px));
       left: 50%;
       transform: translateX(-50%);
-      background: var(--text);
-      color: var(--bg-color);
-      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #000000;
+      padding: 9px 18px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 13px;
+      font-weight: 700;
       z-index: 300;
       display: none;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+      text-shadow: none;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -736,11 +762,14 @@
 
   <!-- Bestands-uploads voor Custom Achtergrond & Geluiden (Video en Audio) -->
   <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
-  <input type="file" id="customDoneMediaInput" accept="video/*,audio/*" style="display:none;" onchange="handleMediaFileChosen(event, 'done')">
-  <input type="file" id="customAlarmMediaInput" accept="video/*,audio/*" style="display:none;" onchange="handleMediaFileChosen(event, 'alarm')">
+  <input type="file" id="customDoneMediaInput" accept="video/*,audio/*,.mp4,.mov,.mp3,.m4a,.wav" style="display:none;" onchange="handleMediaFileChosen(event, 'done')">
+  <input type="file" id="customAlarmMediaInput" accept="video/*,audio/*,.mp4,.mov,.mp3,.m4a,.wav" style="display:none;" onchange="handleMediaFileChosen(event, 'alarm')">
 
-  <!-- Verborgen Video-element dat audio uit videoclips afspeelt op iOS zonder beeldvenster -->
-  <video id="hiddenMediaRunner" playsinline webkit-playsinline style="position:fixed; top:-999px; left:-999px; width:1px; height:1px; opacity:0; pointer-events:none;"></video>
+  <!-- Onzichtbare inline videospeler voor het afspelen van het audiospoor uit videobestanden op iOS -->
+  <video id="hiddenMediaRunner" playsinline webkit-playsinline preload="auto" style="position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0.01; pointer-events:none; z-index:-1;"></video>
+
+  <!-- Stille audio-keepalive zodat iOS Safari timers actief houdt wanneer het scherm vergrendeld is -->
+  <audio id="keepAliveAudio" loop playsinline preload="auto" style="display:none;"></audio>
 
   <datalist id="exerciseSuggestions"></datalist>
 
@@ -748,7 +777,7 @@
     <div class="top-row">
       <div class="title">Workout Log</div>
       <div class="header-actions">
-        <button class="btn-glass" onclick="undoLastAction()">Herstel</button>
+        <button class="btn-glass" onclick="undoLastAction()">↶ Herstel</button>
         <button class="btn-glass" onclick="toggleSummary()">Volume W<span id="summaryWeekLabel">1</span></button>
         <button class="btn-glass" onclick="openSettingsModal()">⚙️ Instellingen</button>
       </div>
@@ -765,9 +794,9 @@
 
   <div class="container">
     <div id="summaryPanel">
-      <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800;">
+      <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
         <span>WEEKVOLUME (<span id="summaryModeLabel">SIMPEL</span>)</span>
-        <span style="color: var(--text-muted); font-size: 10px;">Sets (Direct + Overlap)</span>
+        <span style="color: var(--text-muted); font-size: 11px;">Sets (Direct + Overlap)</span>
       </div>
       <div class="summary-grid" id="summaryGrid"></div>
     </div>
@@ -782,13 +811,13 @@
         <span>📋 Kopieer dag naar alle weken</span>
       </button>
       <button class="btn-bulk-copy" onclick="copyCurrentWeekToAllWeeks()">
-        <span>📦 Kopieer hele week naar alle weken</span>
+        <span>📦 Kopieer week naar alle weken</span>
       </button>
     </div>
 
     <div id="exercisesContainer"></div>
 
-    <button onclick="addNewExercise()" class="btn-action-tool" style="width: 100%; min-height: 44px; margin-top: 6px; font-weight: 800; border-radius: 14px;">
+    <button onclick="addNewExercise()" class="btn-action-tool" style="width: 100%; min-height: 46px; margin-top: 4px; font-weight: 700; font-size: 13px; border-radius: 14px;">
       + Oefening Toevoegen
     </button>
   </div>
@@ -799,7 +828,7 @@
       <span class="timer-display" id="timerText">00:00</span>
     </div>
     <div class="timer-controls">
-      <select id="autoTimerSelect" onchange="changeAutoTimerSetting(this.value)" style="width:auto; padding:6px 8px; font-size:11px;">
+      <select id="autoTimerSelect" onchange="changeAutoTimerSetting(this.value)" style="width:auto; padding:6px 10px;">
         <option value="0">Auto: Uit</option>
         <option value="30">Auto: 30s</option>
         <option value="60">Auto: 60s</option>
@@ -809,19 +838,21 @@
         <option value="240">Auto: 4m</option>
         <option value="300">Auto: 5m</option>
       </select>
-      <select id="volumeControlSelect" onchange="changeVolumeLevel(this.value)" style="width:auto; padding:6px 6px; font-size:11px;">
+      <select id="volumeControlSelect" onchange="changeVolumeLevel(this.value)" style="width:auto; padding:6px 8px;">
         <option value="1.0">Vol: 100%</option>
         <option value="0.75">Vol: 75%</option>
         <option value="0.5">Vol: 50%</option>
         <option value="0.25">Vol: 25%</option>
       </select>
       <button onclick="addTimer(60)">+60s</button>
+      <button onclick="addTimer(180)">+3m</button>
       <button onclick="promptCustomTimer()">+ Tijd</button>
       <button id="loopBtn" onclick="toggleStopwatch()">Loop</button>
       <button class="stop" onclick="stopTimer()">Stop</button>
     </div>
   </div>
 
+  <!-- INSTELLINGEN MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-box">
       <h3>⚙️ Instellingen</h3>
@@ -830,9 +861,9 @@
         <div class="setting-title">Spiercategorisering</div>
         <div class="setting-row">
           <span>Modus:</span>
-          <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)" style="max-width: 150px; font-weight: 700;">
+          <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)" style="max-width: 175px;">
             <option value="simple">Simpel (Hoofdgroepen)</option>
-            <option value="advanced">Geavanceerd (Specifiek + Overlap)</option>
+            <option value="advanced">Geavanceerd (Zone + Overlap)</option>
           </select>
         </div>
       </div>
@@ -841,56 +872,58 @@
         <div class="setting-title">Thema & Stijl</div>
         <div class="setting-row">
           <span>Kies thema:</span>
-          <select id="themeSelectModal" onchange="changeTheme(this.value)" style="max-width: 160px;">
-            <option value="glass">Zwart</option>
-            <option value="bright">Wit</option>
+          <select id="themeSelectModal" onchange="changeTheme(this.value)" style="max-width: 165px;">
+            <option value="glass">Zwart (iOS Dark)</option>
+            <option value="bright">Wit (iOS Light)</option>
             <option value="light-color">Lichtblauw</option>
             <option value="medium-color">Amber</option>
             <option value="dark-color">Indigo</option>
           </select>
         </div>
         
-        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
-          <div style="font-size:11px; font-weight:700; margin-bottom:6px; color:var(--text-muted);">CUSTOM THEMA (TRANSPARANT):</div>
-          <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-            <button class="btn-config" style="flex:1;" onclick="triggerBgUpload()">📷 Foto</button>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border);">
+          <div style="font-size:11px; font-weight:700; margin-bottom:6px; color:var(--text-muted);">CUSTOM THEMA (ULTRA-TRANSLUCENT):</div>
+          <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+            <button class="btn-config" style="flex:1;" onclick="triggerBgUpload()">📷 Kies Foto</button>
             <button class="btn-config" style="flex:1;" onclick="autoExtractColorsFromCurrentBg()">🪄 Auto Kleur</button>
           </div>
           <div class="setting-row">
-            <span>Vlakken (Transparant):</span>
-            <input type="color" id="cardColorPicker" value="#161922" oninput="updateCardBgColor(this.value)" style="width:30px; height:30px; border:none; background:none; cursor:pointer;">
+            <span>Vlakken (Glas-tint):</span>
+            <input type="color" id="cardColorPicker" value="#161922" oninput="updateCardBgColor(this.value)" style="width:34px; height:34px; border:none; background:none; cursor:pointer; min-height:0; padding:0;">
           </div>
           <div class="setting-row">
             <span>Tekst & Accent:</span>
-            <input type="color" id="accentColorPicker" value="#30d158" oninput="updateAccentColor(this.value)" style="width:30px; height:30px; border:none; background:none; cursor:pointer;">
+            <input type="color" id="accentColorPicker" value="#30d158" oninput="updateAccentColor(this.value)" style="width:34px; height:34px; border:none; background:none; cursor:pointer; min-height:0; padding:0;">
           </div>
           <div style="display:flex; gap:6px; margin-top:8px;">
-            <button class="btn-config" style="flex:2; background:var(--accent); color:#000;" onclick="saveCustomThemePrompt()">💾 Thema Opslaan</button>
-            <button class="btn-config" id="deleteThemeBtn" style="flex:1; color:#ef4444;" onclick="deleteCurrentCustomTheme()">Wis</button>
+            <button class="btn-config" style="flex:2; background:var(--accent); color:#000; font-weight:700;" onclick="saveCustomThemePrompt()">💾 Thema Opslaan</button>
+            <button class="btn-config" id="deleteThemeBtn" style="flex:1; color:var(--danger); display:none;" onclick="deleteCurrentCustomTheme()">Wis</button>
           </div>
         </div>
       </div>
 
       <div class="setting-section">
         <div class="setting-title">Geluiden (Video & Audio)</div>
-        <div class="setting-row">
-          <span>Set Voltooid:</span>
-          <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
-            <select id="doneAudioSelect" onchange="changeAudioSetting('done', this.value)" style="max-width: 140px;"></select>
-            <button class="btn-config" onclick="playDoneAudio()">▶ Test</button>
-            <button class="btn-config" id="deleteDoneAudioBtn" style="display:none; color:#ef4444;" onclick="deleteCustomAudio('done')">🗑️</button>
+        <div style="margin-bottom: 10px;">
+          <div style="font-size:12px; margin-bottom:4px; color:var(--text-muted);">Set Voltooid:</div>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <select id="doneAudioSelect" onchange="changeAudioSetting('done', this.value)" style="flex:1;"></select>
+            <button class="btn-config" onclick="triggerMediaUpload('done')" title="Upload Video/Audio">+ Upload</button>
+            <button class="btn-config" onclick="playDoneAudio()">▶</button>
+            <button class="btn-config" id="deleteDoneAudioBtn" style="display:none; color:var(--danger);" onclick="deleteCustomAudio('done')">🗑️</button>
           </div>
         </div>
-        <div class="setting-row">
-          <span>Timer Alarm:</span>
-          <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
-            <select id="alarmAudioSelect" onchange="changeAudioSetting('alarm', this.value)" style="max-width: 140px;"></select>
-            <button class="btn-config" onclick="playAlarmAudio()">▶ Test</button>
-            <button class="btn-config" id="deleteAlarmAudioBtn" style="display:none; color:#ef4444;" onclick="deleteCustomAudio('alarm')">🗑️</button>
+        <div>
+          <div style="font-size:12px; margin-bottom:4px; color:var(--text-muted);">Timer Alarm:</div>
+          <div style="display: flex; gap: 5px; align-items: center;">
+            <select id="alarmAudioSelect" onchange="changeAudioSetting('alarm', this.value)" style="flex:1;"></select>
+            <button class="btn-config" onclick="triggerMediaUpload('alarm')" title="Upload Video/Audio">+ Upload</button>
+            <button class="btn-config" onclick="playAlarmAudio()">▶</button>
+            <button class="btn-config" id="deleteAlarmAudioBtn" style="display:none; color:var(--danger);" onclick="deleteCustomAudio('alarm')">🗑️</button>
           </div>
         </div>
-        <div class="setting-row" style="margin-top: 6px;">
-          <span>Audio Inschakelen:</span>
+        <div class="setting-row" style="margin-top: 10px; padding-top: 8px; border-top: 0.5px solid var(--border);">
+          <span>Geluid Inschakelen:</span>
           <button class="btn-config" id="soundToggleBtn" onclick="toggleSound()">Audio Aan</button>
         </div>
       </div>
@@ -899,16 +932,16 @@
         <div class="setting-title">Cyclus & Data</div>
         <div class="setting-row">
           <span>Dagen (<strong id="activeDaysCountLabel">5</strong> actueel):</span>
-          <div>
-            <button class="btn-config" onclick="addDay()">+ D</button>
-            <button class="btn-config" onclick="removeDay()">- D</button>
+          <div style="display:flex; gap:5px;">
+            <button class="btn-config" onclick="addDay()">+ Dag</button>
+            <button class="btn-config" onclick="removeDay()">- Dag</button>
           </div>
         </div>
         <div class="setting-row">
           <span>Weken (<strong id="activeWeeksCountLabel">8</strong> actueel):</span>
-          <div>
-            <button class="btn-config" onclick="addWeek()">+ W</button>
-            <button class="btn-config" onclick="removeWeek()">- W</button>
+          <div style="display:flex; gap:5px;">
+            <button class="btn-config" onclick="addWeek()">+ Week</button>
+            <button class="btn-config" onclick="removeWeek()">- Week</button>
           </div>
         </div>
         <div class="setting-row" style="margin-top: 8px;">
@@ -921,73 +954,22 @@
         </div>
       </div>
 
-      <button class="btn-glass" style="width: 100%; min-height: 40px; margin-top: 6px; font-weight:800;" onclick="closeSettingsModal()">Sluiten</button>
+      <button class="btn-glass" style="width: 100%; min-height: 44px; margin-top: 6px; font-weight:700;" onclick="closeSettingsModal()">Gereed</button>
     </div>
   </div>
 
+  <!-- WARM-UP CALCULATOR MODAL -->
   <div class="modal-overlay" id="warmupModal">
     <div class="modal-box" style="max-width: 360px;">
       <h3 style="margin-bottom: 4px;">Opwarmsets</h3>
-      <p id="warmupSubtitle" style="text-align: center; color: var(--text-muted); font-size: 11px; margin-bottom: 12px;"></p>
+      <p id="warmupSubtitle" style="text-align: center; color: var(--text-muted); font-size: 12px; margin-bottom: 12px;"></p>
       <div id="warmupList" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;"></div>
-      <button class="btn-glass" style="width: 100%; min-height: 40px;" onclick="closeWarmupModal()">Gereed</button>
+      <button class="btn-glass" style="width: 100%; min-height: 44px; font-weight:700;" onclick="closeWarmupModal()">Sluiten</button>
     </div>
   </div>
 
   <script>
-    // --- INDEXEDDB STORAGE VOOR GROTE VIDEO/AUDIO BESTANDEN ---
-    let idb = null;
-    function openMediaDB() {
-      return new Promise((resolve) => {
-        if (idb) return resolve(idb);
-        const req = indexedDB.open('GymTrackerMediaDB', 1);
-        req.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains('media')) {
-            db.createObjectStore('media', { keyPath: 'id' });
-          }
-        };
-        req.onsuccess = (e) => {
-          idb = e.target.result;
-          resolve(idb);
-        };
-        req.onerror = () => resolve(null);
-      });
-    }
-
-    async function idbSaveMedia(item) {
-      const db = await openMediaDB();
-      if (!db) return;
-      return new Promise((resolve) => {
-        const tx = db.transaction('media', 'readwrite');
-        tx.objectStore('media').put(item);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => resolve(false);
-      });
-    }
-
-    async function idbGetMedia(id) {
-      const db = await openMediaDB();
-      if (!db) return null;
-      return new Promise((resolve) => {
-        const tx = db.transaction('media', 'readonly');
-        const req = tx.objectStore('media').get(id);
-        req.onsuccess = () => resolve(req.result || null);
-        req.onerror = () => resolve(null);
-      });
-    }
-
-    async function idbDeleteMedia(id) {
-      const db = await openMediaDB();
-      if (!db) return;
-      return new Promise((resolve) => {
-        const tx = db.transaction('media', 'readwrite');
-        tx.objectStore('media').delete(id);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => resolve(false);
-      });
-    }
-
+    // --- 1. SAFE LOCALSTORAGE SHIM ---
     const memoryStore = {};
     const SafeStore = {
       getItem(key) {
@@ -1009,6 +991,112 @@
       }
     };
 
+    // --- 2. INDEXEDDB VOOR VIDEO/AUDIO OPSLAG & IN-MEMORY OBJECT-URL CACHE ---
+    let idb = null;
+    const mediaUrlCache = {};
+
+    function openMediaDB() {
+      return new Promise((resolve) => {
+        if (idb) return resolve(idb);
+        if (!('indexedDB' in window)) return resolve(null);
+        const req = indexedDB.open('GymTrackerMediaDB_v2', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('media')) {
+            db.createObjectStore('media', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          idb = e.target.result;
+          resolve(idb);
+        };
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    function cacheMediaRecord(record) {
+      if (!record) return null;
+      if (mediaUrlCache[record.id]) return mediaUrlCache[record.id];
+      try {
+        if (record.buffer) {
+          const blob = new Blob([record.buffer], { type: record.mime || 'video/mp4' });
+          mediaUrlCache[record.id] = URL.createObjectURL(blob);
+          return mediaUrlCache[record.id];
+        } else if (record.blob) {
+          mediaUrlCache[record.id] = URL.createObjectURL(record.blob);
+          return mediaUrlCache[record.id];
+        } else if (record.dataUrl) {
+          mediaUrlCache[record.id] = record.dataUrl;
+          return mediaUrlCache[record.id];
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    async function idbSaveMedia(item) {
+      const db = await openMediaDB();
+      cacheMediaRecord(item);
+      if (!db) return false;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction('media', 'readwrite');
+          tx.objectStore('media').put(item);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    async function idbGetMediaUrl(id) {
+      if (mediaUrlCache[id]) return mediaUrlCache[id];
+      const db = await openMediaDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction('media', 'readonly');
+          const req = tx.objectStore('media').get(id);
+          req.onsuccess = () => resolve(cacheMediaRecord(req.result));
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+
+    async function idbPreloadAllMedia() {
+      const db = await openMediaDB();
+      if (!db) return;
+      try {
+        const tx = db.transaction('media', 'readonly');
+        const req = tx.objectStore('media').getAll();
+        req.onsuccess = () => {
+          (req.result || []).forEach(rec => cacheMediaRecord(rec));
+        };
+      } catch (e) {}
+    }
+
+    async function idbDeleteMedia(id) {
+      if (mediaUrlCache[id]) {
+        try { URL.revokeObjectURL(mediaUrlCache[id]); } catch (e) {}
+        delete mediaUrlCache[id];
+      }
+      const db = await openMediaDB();
+      if (!db) return;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction('media', 'readwrite');
+          tx.objectStore('media').delete(id);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    // --- 3. DATA & CONSTANTEN ---
     const SIMPLE_MUSCLE_GROUPS = [
       'Borst', 'Rug', 'Quadriceps', 'Hamstrings/Glutes', 
       'Schouders', 'Biceps', 'Triceps', 'Calves/Abs'
@@ -1038,40 +1126,109 @@
     let currentTheme = SafeStore.getItem('wk_theme_v27') || 'glass';
     if (currentTheme === 'beast') currentTheme = 'glass';
 
-    let days = JSON.parse(SafeStore.getItem('wk_days_v27')) || ['Dag 1', 'Dag 2', 'Dag 3', 'Dag 4', 'Dag 5'];
+    let days = JSON.parse(SafeStore.getItem('wk_days_v27') || 'null') || ['Dag 1', 'Dag 2', 'Dag 3', 'Dag 4', 'Dag 5'];
     let totalWeeks = parseInt(SafeStore.getItem('wk_total_weeks_v27')) || 8;
     let currentWeek = parseInt(SafeStore.getItem('wk_active_week_v27')) || 1;
     let currentDay = SafeStore.getItem('wk_active_day_v27') || days[0];
     
-    let data = JSON.parse(SafeStore.getItem('workout_data_v27')) || {};
+    let data = JSON.parse(SafeStore.getItem('workout_data_v27') || '{}');
     let soundEnabled = JSON.parse(SafeStore.getItem('wk_sound_v27') ?? 'true');
     let autoTimerSeconds = parseInt(SafeStore.getItem('wk_autotimer_sec_v27') ?? '90');
     let soundVolume = parseFloat(SafeStore.getItem('wk_sound_volume_v27') ?? '1.0');
 
-    let customDoneAudios = JSON.parse(SafeStore.getItem('wk_custom_done_audios_meta_v27')) || [];
-    let customAlarmAudios = JSON.parse(SafeStore.getItem('wk_custom_alarm_audios_meta_v27')) || [];
+    let customDoneAudios = JSON.parse(SafeStore.getItem('wk_custom_done_audios_meta_v27') || '[]');
+    let customAlarmAudios = JSON.parse(SafeStore.getItem('wk_custom_alarm_audios_meta_v27') || '[]');
     let currentDoneAudioId = SafeStore.getItem('wk_active_done_audio_id_v27') || 'beep';
     let currentAlarmAudioId = SafeStore.getItem('wk_active_alarm_audio_id_v27') || 'classic';
 
-    let savedCustomThemes = JSON.parse(SafeStore.getItem('wk_custom_themes_list_v27')) || [];
+    let savedCustomThemes = JSON.parse(SafeStore.getItem('wk_custom_themes_list_v27') || '[]');
     let activeCustomBg = SafeStore.getItem('wk_active_custom_bg_v27') || '';
     let activeCardColor = SafeStore.getItem('wk_active_card_color_v27') || '#161922';
     let activeAccentColor = SafeStore.getItem('wk_active_accent_color_v27') || '#30d158';
 
     let historyStack = [];
     let wakeLock = null;
-    let wakeLockEnabled = false;
+    let wakeLockUserToggled = false;
 
     let timerInterval = null;
     let timerTargetTime = 0;
+    let stopwatchStartTime = 0;
     let timerSeconds = 0;
     let isStopwatch = false;
     let audioCtx = null;
-    let silentAudioLoop = null;
+    let keepAliveBlobUrl = null;
+
+    // --- 4. IOS BACKGROUND KEEP-ALIVE & AUDIO/VIDEO ENGINE ---
+    function createSilentWavBlobUrl() {
+      if (keepAliveBlobUrl) return keepAliveBlobUrl;
+      const sampleRate = 8000;
+      const numSamples = sampleRate; // 1 seconde echte stilte zodat iOS niet voortijdig stopt
+      const buffer = new ArrayBuffer(44 + numSamples);
+      const view = new DataView(buffer);
+      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+
+      writeStr(0, 'RIFF');
+      view.setUint32(4, 36 + numSamples, true);
+      writeStr(8, 'WAVE');
+      writeStr(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate, true);
+      view.setUint16(32, 1, true);
+      view.setUint16(34, 8, true);
+      writeStr(36, 'data');
+      view.setUint32(40, numSamples, true);
+      for (let i = 0; i < numSamples; i++) view.setUint8(44 + i, 128);
+
+      keepAliveBlobUrl = URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' }));
+      return keepAliveBlobUrl;
+    }
 
     function initAudio() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      } catch (e) {}
+    }
+
+    function blessMediaElementsForBackground() {
+      initAudio();
+      try {
+        const ka = document.getElementById('keepAliveAudio');
+        if (ka && !ka.src) ka.src = createSilentWavBlobUrl();
+        const runner = document.getElementById('hiddenMediaRunner');
+        if (runner && currentAlarmAudioId.startsWith('custom_media_') && mediaUrlCache[currentAlarmAudioId]) {
+          if (runner.src !== mediaUrlCache[currentAlarmAudioId]) {
+            runner.src = mediaUrlCache[currentAlarmAudioId];
+            runner.load();
+          }
+        }
+      } catch (e) {}
+    }
+
+    function startBackgroundKeepAlive() {
+      try {
+        const ka = document.getElementById('keepAliveAudio');
+        if (ka) {
+          if (!ka.src) ka.src = createSilentWavBlobUrl();
+          ka.volume = 0.01;
+          ka.play().catch(() => {});
+        }
+        acquireWakeLock();
+      } catch (e) {}
+    }
+
+    function stopBackgroundKeepAlive() {
+      try {
+        const ka = document.getElementById('keepAliveAudio');
+        if (ka) {
+          ka.pause();
+          ka.currentTime = 0;
+        }
+        if (!wakeLockUserToggled) releaseWakeLock();
+      } catch (e) {}
     }
 
     function changeVolumeLevel(val) {
@@ -1081,25 +1238,6 @@
       if (runner) runner.volume = soundVolume;
       playSynthTone(750, 0.15, 'sawtooth');
       showToast(`Volume: ${Math.round(soundVolume * 100)}%`);
-    }
-
-    function startBackgroundAudioKeepAlive() {
-      try {
-        if (!silentAudioLoop) {
-          silentAudioLoop = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=");
-          silentAudioLoop.loop = true;
-        }
-        silentAudioLoop.play().catch(() => {});
-      } catch (e) {}
-    }
-
-    function stopBackgroundAudioKeepAlive() {
-      try {
-        if (silentAudioLoop) {
-          silentAudioLoop.pause();
-          silentAudioLoop.currentTime = 0;
-        }
-      } catch (e) {}
     }
 
     function playSynthTone(freq, dur, wave = 'sawtooth') {
@@ -1127,25 +1265,28 @@
     }
 
     async function playMediaById(mediaId) {
-      const item = await idbGetMedia(mediaId);
-      if (!item || !item.blob) return false;
+      try {
+        const url = mediaUrlCache[mediaId] || await idbGetMediaUrl(mediaId);
+        if (!url) return false;
 
-      const runner = document.getElementById('hiddenMediaRunner');
-      const blobUrl = URL.createObjectURL(item.blob);
-      runner.src = blobUrl;
-      runner.volume = soundVolume;
-      runner.currentTime = 0;
-      runner.play().then(() => {
-        runner.onended = () => URL.revokeObjectURL(blobUrl);
-      }).catch(() => {});
-      return true;
+        const runner = document.getElementById('hiddenMediaRunner');
+        runner.pause();
+        if (runner.src !== url) runner.src = url;
+        runner.muted = false;
+        runner.volume = soundVolume;
+        runner.currentTime = 0;
+        await runner.play();
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
 
     async function playAlarmAudio() {
       if (!soundEnabled) return;
       if (currentAlarmAudioId.startsWith('custom_media_')) {
-        const played = await playMediaById(currentAlarmAudioId);
-        if (played) return;
+        const ok = await playMediaById(currentAlarmAudioId);
+        if (ok) return;
       }
 
       if (currentAlarmAudioId === 'boxing') {
@@ -1164,8 +1305,8 @@
     async function playDoneAudio() {
       if (!soundEnabled) return;
       if (currentDoneAudioId.startsWith('custom_media_')) {
-        const played = await playMediaById(currentDoneAudioId);
-        if (played) return;
+        const ok = await playMediaById(currentDoneAudioId);
+        if (ok) return;
       }
 
       if (currentDoneAudioId === 'doubleclick') {
@@ -1189,9 +1330,12 @@
         <option value="upload_new">+ Nieuw Filmpje/Audio...</option>
       `;
       customDoneAudios.forEach(item => {
-        doneHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+        doneHtml += `<option value="${item.id}">🎵 ${escapeHtml(item.name)}</option>`;
       });
       doneSelect.innerHTML = doneHtml;
+      if (!customDoneAudios.some(a => a.id === currentDoneAudioId) && !['beep', 'doubleclick', 'chime'].includes(currentDoneAudioId)) {
+        currentDoneAudioId = 'beep';
+      }
       doneSelect.value = currentDoneAudioId;
       updateDeleteAudioBtnVisibility('done');
 
@@ -1203,9 +1347,12 @@
         <option value="upload_new">+ Nieuw Filmpje/Audio...</option>
       `;
       customAlarmAudios.forEach(item => {
-        alarmHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+        alarmHtml += `<option value="${item.id}">🎵 ${escapeHtml(item.name)}</option>`;
       });
       alarmSelect.innerHTML = alarmHtml;
+      if (!customAlarmAudios.some(a => a.id === currentAlarmAudioId) && !['classic', 'boxing', 'triplebeep'].includes(currentAlarmAudioId)) {
+        currentAlarmAudioId = 'classic';
+      }
       alarmSelect.value = currentAlarmAudioId;
       updateDeleteAudioBtnVisibility('alarm');
     }
@@ -1222,13 +1369,22 @@
       }
     }
 
+    function triggerMediaUpload(type) {
+      if (type === 'done') {
+        const input = document.getElementById('customDoneMediaInput');
+        input.value = '';
+        input.click();
+      } else {
+        const input = document.getElementById('customAlarmMediaInput');
+        input.value = '';
+        input.click();
+      }
+    }
+
     function changeAudioSetting(type, val) {
       if (val === 'upload_new') {
-        if (type === 'done') {
-          document.getElementById('customDoneMediaInput').click();
-        } else {
-          document.getElementById('customAlarmMediaInput').click();
-        }
+        renderAudioDropdowns();
+        triggerMediaUpload(type);
         return;
       }
 
@@ -1236,45 +1392,61 @@
         currentDoneAudioId = val;
         SafeStore.setItem('wk_active_done_audio_id_v27', val);
         updateDeleteAudioBtnVisibility('done');
+        idbGetMediaUrl(val);
       } else {
         currentAlarmAudioId = val;
         SafeStore.setItem('wk_active_alarm_audio_id_v27', val);
         updateDeleteAudioBtnVisibility('alarm');
+        idbGetMediaUrl(val);
       }
-      showToast('Geluid ingesteld');
+      showToast('Geluid geselecteerd');
     }
 
-    async function handleMediaFileChosen(event, type) {
-      const file = event.target.files[0];
+    function handleMediaFileChosen(event, type) {
+      const file = event.target.files && event.target.files[0];
       if (!file) return;
 
-      const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : `Video ${Date.now()}`;
-      const name = prompt('Geef dit fragment een naam:', defaultName.substring(0, 16));
+      const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : `Fragment ${Date.now()}`;
+      const name = prompt('Geef dit video/audio-fragment een naam:', defaultName.substring(0, 18));
       if (!name || name.trim() === '') return;
 
-      const mediaId = 'custom_media_' + Date.now();
-      await idbSaveMedia({ id: mediaId, blob: file, name: name.trim() });
+      showToast('Bezig met laden...');
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const arrayBuffer = e.target.result;
+        const mediaId = 'custom_media_' + Date.now();
+        const mimeType = file.type || (file.name.toLowerCase().endsWith('.mov') ? 'video/quicktime' : 'video/mp4');
 
-      const meta = { id: mediaId, name: name.trim() };
-      if (type === 'done') {
-        customDoneAudios.push(meta);
-        SafeStore.setItem('wk_custom_done_audios_meta_v27', JSON.stringify(customDoneAudios));
-        currentDoneAudioId = mediaId;
-        SafeStore.setItem('wk_active_done_audio_id_v27', mediaId);
-      } else {
-        customAlarmAudios.push(meta);
-        SafeStore.setItem('wk_custom_alarm_audios_meta_v27', JSON.stringify(customAlarmAudios));
-        currentAlarmAudioId = mediaId;
-        SafeStore.setItem('wk_active_alarm_audio_id_v27', mediaId);
-      }
+        await idbSaveMedia({
+          id: mediaId,
+          name: name.trim(),
+          mime: mimeType,
+          buffer: arrayBuffer
+        });
 
-      renderAudioDropdowns();
-      showToast(`'${name}' opgeslagen! Speelt alleen audio af.`);
-      playMediaById(mediaId);
+        const meta = { id: mediaId, name: name.trim() };
+        if (type === 'done') {
+          customDoneAudios.push(meta);
+          SafeStore.setItem('wk_custom_done_audios_meta_v27', JSON.stringify(customDoneAudios));
+          currentDoneAudioId = mediaId;
+          SafeStore.setItem('wk_active_done_audio_id_v27', mediaId);
+        } else {
+          customAlarmAudios.push(meta);
+          SafeStore.setItem('wk_custom_alarm_audios_meta_v27', JSON.stringify(customAlarmAudios));
+          currentAlarmAudioId = mediaId;
+          SafeStore.setItem('wk_active_alarm_audio_id_v27', mediaId);
+        }
+
+        renderAudioDropdowns();
+        showToast(`'${name.trim()}' opgeslagen!`);
+        playMediaById(mediaId);
+      };
+      reader.onerror = () => showToast('Fout bij inlezen bestand');
+      reader.readAsArrayBuffer(file);
     }
 
     async function deleteCustomAudio(type) {
-      if (!confirm('Weet je zeker dat je dit opgeslagen fragment wilt wissen?')) return;
+      if (!confirm('Weet je zeker dat je dit opgeslagen geluid wilt verwijderen?')) return;
 
       if (type === 'done') {
         await idbDeleteMedia(currentDoneAudioId);
@@ -1291,65 +1463,139 @@
       }
 
       renderAudioDropdowns();
-      showToast('Fragment verwijderd');
+      showToast('Geluid verwijderd');
     }
 
-    function pushHistory() {
-      historyStack.push(JSON.stringify(data));
-      if (historyStack.length > 20) historyStack.shift();
+    // --- 5. WAKE LOCK & TIMERS ---
+    async function acquireWakeLock() {
+      if (!('wakeLock' in navigator) || wakeLock) return;
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => { wakeLock = null; });
+      } catch (e) {}
     }
 
-    function undoLastAction() {
-      if (historyStack.length === 0) {
-        showToast('Niets om te herstellen');
+    async function releaseWakeLock() {
+      if (!wakeLock) return;
+      try {
+        await wakeLock.release();
+        wakeLock = null;
+      } catch (e) {}
+    }
+
+    async function toggleWakeLock() {
+      const btn = document.getElementById('wakeLockModalBtn');
+      if (!('wakeLock' in navigator)) {
+        showToast('Wake Lock niet ondersteund op deze browser');
         return;
       }
-      const previousState = historyStack.pop();
-      data = JSON.parse(previousState);
-      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
-      renderExercises();
-      updateStats();
-      if (document.getElementById('summaryPanel').style.display === 'block') {
-        renderWeeklySummary();
+      wakeLockUserToggled = !wakeLockUserToggled;
+      if (wakeLockUserToggled) {
+        await acquireWakeLock();
+        btn.innerText = 'Scherm Continu Aan';
+        showToast('Scherm blijft nu aan tijdens de training');
+      } else {
+        if (!timerInterval) await releaseWakeLock();
+        btn.innerText = 'Scherm Normaal';
+        showToast('Schermvergrendeling weer normaal');
       }
-      showToast('Laatste wijziging hersteld');
     }
 
-    function changeMuscleMode(val) {
-      muscleMode = val;
-      SafeStore.setItem('wk_muscle_mode_v27', val);
-      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
-      renderExercises();
-      if (document.getElementById('summaryPanel').style.display === 'block') {
-        renderWeeklySummary();
+    function promptCustomTimer() {
+      const sec = prompt('Hoeveel seconden rust wil je?', '45');
+      const val = parseInt(sec);
+      if (!isNaN(val) && val > 0) {
+        startTimer(val);
       }
-      showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
     }
 
-    function openSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'flex';
-      document.getElementById('muscleModeSelect').value = muscleMode;
-      renderAudioDropdowns();
-      renderThemeDropdown();
-      updateCycleCountLabels();
-    }
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'none';
+    function startTimer(seconds) {
+      blessMediaElementsForBackground();
+      stopTimer();
+      startBackgroundKeepAlive();
+      timerTargetTime = Date.now() + (seconds * 1000);
+      timerSeconds = seconds;
+      renderTimer();
+
+      timerInterval = setInterval(checkTimerTick, 250);
     }
 
-    function updateCycleCountLabels() {
-      const dEl = document.getElementById('activeDaysCountLabel');
-      const wEl = document.getElementById('activeWeeksCountLabel');
-      if (dEl) dEl.innerText = days.length;
-      if (wEl) wEl.innerText = totalWeeks;
+    function checkTimerTick() {
+      if (isStopwatch) {
+        timerSeconds = Math.floor((Date.now() - stopwatchStartTime) / 1000);
+        renderTimer();
+        return;
+      }
+      const remaining = Math.ceil((timerTargetTime - Date.now()) / 1000);
+      if (remaining <= 0) {
+        stopTimer();
+        playAlarmAudio();
+      } else {
+        timerSeconds = remaining;
+        renderTimer();
+      }
     }
 
+    function addTimer(sec) {
+      blessMediaElementsForBackground();
+      if (isStopwatch) stopTimer();
+      if (!timerInterval) {
+        startTimer(sec);
+      } else {
+        timerTargetTime += (sec * 1000);
+        checkTimerTick();
+      }
+    }
+
+    function toggleStopwatch() {
+      const loopBtn = document.getElementById('loopBtn');
+      if (isStopwatch) {
+        stopTimer();
+      } else {
+        stopTimer();
+        isStopwatch = true;
+        startBackgroundKeepAlive();
+        loopBtn.style.color = 'var(--accent)';
+        document.getElementById('timerModeLabel').innerText = 'Stopwatch';
+        stopwatchStartTime = Date.now();
+        timerInterval = setInterval(checkTimerTick, 250);
+      }
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 0;
+      isStopwatch = false;
+      stopBackgroundKeepAlive();
+      document.getElementById('loopBtn').style.color = '';
+      document.getElementById('timerModeLabel').innerText = 'Rusttimer';
+      renderTimer();
+    }
+
+    function renderTimer() {
+      const m = Math.floor(timerSeconds / 60);
+      const s = timerSeconds % 60;
+      document.getElementById('timerText').innerText = 
+        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        if (timerInterval || wakeLockUserToggled) acquireWakeLock();
+        if (timerInterval) checkTimerTick();
+      }
+    });
+
+    // --- 6. THEMA & ULTRA-TRANSLUCENT CUSTOM ACHTERGROND ---
     function triggerBgUpload() {
-      document.getElementById('customBgInput').click();
+      const input = document.getElementById('customBgInput');
+      input.value = '';
+      input.click();
     }
 
     function handleCustomBgUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files && event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
@@ -1363,7 +1609,7 @@
           currentTheme = 'custom_temp';
         }
         applyTheme(currentTheme);
-        showToast('Foto geladen! Kleuren analyseren...');
+        showToast('Foto geladen! Kleuren afstemmen...');
         autoExtractColorsFromCurrentBg();
       };
       reader.readAsDataURL(file);
@@ -1402,11 +1648,11 @@
         }
 
         const avgBrightness = (0.299 * (rSum / count) + 0.587 * (gSum / count) + 0.114 * (bSum / count));
-        const calculatedCard = avgBrightness > 130 ? '#10121a' : '#181b24';
+        const calculatedCard = avgBrightness > 130 ? '#0c0e14' : '#161922';
         
         updateCardBgColor(calculatedCard);
         updateAccentColor(bestAccent);
-        showToast('Bijpassende kleuren ingesteld!');
+        showToast('Kleuren afgestemd op je foto!');
       };
       img.src = activeCustomBg;
     }
@@ -1418,8 +1664,8 @@
     function updateCardBgColor(val) {
       activeCardColor = val;
       SafeStore.setItem('wk_active_card_color_v27', val);
-      document.body.style.setProperty('--card-bg', hexToRgba(val, 0.22));
-      document.body.style.setProperty('--card-inner', hexToRgba(val, 0.28));
+      document.body.style.setProperty('--card-bg', hexToRgba(val, 0.18));
+      document.body.style.setProperty('--card-inner', hexToRgba(val, 0.24));
       document.getElementById('cardColorPicker').value = val;
     }
 
@@ -1431,7 +1677,7 @@
     }
 
     function hexToRgba(hex, alpha) {
-      hex = hex.replace('#', '');
+      hex = (hex || '#161922').replace('#', '');
       if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
       const num = parseInt(hex, 16);
       return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
@@ -1471,15 +1717,15 @@
     function renderThemeDropdown() {
       const select = document.getElementById('themeSelectModal');
       let html = `
-        <option value="glass">Zwart</option>
-        <option value="bright">Wit</option>
+        <option value="glass">Zwart (iOS Dark)</option>
+        <option value="bright">Wit (iOS Light)</option>
         <option value="light-color">Lichtblauw</option>
         <option value="medium-color">Amber</option>
         <option value="dark-color">Indigo</option>
       `;
 
       savedCustomThemes.forEach(t => {
-        html += `<option value="${t.id}">${escapeHtml(t.name)}</option>`;
+        html += `<option value="${t.id}">🖼️ ${escapeHtml(t.name)}</option>`;
       });
 
       select.innerHTML = html;
@@ -1530,11 +1776,63 @@
       applyTheme(themeName);
     }
 
+    // --- 7. WORKOUT LOGICA, SPIERGROEPEN, KOPIËREN & STATS ---
+    function pushHistory() {
+      historyStack.push(JSON.stringify(data));
+      if (historyStack.length > 20) historyStack.shift();
+    }
+
+    function undoLastAction() {
+      if (historyStack.length === 0) {
+        showToast('Niets om te herstellen');
+        return;
+      }
+      const previousState = historyStack.pop();
+      data = JSON.parse(previousState);
+      SafeStore.setItem('workout_data_v27', JSON.stringify(data));
+      renderExercises();
+      updateStats();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast('Laatste wijziging hersteld');
+    }
+
+    function changeMuscleMode(val) {
+      muscleMode = val;
+      SafeStore.setItem('wk_muscle_mode_v27', val);
+      document.getElementById('summaryModeLabel').innerText = val === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+      renderExercises();
+      if (document.getElementById('summaryPanel').style.display === 'block') {
+        renderWeeklySummary();
+      }
+      showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('muscleModeSelect').value = muscleMode;
+      renderAudioDropdowns();
+      renderThemeDropdown();
+      updateCycleCountLabels();
+    }
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function updateCycleCountLabels() {
+      const dEl = document.getElementById('activeDaysCountLabel');
+      const wEl = document.getElementById('activeWeeksCountLabel');
+      if (dEl) dEl.innerText = days.length;
+      if (wEl) wEl.innerText = totalWeeks;
+    }
+
     function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
       toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => { toast.style.display = 'none'; }, 2200);
     }
 
     function toggleSound() {
@@ -1549,117 +1847,6 @@
       SafeStore.setItem('wk_autotimer_sec_v27', autoTimerSeconds);
       showToast(autoTimerSeconds === 0 ? 'Auto-timer Uit' : `Auto-timer: ${autoTimerSeconds}s`);
     }
-
-    async function toggleWakeLock() {
-      const btn = document.getElementById('wakeLockModalBtn');
-      if (!('wakeLock' in navigator)) {
-        showToast('Wake Lock niet ondersteund op deze browser');
-        return;
-      }
-      try {
-        if (!wakeLockEnabled) {
-          wakeLock = await navigator.wakeLock.request('screen');
-          wakeLockEnabled = true;
-          btn.innerText = 'Scherm Continu Aan';
-          showToast('Scherm blijft nu aan tijdens de training');
-        } else {
-          if (wakeLock) await wakeLock.release();
-          wakeLock = null;
-          wakeLockEnabled = false;
-          btn.innerText = 'Scherm Normaal';
-          showToast('Schermvergrendeling weer normaal');
-        }
-      } catch (err) {
-        showToast('Wake lock fout: ' + err.message);
-      }
-    }
-
-    function promptCustomTimer() {
-      const sec = prompt('Hoeveel seconden rust wil je?', '45');
-      const val = parseInt(sec);
-      if (!isNaN(val) && val > 0) {
-        startTimer(val);
-      }
-    }
-
-    function startTimer(seconds) {
-      initAudio();
-      stopTimer();
-      startBackgroundAudioKeepAlive();
-      timerTargetTime = Date.now() + (seconds * 1000);
-      timerSeconds = seconds;
-      renderTimer();
-
-      timerInterval = setInterval(() => {
-        const remaining = Math.round((timerTargetTime - Date.now()) / 1000);
-        if (remaining <= 0) {
-          stopTimer();
-          playAlarmAudio();
-        } else {
-          timerSeconds = remaining;
-          renderTimer();
-        }
-      }, 500);
-    }
-
-    function addTimer(sec) {
-      if (isStopwatch) stopTimer();
-      if (!timerInterval) {
-        startTimer(sec);
-      } else {
-        timerTargetTime += (sec * 1000);
-        timerSeconds = Math.round((timerTargetTime - Date.now()) / 1000);
-        renderTimer();
-      }
-    }
-
-    function toggleStopwatch() {
-      const loopBtn = document.getElementById('loopBtn');
-      if (isStopwatch) {
-        stopTimer();
-      } else {
-        stopTimer();
-        isStopwatch = true;
-        loopBtn.style.color = 'var(--accent)';
-        document.getElementById('timerModeLabel').innerText = 'Loop';
-        const start = Date.now();
-        timerInterval = setInterval(() => {
-          timerSeconds = Math.floor((Date.now() - start) / 1000);
-          renderTimer();
-        }, 500);
-      }
-    }
-
-    function stopTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerSeconds = 0;
-      isStopwatch = false;
-      stopBackgroundAudioKeepAlive();
-      document.getElementById('loopBtn').style.color = '';
-      document.getElementById('timerModeLabel').innerText = 'Rusttimer';
-      renderTimer();
-    }
-
-    function renderTimer() {
-      const m = Math.floor(timerSeconds / 60);
-      const s = timerSeconds % 60;
-      document.getElementById('timerText').innerText = 
-        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && timerInterval && !isStopwatch) {
-        const remaining = Math.round((timerTargetTime - Date.now()) / 1000);
-        if (remaining <= 0) {
-          stopTimer();
-          playAlarmAudio();
-        } else {
-          timerSeconds = remaining;
-          renderTimer();
-        }
-      }
-    });
 
     function exportCSV() {
       let csv = 'Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities\n';
@@ -1686,27 +1873,6 @@
       link.click();
       document.body.removeChild(link);
       showToast('CSV gedownload');
-    }
-
-    function init() {
-      document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
-      document.getElementById('autoTimerSelect').value = autoTimerSeconds;
-      document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
-      document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
-
-      renderAudioDropdowns();
-      renderThemeDropdown();
-      applyTheme(currentTheme);
-
-      if (!days.includes(currentDay)) currentDay = days[0] || 'Dag 1';
-      if (currentWeek > totalWeeks) currentWeek = totalWeeks;
-
-      ensureInitialData();
-      updateSuggestionsDatalist();
-      renderNav();
-      renderExercises();
-      updateStats();
-      updateCycleCountLabels();
     }
 
     function ensureInitialData() {
@@ -1917,11 +2083,7 @@
 
       if (parentVal) {
         const matchingSubs = ADVANCED_MUSCLES.filter(m => m.parent === parentVal);
-        if (matchingSubs.length > 0) {
-          data[k][exIdx].advMuscle = matchingSubs[0].id;
-        } else {
-          data[k][exIdx].advMuscle = '';
-        }
+        data[k][exIdx].advMuscle = matchingSubs.length > 0 ? matchingSubs[0].id : '';
       } else {
         data[k][exIdx].advMuscle = '';
       }
@@ -2008,7 +2170,7 @@
       }
 
       saveData();
-      showToast(`'${sourceEx.exercise}' en alle spieren gekopieerd naar alle weken!`);
+      showToast(`'${sourceEx.exercise}' gekopieerd naar alle weken!`);
     }
 
     function copyCurrentDayToAllWeeks() {
@@ -2075,7 +2237,7 @@
       }
 
       saveData();
-      showToast(`Hele trainingsschema van Week ${currentWeek} gekopieerd naar alle weken!`);
+      showToast(`Hele schema van Week ${currentWeek} gekopieerd naar alle weken!`);
     }
 
     function updatePlatesInput(exIdx, setIdx, rawVal) {
@@ -2160,6 +2322,7 @@
     }
 
     function toggleComplete(exIdx, setIdx) {
+      blessMediaElementsForBackground();
       pushHistory();
       const k = getKey();
       const ex = data[k][exIdx];
@@ -2303,7 +2466,7 @@
                 </button>
 
                 <div class="overlap-chips-wrapper" id="overlap_panel_${exIdx}">
-                  <div style="font-weight: 800; font-size: 10px; color: var(--text-muted);">SELECTEER SECUNDAIRE SPIEREN:</div>
+                  <div style="font-weight: 700; font-size: 10px; color: var(--text-muted);">SELECTEER SECUNDAIRE SPIEREN:</div>
                   <div class="overlap-chips-list">
                     ${ADVANCED_MUSCLES.map(m => {
                       if (m.id === activeAdv) return '';
@@ -2534,10 +2697,10 @@
           const hasSets = (item.direct + item.overlap) > 0;
           return `
             <div class="summary-item" style="${hasSets ? 'border-color:var(--accent);' : 'opacity:0.75;'}">
-              <span style="font-size:10px; font-weight:700;">${m.parent}: ${m.label.split('(')[0].trim()}</span>
+              <span style="font-size:11px; font-weight:600;">${m.parent}: ${m.label.split('(')[0].trim()}</span>
               <span>
                 <strong>${item.direct}</strong>
-                ${item.overlap > 0 ? `<span style="color:var(--text-muted); font-size:9px;"> +${item.overlap} ov</span>` : ''}
+                ${item.overlap > 0 ? `<span style="color:var(--text-muted); font-size:10px;"> +${item.overlap} ov</span>` : ''}
               </span>
             </div>
           `;
@@ -2557,7 +2720,7 @@
       sub.innerText = `Werkgewicht: ${targetWeight > 0 ? targetWeight + ' kg' : 'nog niet ingevuld'}`;
 
       if (targetWeight <= 10) {
-        list.innerHTML = `<div style="font-size:12px; color:var(--text-muted); text-align:center;">Vul eerst een gewicht in bij Set 1.</div>`;
+        list.innerHTML = `<div style="font-size:13px; color:var(--text-muted); text-align:center;">Vul eerst een gewicht in bij Set 1.</div>`;
       } else {
         const p1 = Math.round((targetWeight * 0.35) / 2.5) * 2.5;
         const p2 = Math.round((targetWeight * 0.55) / 2.5) * 2.5;
@@ -2575,6 +2738,28 @@
     }
     function closeWarmupModal() {
       document.getElementById('warmupModal').style.display = 'none';
+    }
+
+    async function init() {
+      document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
+      document.getElementById('autoTimerSelect').value = autoTimerSeconds;
+      document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
+      document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
+
+      await idbPreloadAllMedia();
+      renderAudioDropdowns();
+      renderThemeDropdown();
+      applyTheme(currentTheme);
+
+      if (!days.includes(currentDay)) currentDay = days[0] || 'Dag 1';
+      if (currentWeek > totalWeeks) currentWeek = totalWeeks;
+
+      ensureInitialData();
+      updateSuggestionsDatalist();
+      renderNav();
+      renderExercises();
+      updateStats();
+      updateCycleCountLabels();
     }
 
     init();
