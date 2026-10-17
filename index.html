@@ -10,8 +10,9 @@
     :root {
       --bg-gradient: none;
       --bg-color: #000000;
-      --card-bg: rgba(28, 28, 30, 0.85);
-      --card-inner: rgba(44, 44, 46, 0.75);
+      --card-bg: rgba(24, 24, 27, 0.88);
+      --card-bg-alt: rgba(36, 39, 48, 0.88);
+      --card-inner: rgba(44, 44, 48, 0.72);
       --text: #ffffff;
       --text-muted: #8e8e93;
       --accent: #30d158;
@@ -23,12 +24,14 @@
       --active-pill-bg: #ffffff;
       --active-pill-color: #000000;
       --card-blur: 20px;
+      --bg-fit-mode: cover;
     }
 
     body.theme-bright {
       --bg-gradient: none;
       --bg-color: #f2f2f7;
-      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg-alt: rgba(232, 236, 244, 0.95);
       --card-inner: rgba(242, 242, 247, 0.95);
       --text: #000000;
       --text-muted: #6c6c70;
@@ -45,7 +48,8 @@
     body.theme-light-color {
       --bg-gradient: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%);
       --bg-color: #ecfeff;
-      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --card-bg-alt: rgba(218, 240, 252, 0.9);
       --card-inner: rgba(224, 242, 254, 0.82);
       --text: #083344;
       --text-muted: #155e75;
@@ -62,7 +66,8 @@
     body.theme-medium-color {
       --bg-gradient: linear-gradient(180deg, #fef3c7 0%, #fffbeb 100%);
       --bg-color: #fef3c7;
-      --card-bg: rgba(255, 253, 245, 0.9);
+      --card-bg: rgba(255, 253, 245, 0.92);
+      --card-bg-alt: rgba(252, 235, 188, 0.92);
       --card-inner: rgba(254, 243, 199, 0.85);
       --text: #451a03;
       --text-muted: #78350f;
@@ -79,7 +84,8 @@
     body.theme-dark-color {
       --bg-gradient: radial-gradient(at 50% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 60%);
       --bg-color: #090d16;
-      --card-bg: rgba(22, 30, 46, 0.86);
+      --card-bg: rgba(19, 27, 43, 0.88);
+      --card-bg-alt: rgba(31, 43, 66, 0.88);
       --card-inner: rgba(15, 23, 42, 0.85);
       --text: #f8fafc;
       --text-muted: #94a3b8;
@@ -103,11 +109,33 @@
       --active-pill-bg: var(--accent);
       --active-pill-color: #000000;
       --card-blur: 2px;
-      background-image: var(--custom-bg-image, none) !important;
-      background-blend-mode: normal !important;
-      background-size: cover !important;
-      background-position: center center !important;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Gefixeerde viewport-laag zodat iOS Safari de achtergrondfoto NIET inzoomt over de scrollhoogte */
+    #bgViewportLayer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: -2;
+      pointer-events: none;
+      background-color: var(--bg-color);
+      background-image: var(--bg-gradient);
+      background-size: var(--bg-fit-mode, cover);
+      background-position: center center;
+      background-repeat: no-repeat;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+
+    body.theme-custom #bgViewportLayer {
+      background-image: var(--custom-bg-image, none) !important;
+      background-size: var(--bg-fit-mode, cover) !important;
+      background-position: center center !important;
+      background-repeat: no-repeat !important;
     }
 
     * { 
@@ -120,12 +148,7 @@
     }
 
     body { 
-      background-color: var(--bg-color);
-      background-image: var(--bg-gradient);
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      background-color: transparent;
       color: var(--text); 
       padding-bottom: calc(165px + env(safe-area-inset-bottom, 0px)); 
       -webkit-font-smoothing: antialiased;
@@ -305,6 +328,10 @@
       backdrop-filter: blur(var(--card-blur));
       -webkit-backdrop-filter: blur(var(--card-blur));
     }
+    /* Tweede kleur voor afwisselende oefeningen (Kleur A / Kleur B) */
+    .exercise-block.alt-color {
+      background: var(--card-bg-alt);
+    }
     .exercise-block.superset-parent {
       border-left: 3.5px solid var(--accent);
       margin-bottom: 4px;
@@ -336,7 +363,18 @@
       color: var(--text);
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 6px;
+    }
+    .rep-range-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--btn-bg);
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
     }
     .status-pill {
       font-size: 10px;
@@ -376,7 +414,7 @@
 
     .exercise-header {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 110px auto;
       gap: 6px;
       align-items: center;
       margin-bottom: 8px;
@@ -492,6 +530,9 @@
       gap: 7px;
       position: relative;
     }
+    .set-row.compact-goal-only {
+      padding: 8px 10px;
+    }
     .set-row.is-pr {
       border: 1px solid var(--accent);
     }
@@ -571,7 +612,7 @@
       font-size: 10px;
       font-weight: 700;
       color: var(--text-muted);
-      width: 48px;
+      width: 52px;
       text-transform: uppercase;
     }
     .rir-btns {
@@ -601,7 +642,7 @@
       border-color: transparent;
       text-shadow: none;
     }
-    .btn-rir.active.fail {
+    .btn-rir.active.neg-rir {
       background: var(--danger);
       color: #ffffff;
       border-color: transparent;
@@ -681,7 +722,6 @@
       text-shadow: none;
     }
 
-    /* Dubbele balk onderaan: aparte Rusttimer én aparte Stopwatch */
     .bottom-bar { 
       position: fixed; 
       bottom: 0; 
@@ -780,7 +820,6 @@
       justify-content: center;
     }
 
-    /* Progressie Lijngrafiek Styling */
     .prog-metrics-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -868,6 +907,9 @@
 </head>
 <body class="theme-glass">
 
+  <!-- Gefixeerde schermvullende achtergrondlaag (voorkomt inzoomen op iOS Safari) -->
+  <div id="bgViewportLayer"></div>
+
   <div id="toast"></div>
 
   <!-- Bestands-uploads voor Custom Achtergrond, Geluiden (Video en Audio) & CSV Schema -->
@@ -876,7 +918,6 @@
   <input type="file" id="customAlarmMediaInput" accept="video/*,audio/*,.mp4,.mov,.mp3,.m4a,.wav" style="display:none;" onchange="handleMediaFileChosen(event, 'alarm')">
   <input type="file" id="csvSchemaUploadInput" accept=".csv,text/csv,text/plain" style="display:none;" onchange="handleCSVUpload(event)">
 
-  <!-- Fallback inline speler voor videobestanden -->
   <video id="hiddenMediaRunner" playsinline webkit-playsinline preload="auto" style="position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0.01; pointer-events:none; z-index:-1;"></video>
 
   <datalist id="exerciseSuggestions"></datalist>
@@ -915,7 +956,6 @@
       <div>Dagvolume: <strong id="tonnageStat">0 kg</strong></div>
     </div>
 
-    <!-- Kopieerknoppen zonder emoji's -->
     <div class="bulk-copy-bar">
       <button class="btn-bulk-copy" onclick="copyCurrentDayToAllWeeks()">
         <span>Kopieer dag naar alle weken</span>
@@ -934,7 +974,6 @@
 
   <!-- Dubbele onderbalk: Rusttimer én losstaande Stopwatch -->
   <div class="bottom-bar">
-    <!-- Rij 1: Rusttimer -->
     <div class="bar-row">
       <div class="timer-info">
         <span class="timer-sub">Rusttimer</span>
@@ -964,7 +1003,6 @@
       </div>
     </div>
 
-    <!-- Rij 2: Onafhankelijke Stopwatch -->
     <div class="bar-row sw-row">
       <div class="timer-info">
         <span class="timer-sub">Stopwatch</span>
@@ -1022,13 +1060,17 @@
       <h3>Instellingen</h3>
 
       <div class="setting-section">
-        <div class="setting-title">Spiercategorisering & Eenheden</div>
+        <div class="setting-title">Spiercategorisering, Sets & Eenheden</div>
         <div class="setting-row">
           <span>Spiermodus:</span>
           <select id="muscleModeSelect" onchange="changeMuscleMode(this.value)" style="max-width: 175px;">
             <option value="simple">Simpel (Hoofdgroepen)</option>
             <option value="advanced">Geavanceerd (Zone + Overlap)</option>
           </select>
+        </div>
+        <div class="setting-row">
+          <span>Alleen 1e set invullen:</span>
+          <button class="btn-config" id="firstSetOnlyToggleBtn" onclick="toggleFirstSetOnlyMode()">Uit</button>
         </div>
         <div class="setting-row">
           <span>LBS (Pounds) kolom:</span>
@@ -1048,12 +1090,23 @@
             <option value="dark-color">Indigo</option>
           </select>
         </div>
+        <div class="setting-row">
+          <span>Wisselende oefeningkleuren:</span>
+          <button class="btn-config" id="altColorsToggleBtn" onclick="toggleAltExerciseColors()">Aan</button>
+        </div>
         
         <div style="margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border);">
           <div style="font-size:11px; font-weight:700; margin-bottom:6px; color:var(--text-muted);">CUSTOM THEMA (ULTRA-TRANSLUCENT):</div>
           <div style="display: flex; gap: 6px; margin-bottom: 8px;">
             <button class="btn-config" style="flex:1;" onclick="triggerBgUpload()">Kies Foto</button>
             <button class="btn-config" style="flex:1;" onclick="autoExtractColorsFromCurrentBg()">Auto Kleur</button>
+          </div>
+          <div class="setting-row">
+            <span>Foto pasvorm:</span>
+            <select id="bgFitSelect" onchange="changeBgFitMode(this.value)" style="max-width: 155px;">
+              <option value="cover">Schermvullend</option>
+              <option value="contain">Volledige foto</option>
+            </select>
           </div>
           <div class="setting-row">
             <span>Vlakken (Glas-tint):</span>
@@ -1313,6 +1366,10 @@
 
     let muscleMode = SafeStore.getItem('wk_muscle_mode_v27') || 'simple';
     let showLbs = JSON.parse(SafeStore.getItem('wk_show_lbs_v27') ?? 'false');
+    let firstSetOnlyMode = JSON.parse(SafeStore.getItem('wk_first_set_only_v27') ?? 'false');
+    let altExerciseColors = JSON.parse(SafeStore.getItem('wk_alt_colors_v27') ?? 'true');
+    let bgFitMode = SafeStore.getItem('wk_bg_fit_mode_v27') || 'cover';
+
     let currentTheme = SafeStore.getItem('wk_theme_v27') || 'glass';
     if (currentTheme === 'beast') currentTheme = 'glass';
 
@@ -1856,7 +1913,22 @@
       }
     });
 
-    // --- 6. THEMA & ULTRA-TRANSLUCENT CUSTOM ACHTERGROND ---
+    // --- 6. THEMA, WISSELENDE OEFENINGKLEUREN & GEFIXTE CUSTOM ACHTERGROND ---
+    function toggleAltExerciseColors() {
+      altExerciseColors = !altExerciseColors;
+      SafeStore.setItem('wk_alt_colors_v27', JSON.stringify(altExerciseColors));
+      document.getElementById('altColorsToggleBtn').innerText = altExerciseColors ? 'Aan' : 'Uit';
+      renderExercises();
+      showToast(altExerciseColors ? 'Wisselende kleuren Aan' : 'Wisselende kleuren Uit');
+    }
+
+    function changeBgFitMode(mode) {
+      bgFitMode = mode;
+      SafeStore.setItem('wk_bg_fit_mode_v27', mode);
+      document.documentElement.style.setProperty('--bg-fit-mode', mode);
+      showToast(mode === 'contain' ? 'Volledige foto zichtbaar' : 'Schermvullende weergave');
+    }
+
     function triggerBgUpload() {
       const input = document.getElementById('customBgInput');
       input.value = '';
@@ -1872,7 +1944,7 @@
         const base64Img = e.target.result;
         activeCustomBg = base64Img;
         SafeStore.setItem('wk_active_custom_bg_v27', base64Img);
-        document.body.style.setProperty('--custom-bg-image', `url(${base64Img})`);
+        document.documentElement.style.setProperty('--custom-bg-image', `url(${base64Img})`);
 
         if (!currentTheme.startsWith('custom_')) {
           currentTheme = 'custom_temp';
@@ -1930,10 +2002,22 @@
       return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
 
+    function shiftHexColor(hex, delta) {
+      hex = (hex || '#161922').replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      const num = parseInt(hex, 16);
+      const r = Math.min(255, Math.max(0, ((num >> 16) & 255) + delta));
+      const g = Math.min(255, Math.max(0, ((num >> 8) & 255) + delta));
+      const b = Math.min(255, Math.max(0, (num & 255) + delta));
+      return rgbToHex(r, g, b);
+    }
+
     function updateCardBgColor(val) {
       activeCardColor = val;
       SafeStore.setItem('wk_active_card_color_v27', val);
-      document.body.style.setProperty('--card-bg', hexToRgba(val, 0.18));
+      const altHex = shiftHexColor(val, 26);
+      document.body.style.setProperty('--card-bg', hexToRgba(val, 0.16));
+      document.body.style.setProperty('--card-bg-alt', hexToRgba(altHex, 0.28));
       document.body.style.setProperty('--card-inner', hexToRgba(val, 0.24));
       document.getElementById('cardColorPicker').value = val;
     }
@@ -2005,6 +2089,7 @@
       document.body.className = '';
       const deleteBtn = document.getElementById('deleteThemeBtn');
       const foundCustom = savedCustomThemes.find(t => t.id === themeName);
+      document.documentElement.style.setProperty('--bg-fit-mode', bgFitMode);
 
       if (foundCustom || themeName === 'custom_temp') {
         document.body.classList.add('theme-custom');
@@ -2022,14 +2107,15 @@
         updateAccentColor(activeAccentColor);
 
         if (activeCustomBg) {
-          document.body.style.setProperty('--custom-bg-image', `url(${activeCustomBg})`);
+          document.documentElement.style.setProperty('--custom-bg-image', `url(${activeCustomBg})`);
         }
       } else {
         deleteBtn.style.display = 'none';
         document.body.style.removeProperty('--accent');
         document.body.style.removeProperty('--card-bg');
+        document.body.style.removeProperty('--card-bg-alt');
         document.body.style.removeProperty('--card-inner');
-        document.body.style.removeProperty('--custom-bg-image');
+        document.documentElement.style.removeProperty('--custom-bg-image');
 
         if (themeName !== 'glass') {
           document.body.classList.add(`theme-${themeName}`);
@@ -2050,12 +2136,12 @@
       const promptText = `Maak voor mijn workout-tracker web-app een kant-en-klaar CSV-bestand op basis van mijn trainingsschema onderaan dit bericht.
 
 Gebruik EXACT deze kolomkoppen op regel 1 (komma-gescheiden en elke waarde tussen dubbele aanhalingstekens):
-Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities
+Week,Dag,Oefening,RepRange,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities
 
 Houd je strikt aan deze regels:
 1. ELKE SET IS EEN APARTE REGEL: Als een oefening 3 sets heeft, maak je 3 regels aan onder elkaar waarbij de kolom "Set" oploopt ("1", "2", "3").
-2. WEEK: Zet "Week" standaard op "1" (tenzij ik vraag om meerdere weken).
-3. DAG: Gebruik de dagnamen die ik opgeef (bijv. "Dag 1", "Dag 2" of de naam van de split).
+2. WEEK & DAG: Zet "Week" standaard op "1". Gebruik mijn dagnamen (bijv. "Dag 1", "Dag 2").
+3. REPRANGE: Vul per oefening de gewenste rep range in (bijv. "6-8", "8-12", "10-15").
 4. HOOFDGROEP: Kies per oefening uitsluitend één van deze exacte namen:
    - Borst
    - Rug
@@ -2075,14 +2161,14 @@ Houd je strikt aan deze regels:
    - Triceps: triceps_long OF triceps_lateral_medial
    - Calves/Abs: calves OF abs_core
 6. OVERLAPSPIEREN: Vul hier secundaire spieren in die meehelpen bij de oefening, gescheiden door een puntkomma (bijv. "delts_front;triceps_lateral_medial" bij een druk-oefening, of "biceps;delts_rear" bij een roei-oefening). Gebruik alleen de exacte ID's uit punt 5. Laat leeg ("") bij pure isolatie.
-7. PLATES, GEWICHTKG, REPS: Laat "Plates" en "GewichtKG" leeg ("") tenzij ik gewichten noem. Vul bij "Reps" mijn doel-reps in (of laat leeg "").
-8. RIR & VOLTOOID: Zet "DoelRIR" en "BehaaldRIR" standaard op "2" (tenzij ik iets anders aangeef, gebruik "-1" voor Failure). Zet "Voltooid" altijd op "Nee".
+7. PLATES, GEWICHTKG, REPS: Laat "Plates", "GewichtKG" en "Reps" leeg ("") tenzij ik specifieke getallen noem.
+8. RIR & VOLTOOID: Zet "DoelRIR" en "BehaaldRIR" standaard op "2" (gebruik "-1", "0", "1", "2", "3" of "4"). Zet "Voltooid" altijd op "Nee".
 9. Geef het resultaat terug in één enkel CSV-codeblok zodat ik het direct kan kopiëren of opslaan als .csv bestand.
 
 HIER IS MIJN SCHEMA OM IN TE VULLEN:
-- Dag 1: [Typ hier je oefeningen + aantal sets]
-- Dag 2: [Typ hier je oefeningen + aantal sets]
-- Dag 3: [Typ hier je oefeningen + aantal sets]`;
+- Dag 1: [Typ hier je oefeningen + aantal sets + rep range]
+- Dag 2: [Typ hier je oefeningen + aantal sets + rep range]
+- Dag 3: [Typ hier je oefeningen + aantal sets + rep range]`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(promptText).then(() => {
@@ -2111,7 +2197,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
     }
 
     function exportCSV() {
-      let csv = 'Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities\n';
+      let csv = 'Week,Dag,Oefening,RepRange,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities\n';
       for (let w = 1; w <= totalWeeks; w++) {
         for (let d of days) {
           const k = getKey(w, d);
@@ -2120,7 +2206,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
             if (ex.exercise) {
               const overlapStr = (ex.overlapMuscles || []).join(';');
               ex.sets.forEach((s, sIdx) => {
-                csv += `"${w}","${d}","${ex.exercise.replace(/"/g, '""')}","${ex.muscle || ''}","${ex.advMuscle || ''}","${overlapStr}","${sIdx + 1}","${s.plates || ''}","${s.weight || ''}","${s.reps || ''}","${s.targetRir || ''}","${s.actualRir || ''}","${s.completed ? 'Ja' : 'Nee'}","${(ex.note || '').replace(/"/g, '""')}"\n`;
+                csv += `"${w}","${d}","${ex.exercise.replace(/"/g, '""')}","${(ex.repRange || '').replace(/"/g, '""')}","${ex.muscle || ''}","${ex.advMuscle || ''}","${overlapStr}","${sIdx + 1}","${s.plates || ''}","${s.weight || ''}","${s.reps || ''}","${s.targetRir || ''}","${s.actualRir || ''}","${s.completed ? 'Ja' : 'Nee'}","${(ex.note || '').replace(/"/g, '""')}"\n`;
               });
             }
           });
@@ -2139,11 +2225,11 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
 
     function downloadCSVTemplate() {
       const template = [
-        'Week,Dag,Oefening,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities',
-        '"1","Dag 1","Incline Dumbbell Press","Borst","chest_upper","delts_front;triceps_lateral_medial","1","3","60","8","2","2","Nee","Bankje stand 3"',
-        '"1","Dag 1","Incline Dumbbell Press","Borst","chest_upper","delts_front;triceps_lateral_medial","2","3","60","8","2","2","Nee","Bankje stand 3"',
-        '"1","Dag 1","Lat Pulldown","Rug","back_lats","biceps","1","3.5","70","10","1","1","Nee","Brede grip"',
-        '"1","Dag 2","Hack Squat","Quadriceps","quads","glutes","1","4","80","8","2","2","Nee","Diep zakken"'
+        'Week,Dag,Oefening,RepRange,Hoofdgroep,SpecifiekeZone,OverlapSpieren,Set,Plates,GewichtKG,Reps,DoelRIR,BehaaldRIR,Voltooid,Notities',
+        '"1","Dag 1","Incline Dumbbell Press","6-8","Borst","chest_upper","delts_front;triceps_lateral_medial","1","3","60","8","1","1","Nee","Bankje stand 3"',
+        '"1","Dag 1","Incline Dumbbell Press","6-8","Borst","chest_upper","delts_front;triceps_lateral_medial","2","3","60","8","0","0","Nee","Bankje stand 3"',
+        '"1","Dag 1","Lat Pulldown","8-12","Rug","back_lats","biceps","1","3.5","70","10","1","1","Nee","Brede grip"',
+        '"1","Dag 2","Hack Squat","6-10","Quadriceps","quads","glutes","1","4","80","8","1","1","Nee","Diep zakken"'
       ].join('\n');
 
       const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' });
@@ -2206,6 +2292,8 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
         const commaCount = (headerLine.match(/,/g) || []).length;
         const semiCount = (headerLine.match(/;/g) || []).length;
         const delimiter = semiCount > commaCount ? ';' : ',';
+        const headerCols = parseCSVLine(headerLine, delimiter).map(h => h.toLowerCase());
+        const hasRepRangeCol = headerCols.includes('reprange');
 
         pushHistory();
 
@@ -2223,18 +2311,20 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
           const exName = cols[2] || '';
           if (!exName) continue;
 
-          const muscle = cols[3] || '';
-          const advMuscle = cols[4] || '';
-          const overlapRaw = cols[5] || '';
+          const off = hasRepRangeCol ? 1 : 0;
+          const repRange = hasRepRangeCol ? (cols[3] || '') : '';
+          const muscle = cols[3 + off] || '';
+          const advMuscle = cols[4 + off] || '';
+          const overlapRaw = cols[5 + off] || '';
           const overlapMuscles = overlapRaw ? overlapRaw.split(';').map(s => s.trim()).filter(Boolean) : [];
-          let plates = cols[7] || '';
-          let weight = cols[8] || '';
-          const reps = cols[9] || '';
-          const targetRir = cols[10] !== undefined && cols[10] !== '' ? cols[10] : '2';
-          const actualRir = cols[11] !== undefined && cols[11] !== '' ? cols[11] : targetRir;
-          const completedStr = (cols[12] || '').toLowerCase();
+          let plates = cols[7 + off] || '';
+          let weight = cols[8 + off] || '';
+          const reps = cols[9 + off] || '';
+          const targetRir = cols[10 + off] !== undefined && cols[10 + off] !== '' ? cols[10 + off] : '2';
+          const actualRir = cols[11 + off] !== undefined && cols[11 + off] !== '' ? cols[11 + off] : targetRir;
+          const completedStr = (cols[12 + off] || '').toLowerCase();
           const completed = completedStr === 'ja' || completedStr === 'true' || completedStr === '1';
-          const note = cols[13] || '';
+          const note = cols[13 + off] || '';
 
           if (weight && !plates) {
             const wVal = parseFloat(weight.replace(',', '.'));
@@ -2255,6 +2345,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
           if (!exObj) {
             exObj = {
               exercise: exName,
+              repRange: repRange,
               muscle: muscle,
               advMuscle: advMuscle,
               overlapMuscles: overlapMuscles,
@@ -2263,6 +2354,8 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
               sets: []
             };
             importedData[key].push(exObj);
+          } else if (repRange && !exObj.repRange) {
+            exObj.repRange = repRange;
           }
 
           exObj.sets.push({
@@ -2438,7 +2531,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       document.getElementById('progLatestVal').innerText = `${lastVal}${suffix}`;
 
       const pctEl = document.getElementById('progTotalPct');
-      if ( sessions.length > 1 && firstVal > 0 ) {
+      if (sessions.length > 1 && firstVal > 0) {
         const totalDiffPct = round1(((lastVal - firstVal) / firstVal) * 100);
         const sign = totalDiffPct > 0 ? '+' : '';
         pctEl.innerText = `${sign}${totalDiffPct}%`;
@@ -2448,7 +2541,6 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
         pctEl.style.color = 'var(--text-muted)';
       }
 
-      // Teken SVG Lijngrafiek
       const width = 360;
       const height = 165;
       const padLeft = 28;
@@ -2501,7 +2593,6 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
         </svg>
       `;
 
-      // Render sessie-overzicht met procentuele vergelijking t.o.v. vorige sessie
       logList.innerHTML = sessions.map((s, idx) => {
         let pctBadge = `<span class="badge-pct same">Start</span>`;
         if (idx > 0) {
@@ -2529,7 +2620,15 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       }).reverse().join('');
     }
 
-    // --- 9. WORKOUT LOGICA, LBS CONVERSIE & MEEST RECENTE SESSIE LOOKUP ---
+    // --- 9. WORKOUT LOGICA, ALLEEN 1E SET, REP RANGE & LBS ---
+    function toggleFirstSetOnlyMode() {
+      firstSetOnlyMode = !firstSetOnlyMode;
+      SafeStore.setItem('wk_first_set_only_v27', JSON.stringify(firstSetOnlyMode));
+      document.getElementById('firstSetOnlyToggleBtn').innerText = firstSetOnlyMode ? 'Aan' : 'Uit';
+      renderExercises();
+      showToast(firstSetOnlyMode ? 'Set 2+ toont nu alleen Doel RIR' : 'Alle sets volledig invulbaar');
+    }
+
     function toggleLbsSetting() {
       showLbs = !showLbs;
       SafeStore.setItem('wk_show_lbs_v27', JSON.stringify(showLbs));
@@ -2575,6 +2674,9 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       document.getElementById('settingsModal').style.display = 'flex';
       document.getElementById('muscleModeSelect').value = muscleMode;
       document.getElementById('lbsToggleBtn').innerText = showLbs ? 'LBS Aan' : 'LBS Uit';
+      document.getElementById('firstSetOnlyToggleBtn').innerText = firstSetOnlyMode ? 'Aan' : 'Uit';
+      document.getElementById('altColorsToggleBtn').innerText = altExerciseColors ? 'Aan' : 'Uit';
+      document.getElementById('bgFitSelect').value = bgFitMode;
       renderAudioDropdowns();
       renderThemeDropdown();
       updateCycleCountLabels();
@@ -2615,7 +2717,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       const k = getKey();
       if (!data[k] || data[k].length === 0) {
         data[k] = [
-          { exercise: '', muscle: '', advMuscle: '', overlapMuscles: [], note: '', linkedSuperset: false, sets: [{ weight: '', lbs: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }] }
+          { exercise: '', repRange: '', muscle: '', advMuscle: '', overlapMuscles: [], note: '', linkedSuperset: false, sets: [{ weight: '', lbs: '', plates: '', reps: '', targetRir: '2', actualRir: '2', completed: false }] }
         ];
       }
     }
@@ -2724,6 +2826,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       if (!data[k]) data[k] = [];
       data[k].push({
         exercise: '',
+        repRange: '',
         muscle: '',
         advMuscle: '',
         overlapMuscles: [],
@@ -2769,6 +2872,17 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       saveData();
     }
 
+    function updateExerciseRepRange(exIdx, val) {
+      const k = getKey();
+      data[k][exIdx].repRange = val;
+      saveData();
+      const pill = document.getElementById(`reprange_pill_${exIdx}`);
+      if (pill) {
+        pill.innerText = val ? `${val} reps` : '';
+        pill.style.display = val ? 'inline-block' : 'none';
+      }
+    }
+
     function toggleCollapse(exIdx) {
       const el = document.getElementById(`exercise_block_${exIdx}`);
       if (el) el.classList.toggle('collapsed');
@@ -2780,12 +2894,12 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       const ex = data[k][exIdx];
       const prevSet = ex.sets[ex.sets.length - 1] || {};
       ex.sets.push({
-        weight: prevSet.weight || '',
-        lbs: prevSet.lbs || '',
-        plates: prevSet.plates || '',
-        reps: prevSet.reps || '',
-        targetRir: prevSet.targetRir || '2',
-        actualRir: prevSet.targetRir || '2',
+        weight: firstSetOnlyMode ? '' : (prevSet.weight || ''),
+        lbs: firstSetOnlyMode ? '' : (prevSet.lbs || ''),
+        plates: firstSetOnlyMode ? '' : (prevSet.plates || ''),
+        reps: firstSetOnlyMode ? '' : (prevSet.reps || ''),
+        targetRir: prevSet.targetRir !== undefined ? prevSet.targetRir : '2',
+        actualRir: prevSet.targetRir !== undefined ? prevSet.targetRir : '2',
         completed: false
       });
       saveData();
@@ -2811,6 +2925,8 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       data[k][exIdx].exercise = name;
       saveData();
       updateSuggestionsDatalist();
+      const titleSpan = document.getElementById(`ex_title_span_${exIdx}`);
+      if (titleSpan) titleSpan.innerText = name || `Oefening ${exIdx + 1}`;
     }
 
     function handleParentMuscleChange(exIdx, parentVal) {
@@ -2864,6 +2980,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       if (document.getElementById('summaryPanel').style.display === 'block') renderWeeklySummary();
     }
 
+    // Kopieert oefening inclusief Rep Range en alle Doel RIR's (ook voor Set 2+)
     function sanitizeExerciseForCopy(ex, existingTargetEx = null) {
       const existingSets = existingTargetEx?.sets || [];
       const cleanSets = ex.sets.map((s, idx) => {
@@ -2873,14 +2990,15 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
           lbs: exSet.lbs || '',
           plates: exSet.plates || '',
           reps: exSet.reps || '',
-          targetRir: s.targetRir || '2',
-          actualRir: exSet.actualRir || s.targetRir || '2',
+          targetRir: s.targetRir !== undefined ? String(s.targetRir) : '2',
+          actualRir: exSet.actualRir !== undefined && exSet.actualRir !== '' ? String(exSet.actualRir) : (s.targetRir !== undefined ? String(s.targetRir) : '2'),
           completed: exSet.completed || false
         };
       });
 
       return {
         exercise: ex.exercise || '',
+        repRange: ex.repRange || '',
         muscle: ex.muscle || '',
         advMuscle: ex.advMuscle || '',
         overlapMuscles: [...(ex.overlapMuscles || [])],
@@ -2978,7 +3096,6 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       showToast(`Hele schema van Week ${currentWeek} gekopieerd naar alle weken!`);
     }
 
-    // Automatische 3-weg berekening tussen Plates, KG en LBS (afgerond op max 1 decimaal)
     function updatePlatesInput(exIdx, setIdx, rawVal) {
       const k = getKey();
       const s = data[k][exIdx].sets[setIdx];
@@ -3082,12 +3199,10 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       updateLiveSetBadge(exIdx, setIdx);
     }
 
-    // Zoekt chronologisch terug naar de MEEST RECENTE vorige training waarin deze oefening is uitgevoerd
     function getMostRecentPreviousSet(exerciseName, currentExIdx, setIdx) {
       const target = (exerciseName || '').trim().toLowerCase();
       const curDayIdx = days.indexOf(currentDay);
 
-      // Doorloop weken achteruit vanaf huidige week
       for (let w = currentWeek; w >= 1; w--) {
         const startDayIdx = (w === currentWeek) ? curDayIdx - 1 : days.length - 1;
         for (let dIdx = startDayIdx; dIdx >= 0; dIdx--) {
@@ -3101,8 +3216,7 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
               : (target.length === 0 && dName === currentDay && eIdx === currentExIdx);
 
             if (nameMatch && ex.sets && ex.sets.length > 0) {
-              // Controleer of deze sessie daadwerkelijk ingevulde sets heeft (negeer lege gekopieerde weken/dagen)
-              const candidateSet = ex.sets[setIdx] || ex.sets[ex.sets.length - 1];
+              const candidateSet = ex.sets[setIdx] || ex.sets[0];
               if (candidateSet && candidateSet.weight !== '' && candidateSet.weight !== undefined && candidateSet.reps !== '' && candidateSet.reps !== undefined) {
                 return {
                   week: w,
@@ -3122,7 +3236,6 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       return null;
     }
 
-    // Berekent de percentage-badge ten opzichte van de meest recente training
     function buildPctComparisonHtml(curSet, prevSet) {
       if (!prevSet) return '';
       const curW = parseFloat(String(curSet.weight || '').replace(',', '.'));
@@ -3226,12 +3339,16 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       const container = document.getElementById('exercisesContainer');
       const exercises = data[getKey()] || [];
       let html = '';
+      // RIR -1 t/m 4+ voor ZOWEL Doel RIR als Behaald RIR (zonder 'Fail' tekst)
       const rirOptions = ['-1', '0', '1', '2', '3', '4'];
 
       exercises.forEach((ex, exIdx) => {
         const isParent = ex.linkedSuperset;
         const isChild = exIdx > 0 && exercises[exIdx - 1]?.linkedSuperset;
-        const allCompleted = ex.sets.length > 0 && ex.sets.every(s => s.completed);
+        const isAltColor = altExerciseColors && (exIdx % 2 === 1);
+
+        const relevantSetsForDone = firstSetOnlyMode ? ex.sets.slice(0, 1) : ex.sets;
+        const allCompleted = relevantSetsForDone.length > 0 && relevantSetsForDone.every(s => s.completed);
 
         let parentMuscle = ex.muscle;
         if (!parentMuscle && ex.advMuscle) {
@@ -3252,13 +3369,14 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
         const overlapList = ex.overlapMuscles || [];
 
         html += `
-          <div class="exercise-block ${isParent ? 'superset-parent' : ''} ${isChild ? 'superset-child' : ''} ${allCompleted ? 'all-done' : ''}" id="exercise_block_${exIdx}">
+          <div class="exercise-block ${isAltColor ? 'alt-color' : ''} ${isParent ? 'superset-parent' : ''} ${isChild ? 'superset-child' : ''} ${allCompleted ? 'all-done' : ''}" id="exercise_block_${exIdx}">
             ${isParent ? `<div class="superset-tag">Gekoppeld met onderstaande oefening</div>` : ''}
             ${isChild ? `<div class="superset-tag">Tweede deel van superset</div>` : ''}
             
             <div class="exercise-top-bar" onclick="toggleCollapse(${exIdx})">
               <div class="exercise-title-summary">
-                <span>${escapeHtml(ex.exercise) || `Oefening ${exIdx + 1}`}</span>
+                <span id="ex_title_span_${exIdx}">${escapeHtml(ex.exercise) || `Oefening ${exIdx + 1}`}</span>
+                <span id="reprange_pill_${exIdx}" class="rep-range-pill" style="display:${ex.repRange ? 'inline-block' : 'none'};">${escapeHtml(ex.repRange || '')} reps</span>
                 ${allCompleted ? '<span class="status-pill">✓</span>' : ''}
               </div>
               <span class="collapse-icon">▼</span>
@@ -3270,6 +3388,9 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
                   onfocus="this.select()"
                   onchange="renderExercises()"
                   oninput="handleExerciseNameChange(${exIdx}, this.value)" />
+                <input type="text" class="num-text" placeholder="Reps (8-12)" title="Rep range voor deze oefening" value="${escapeHtml(ex.repRange || '')}"
+                  onfocus="this.select()"
+                  oninput="updateExerciseRepRange(${exIdx}, this.value)" />
                 <button class="btn-action-tool" onclick="removeExercise(${exIdx})">✕</button>
               </div>
 
@@ -3333,7 +3454,23 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
                 oninput="updateNote(${exIdx}, this.value)" />
 
               ${ex.sets.map((set, setIdx) => {
-                // Haal ALTIJD de meest recente voorgaande instantie op (ook als de oefening meerdere keren per week voorkomt)
+                // Indien 'Alleen 1e set invullen' aan staat: toon voor Set 2+ alléén het Doel RIR!
+                if (firstSetOnlyMode && setIdx > 0) {
+                  return `
+                    <div class="set-row compact-goal-only">
+                      <div class="rir-row">
+                        <span class="rir-label" style="width:auto; font-size:11px; color:var(--text);">SET ${setIdx + 1} &bull; DOEL RIR</span>
+                        <div class="rir-btns">
+                          ${rirOptions.map(opt => `
+                            <button class="btn-rir ${String(set.targetRir) === String(opt) ? ('active' + (opt === '-1' ? ' neg-rir' : '')) : ''}" 
+                              onclick="updateRirQuick(${exIdx}, ${setIdx}, 'targetRir', '${opt}')">${opt === '4' ? '4+' : opt}</button>
+                          `).join('')}
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }
+
                 const recentSet = getMostRecentPreviousSet(ex.exercise, exIdx, setIdx);
                 const isPR = checkIsPR(ex.exercise, set.weight, set.reps);
                 const recentRir = recentSet ? (recentSet.actualRir !== undefined && recentSet.actualRir !== '' ? recentSet.actualRir : recentSet.targetRir) : '';
@@ -3401,8 +3538,8 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
                       <div class="rir-row">
                         <span class="rir-label">Doel</span>
                         <div class="rir-btns">
-                          ${rirOptions.filter(r => r !== '-1').map(opt => `
-                            <button class="btn-rir ${String(set.targetRir) === String(opt) ? 'active' : ''}" 
+                          ${rirOptions.map(opt => `
+                            <button class="btn-rir ${String(set.targetRir) === String(opt) ? ('active' + (opt === '-1' ? ' neg-rir' : '')) : ''}" 
                               onclick="updateRirQuick(${exIdx}, ${setIdx}, 'targetRir', '${opt}')">${opt === '4' ? '4+' : opt}</button>
                           `).join('')}
                         </div>
@@ -3411,8 +3548,8 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
                         <span class="rir-label">Behaald</span>
                         <div class="rir-btns">
                           ${rirOptions.map(opt => `
-                            <button class="btn-rir ${String(set.actualRir) === String(opt) ? ('active' + (opt === '-1' ? ' fail' : '')) : ''}" 
-                              onclick="updateRirQuick(${exIdx}, ${setIdx}, 'actualRir', '${opt}')">${opt === '-1' ? 'Fail' : (opt === '4' ? '4+' : opt)}</button>
+                            <button class="btn-rir ${String(set.actualRir) === String(opt) ? ('active' + (opt === '-1' ? ' neg-rir' : '')) : ''}" 
+                              onclick="updateRirQuick(${exIdx}, ${setIdx}, 'actualRir', '${opt}')">${opt === '4' ? '4+' : opt}</button>
                           `).join('')}
                         </div>
                       </div>
@@ -3439,14 +3576,24 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       let tonnage = 0;
 
       exercises.forEach(ex => {
-        ex.sets.forEach(s => {
-          if (s.completed) {
-            completedCount++;
-            const w = parseFloat(s.weight) || 0;
-            const r = parseFloat(s.reps) || 0;
-            tonnage += (w * r);
+        if (firstSetOnlyMode && ex.sets.length > 0) {
+          const s0 = ex.sets[0];
+          if (s0.completed) {
+            completedCount += ex.sets.length;
+            const w = parseFloat(s0.weight) || 0;
+            const r = parseFloat(s0.reps) || 0;
+            tonnage += (w * r) * ex.sets.length;
           }
-        });
+        } else {
+          ex.sets.forEach(s => {
+            if (s.completed) {
+              completedCount++;
+              const w = parseFloat(s.weight) || 0;
+              const r = parseFloat(s.reps) || 0;
+              tonnage += (w * r);
+            }
+          });
+        }
       });
 
       document.getElementById('completedStat').innerText = completedCount;
@@ -3480,12 +3627,19 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
             }
 
             if (group && summary[group]) {
-              ex.sets.forEach(s => {
-                if (s.completed) {
-                  summary[group].direct++;
+              if (firstSetOnlyMode && ex.sets.length > 0) {
+                if (ex.sets[0].completed) {
+                  summary[group].direct += ex.sets.length;
                   summary[group].days.add(d);
                 }
-              });
+              } else {
+                ex.sets.forEach(s => {
+                  if (s.completed) {
+                    summary[group].direct++;
+                    summary[group].days.add(d);
+                  }
+                });
+              }
             }
           });
         });
@@ -3515,20 +3669,35 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
 
             const overlaps = ex.overlapMuscles || [];
 
-            ex.sets.forEach(s => {
-              if (s.completed) {
+            if (firstSetOnlyMode && ex.sets.length > 0) {
+              if (ex.sets[0].completed) {
                 if (primaryAdv && summary[primaryAdv]) {
-                  summary[primaryAdv].direct++;
+                  summary[primaryAdv].direct += ex.sets.length;
                   summary[primaryAdv].days.add(d);
                 }
                 overlaps.forEach(oId => {
                   if (summary[oId]) {
-                    summary[oId].overlap++;
+                    summary[oId].overlap += ex.sets.length;
                     summary[oId].days.add(d);
                   }
                 });
               }
-            });
+            } else {
+              ex.sets.forEach(s => {
+                if (s.completed) {
+                  if (primaryAdv && summary[primaryAdv]) {
+                    summary[primaryAdv].direct++;
+                    summary[primaryAdv].days.add(d);
+                  }
+                  overlaps.forEach(oId => {
+                    if (summary[oId]) {
+                      summary[oId].overlap++;
+                      summary[oId].days.add(d);
+                    }
+                  });
+                }
+              });
+            }
           });
         });
 
@@ -3584,6 +3753,9 @@ HIER IS MIJN SCHEMA OM IN TE VULLEN:
       configureAmbientAudioSession();
       document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
       document.getElementById('lbsToggleBtn').innerText = showLbs ? 'LBS Aan' : 'LBS Uit';
+      document.getElementById('firstSetOnlyToggleBtn').innerText = firstSetOnlyMode ? 'Aan' : 'Uit';
+      document.getElementById('altColorsToggleBtn').innerText = altExerciseColors ? 'Aan' : 'Uit';
+      document.getElementById('bgFitSelect').value = bgFitMode;
       document.getElementById('autoTimerSelect').value = autoTimerSeconds;
       document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
       document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
