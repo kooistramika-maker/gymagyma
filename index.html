@@ -760,16 +760,18 @@
 
   <div id="toast"></div>
 
+  <!-- Native iOS Safari Haptic Switch Trigger (werkt met het 'switch' attribuut in iOS 17.4+) -->
+  <label id="iosHapticLabel" for="iosHapticSwitch" style="position:fixed; top:-100px; left:-100px; width:1px; height:1px; opacity:0.01; pointer-events:none; z-index:-1;">
+    <input type="checkbox" id="iosHapticSwitch" switch>
+  </label>
+
   <!-- Bestands-uploads voor Custom Achtergrond & Geluiden (Video en Audio) -->
   <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
   <input type="file" id="customDoneMediaInput" accept="video/*,audio/*,.mp4,.mov,.mp3,.m4a,.wav" style="display:none;" onchange="handleMediaFileChosen(event, 'done')">
   <input type="file" id="customAlarmMediaInput" accept="video/*,audio/*,.mp4,.mov,.mp3,.m4a,.wav" style="display:none;" onchange="handleMediaFileChosen(event, 'alarm')">
 
-  <!-- Onzichtbare inline videospeler voor het afspelen van het audiospoor uit videobestanden op iOS -->
+  <!-- Fallback inline speler (alleen gebruikt als een videocodec niet door Web Audio gedecodeerd kan worden) -->
   <video id="hiddenMediaRunner" playsinline webkit-playsinline preload="auto" style="position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0.01; pointer-events:none; z-index:-1;"></video>
-
-  <!-- Stille audio-keepalive zodat iOS Safari timers actief houdt wanneer het scherm vergrendeld is -->
-  <audio id="keepAliveAudio" loop playsinline preload="auto" style="display:none;"></audio>
 
   <datalist id="exerciseSuggestions"></datalist>
 
@@ -903,7 +905,7 @@
       </div>
 
       <div class="setting-section">
-        <div class="setting-title">Geluiden (Video & Audio)</div>
+        <div class="setting-title">Geluiden & Haptics (Spotify-vriendelijk)</div>
         <div style="margin-bottom: 10px;">
           <div style="font-size:12px; margin-bottom:4px; color:var(--text-muted);">Set Voltooid:</div>
           <div style="display: flex; gap: 5px; align-items: center;">
@@ -925,6 +927,10 @@
         <div class="setting-row" style="margin-top: 10px; padding-top: 8px; border-top: 0.5px solid var(--border);">
           <span>Geluid Inschakelen:</span>
           <button class="btn-config" id="soundToggleBtn" onclick="toggleSound()">Audio Aan</button>
+        </div>
+        <div class="setting-row">
+          <span>Trillen na Timer & Sets:</span>
+          <button class="btn-config" id="hapticToggleBtn" onclick="toggleHaptics()">Haptic Aan</button>
         </div>
       </div>
 
@@ -991,9 +997,10 @@
       }
     };
 
-    // --- 2. INDEXEDDB VOOR VIDEO/AUDIO OPSLAG & IN-MEMORY OBJECT-URL CACHE ---
+    // --- 2. INDEXEDDB + WEB AUDIO BUFFER CACHE (ZODAT SPOTIFY NOOIT STOPT) ---
     let idb = null;
     const mediaUrlCache = {};
+    const decodedAudioBuffers = {};
 
     function openMediaDB() {
       return new Promise((resolve) => {
@@ -1014,28 +1021,32 @@
       });
     }
 
-    function cacheMediaRecord(record) {
+    async function decodeAndCacheRecord(record) {
       if (!record) return null;
-      if (mediaUrlCache[record.id]) return mediaUrlCache[record.id];
       try {
         if (record.buffer) {
-          const blob = new Blob([record.buffer], { type: record.mime || 'video/mp4' });
-          mediaUrlCache[record.id] = URL.createObjectURL(blob);
+          if (!mediaUrlCache[record.id]) {
+            const blob = new Blob([record.buffer], { type: record.mime || 'video/mp4' });
+            mediaUrlCache[record.id] = URL.createObjectURL(blob);
+          }
+          if (!decodedAudioBuffers[record.id] && audioCtx) {
+            const bufferCopy = record.buffer.slice(0);
+            decodedAudioBuffers[record.id] = await audioCtx.decodeAudioData(bufferCopy);
+          }
           return mediaUrlCache[record.id];
         } else if (record.blob) {
-          mediaUrlCache[record.id] = URL.createObjectURL(record.blob);
-          return mediaUrlCache[record.id];
-        } else if (record.dataUrl) {
-          mediaUrlCache[record.id] = record.dataUrl;
+          if (!mediaUrlCache[record.id]) {
+            mediaUrlCache[record.id] = URL.createObjectURL(record.blob);
+          }
           return mediaUrlCache[record.id];
         }
       } catch (e) {}
-      return null;
+      return mediaUrlCache[record.id] || null;
     }
 
     async function idbSaveMedia(item) {
       const db = await openMediaDB();
-      cacheMediaRecord(item);
+      await decodeAndCacheRecord(item);
       if (!db) return false;
       return new Promise((resolve) => {
         try {
@@ -1049,15 +1060,14 @@
       });
     }
 
-    async function idbGetMediaUrl(id) {
-      if (mediaUrlCache[id]) return mediaUrlCache[id];
+    async function idbGetRecord(id) {
       const db = await openMediaDB();
       if (!db) return null;
       return new Promise((resolve) => {
         try {
           const tx = db.transaction('media', 'readonly');
           const req = tx.objectStore('media').get(id);
-          req.onsuccess = () => resolve(cacheMediaRecord(req.result));
+          req.onsuccess = () => resolve(req.result || null);
           req.onerror = () => resolve(null);
         } catch (e) {
           resolve(null);
@@ -1072,7 +1082,7 @@
         const tx = db.transaction('media', 'readonly');
         const req = tx.objectStore('media').getAll();
         req.onsuccess = () => {
-          (req.result || []).forEach(rec => cacheMediaRecord(rec));
+          (req.result || []).forEach(rec => decodeAndCacheRecord(rec));
         };
       } catch (e) {}
     }
@@ -1082,6 +1092,7 @@
         try { URL.revokeObjectURL(mediaUrlCache[id]); } catch (e) {}
         delete mediaUrlCache[id];
       }
+      delete decodedAudioBuffers[id];
       const db = await openMediaDB();
       if (!db) return;
       return new Promise((resolve) => {
@@ -1133,6 +1144,7 @@
     
     let data = JSON.parse(SafeStore.getItem('workout_data_v27') || '{}');
     let soundEnabled = JSON.parse(SafeStore.getItem('wk_sound_v27') ?? 'true');
+    let hapticsEnabled = JSON.parse(SafeStore.getItem('wk_haptic_v27') ?? 'true');
     let autoTimerSeconds = parseInt(SafeStore.getItem('wk_autotimer_sec_v27') ?? '90');
     let soundVolume = parseFloat(SafeStore.getItem('wk_sound_volume_v27') ?? '1.0');
 
@@ -1155,80 +1167,112 @@
     let stopwatchStartTime = 0;
     let timerSeconds = 0;
     let isStopwatch = false;
+
     let audioCtx = null;
-    let keepAliveBlobUrl = null;
+    let silentKeepAliveNode = null;
+    let activeCustomSourceNode = null;
+    let suspendTimeout = null;
 
-    // --- 4. IOS BACKGROUND KEEP-ALIVE & AUDIO/VIDEO ENGINE ---
-    function createSilentWavBlobUrl() {
-      if (keepAliveBlobUrl) return keepAliveBlobUrl;
-      const sampleRate = 8000;
-      const numSamples = sampleRate; // 1 seconde echte stilte zodat iOS niet voortijdig stopt
-      const buffer = new ArrayBuffer(44 + numSamples);
-      const view = new DataView(buffer);
-      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
-
-      writeStr(0, 'RIFF');
-      view.setUint32(4, 36 + numSamples, true);
-      writeStr(8, 'WAVE');
-      writeStr(12, 'fmt ');
-      view.setUint32(16, 16, true);
-      view.setUint16(20, 1, true);
-      view.setUint16(22, 1, true);
-      view.setUint32(24, sampleRate, true);
-      view.setUint32(28, sampleRate, true);
-      view.setUint16(32, 1, true);
-      view.setUint16(34, 8, true);
-      writeStr(36, 'data');
-      view.setUint32(40, numSamples, true);
-      for (let i = 0; i < numSamples; i++) view.setUint8(44 + i, 128);
-
-      keepAliveBlobUrl = URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' }));
-      return keepAliveBlobUrl;
+    // --- 4. SPOTIFY-SAFE AUDIO ENGINE & IPHONE HAPTICS ---
+    function configureAmbientAudioSession() {
+      try {
+        // iOS 16.4+ AudioSession API: 'ambient' zorgt dat geluiden MIXEN met Spotify zonder Spotify te pauzeren!
+        if (navigator.audioSession) {
+          navigator.audioSession.type = 'ambient';
+        }
+      } catch (e) {}
     }
 
     function initAudio() {
       try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+        configureAmbientAudioSession();
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        clearTimeout(suspendTimeout);
       } catch (e) {}
     }
 
-    function blessMediaElementsForBackground() {
-      initAudio();
-      try {
-        const ka = document.getElementById('keepAliveAudio');
-        if (ka && !ka.src) ka.src = createSilentWavBlobUrl();
-        const runner = document.getElementById('hiddenMediaRunner');
-        if (runner && currentAlarmAudioId.startsWith('custom_media_') && mediaUrlCache[currentAlarmAudioId]) {
-          if (runner.src !== mediaUrlCache[currentAlarmAudioId]) {
-            runner.src = mediaUrlCache[currentAlarmAudioId];
-            runner.load();
-          }
+    // Sluit de audio-focus na het afspelen wanneer er geen timer meer loopt, zodat Spotify direct 100% volume terugkrijgt
+    function scheduleAudioSessionRelease(delayMs = 600) {
+      clearTimeout(suspendTimeout);
+      suspendTimeout = setTimeout(() => {
+        if (!timerInterval && audioCtx && audioCtx.state === 'running') {
+          audioCtx.suspend().catch(() => {});
         }
-      } catch (e) {}
+      }, delayMs);
     }
 
-    function startBackgroundKeepAlive() {
+    // Houdt Web Audio wakker tijdens het aftellen zonder een <audio>-tag te starten die Spotify pauzeert
+    function startWebAudioKeepAlive() {
       try {
-        const ka = document.getElementById('keepAliveAudio');
-        if (ka) {
-          if (!ka.src) ka.src = createSilentWavBlobUrl();
-          ka.volume = 0.01;
-          ka.play().catch(() => {});
-        }
+        initAudio();
+        stopWebAudioKeepAlive();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(20, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.00001, audioCtx.currentTime); // Onhoorbaar stil
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        silentKeepAliveNode = osc;
         acquireWakeLock();
       } catch (e) {}
     }
 
-    function stopBackgroundKeepAlive() {
+    function stopWebAudioKeepAlive() {
       try {
-        const ka = document.getElementById('keepAliveAudio');
-        if (ka) {
-          ka.pause();
-          ka.currentTime = 0;
+        if (silentKeepAliveNode) {
+          silentKeepAliveNode.stop();
+          silentKeepAliveNode.disconnect();
+          silentKeepAliveNode = null;
         }
         if (!wakeLockUserToggled) releaseWakeLock();
       } catch (e) {}
+    }
+
+    // Haptics op iPhone: combineert native iOS Switch Haptics + tactiele 45Hz sub-bass trilling bij timereinde
+    function triggerHaptic(type = 'tap') {
+      if (!hapticsEnabled) return;
+      try {
+        const lbl = document.getElementById('iosHapticLabel');
+        if (lbl) lbl.click();
+
+        if (type === 'alarm') {
+          // Meervoudige tik + tactiele lage-frequentie puls zodat je iPhone voelbaar resoneert als de timer afloopt
+          setTimeout(() => { if (lbl) lbl.click(); }, 120);
+          setTimeout(() => { if (lbl) lbl.click(); }, 260);
+          if (navigator.vibrate) navigator.vibrate([250, 100, 250, 100, 400]);
+
+          initAudio();
+          const now = audioCtx.currentTime;
+          [0, 0.22, 0.44].forEach((offset) => {
+            const subOsc = audioCtx.createOscillator();
+            const subGain = audioCtx.createGain();
+            subOsc.type = 'sine';
+            subOsc.frequency.setValueAtTime(46, now + offset); // 46Hz tactiele resonantiefrequentie
+            subGain.gain.setValueAtTime(0.95, now + offset);
+            subGain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.16);
+            subOsc.connect(subGain);
+            subGain.connect(audioCtx.destination);
+            subOsc.start(now + offset);
+            subOsc.stop(now + offset + 0.16);
+          });
+        } else {
+          if (navigator.vibrate) navigator.vibrate(25);
+        }
+      } catch (e) {}
+    }
+
+    function toggleHaptics() {
+      hapticsEnabled = !hapticsEnabled;
+      SafeStore.setItem('wk_haptic_v27', JSON.stringify(hapticsEnabled));
+      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
+      if (hapticsEnabled) triggerHaptic('tap');
+      showToast(hapticsEnabled ? 'Trillen (Haptics) Aan' : 'Trillen (Haptics) Uit');
     }
 
     function changeVolumeLevel(val) {
@@ -1237,6 +1281,7 @@
       const runner = document.getElementById('hiddenMediaRunner');
       if (runner) runner.volume = soundVolume;
       playSynthTone(750, 0.15, 'sawtooth');
+      scheduleAudioSessionRelease(300);
       showToast(`Volume: ${Math.round(soundVolume * 100)}%`);
     }
 
@@ -1264,17 +1309,58 @@
       } catch (e) {}
     }
 
+    // Speelt geüploade video/audio af via Web Audio Buffer (zodat Spotify blijft spelen!)
     async function playMediaById(mediaId) {
       try {
-        const url = mediaUrlCache[mediaId] || await idbGetMediaUrl(mediaId);
+        initAudio();
+
+        // 1. Probeer Web Audio Buffer (onderbreekt Spotify NIET)
+        let audioBuffer = decodedAudioBuffers[mediaId];
+        if (!audioBuffer) {
+          const rec = await idbGetRecord(mediaId);
+          if (rec && rec.buffer) {
+            await decodeAndCacheRecord(rec);
+            audioBuffer = decodedAudioBuffers[mediaId];
+          }
+        }
+
+        if (audioBuffer && audioCtx) {
+          if (activeCustomSourceNode) {
+            try { activeCustomSourceNode.stop(); } catch (e) {}
+          }
+          const source = audioCtx.createBufferSource();
+          const gainNode = audioCtx.createGain();
+          source.buffer = audioBuffer;
+          gainNode.gain.setValueAtTime(soundVolume, audioCtx.currentTime);
+          source.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          activeCustomSourceNode = source;
+          source.onended = () => {
+            scheduleAudioSessionRelease(250);
+          };
+          source.start(0);
+          return true;
+        }
+
+        // 2. Fallback voor exotische videocodecs: speel af en geef direct de sessie terug aan Spotify
+        const rec = await idbGetRecord(mediaId);
+        const url = mediaUrlCache[mediaId] || await decodeAndCacheRecord(rec);
         if (!url) return false;
 
+        configureAmbientAudioSession();
         const runner = document.getElementById('hiddenMediaRunner');
         runner.pause();
         if (runner.src !== url) runner.src = url;
         runner.muted = false;
         runner.volume = soundVolume;
         runner.currentTime = 0;
+        runner.onended = () => {
+          runner.pause();
+          runner.removeAttribute('src');
+          runner.load();
+          configureAmbientAudioSession();
+          scheduleAudioSessionRelease(150);
+        };
         await runner.play();
         return true;
       } catch (e) {
@@ -1283,7 +1369,11 @@
     }
 
     async function playAlarmAudio() {
-      if (!soundEnabled) return;
+      if (!soundEnabled) {
+        scheduleAudioSessionRelease(100);
+        return;
+      }
+      configureAmbientAudioSession();
       if (currentAlarmAudioId.startsWith('custom_media_')) {
         const ok = await playMediaById(currentAlarmAudioId);
         if (ok) return;
@@ -1292,18 +1382,22 @@
       if (currentAlarmAudioId === 'boxing') {
         playSynthTone(580, 0.5, 'triangle');
         setTimeout(() => playSynthTone(580, 0.5, 'triangle'), 300);
+        scheduleAudioSessionRelease(950);
       } else if (currentAlarmAudioId === 'triplebeep') {
         playSynthTone(980, 0.12, 'square');
         setTimeout(() => playSynthTone(980, 0.12, 'square'), 180);
         setTimeout(() => playSynthTone(1100, 0.35, 'square'), 360);
+        scheduleAudioSessionRelease(850);
       } else {
         playSynthTone(880, 0.25, 'sawtooth');
         setTimeout(() => playSynthTone(1050, 0.45, 'sawtooth'), 220);
+        scheduleAudioSessionRelease(800);
       }
     }
 
     async function playDoneAudio() {
       if (!soundEnabled) return;
+      configureAmbientAudioSession();
       if (currentDoneAudioId.startsWith('custom_media_')) {
         const ok = await playMediaById(currentDoneAudioId);
         if (ok) return;
@@ -1312,12 +1406,15 @@
       if (currentDoneAudioId === 'doubleclick') {
         playSynthTone(950, 0.05, 'square');
         setTimeout(() => playSynthTone(1350, 0.08, 'square'), 70);
+        scheduleAudioSessionRelease(300);
       } else if (currentDoneAudioId === 'chime') {
         playSynthTone(600, 0.1, 'sawtooth');
         setTimeout(() => playSynthTone(750, 0.1, 'sawtooth'), 80);
         setTimeout(() => playSynthTone(900, 0.22, 'sawtooth'), 160);
+        scheduleAudioSessionRelease(500);
       } else {
         playSynthTone(900, 0.15, 'sawtooth');
+        scheduleAudioSessionRelease(300);
       }
     }
 
@@ -1370,6 +1467,7 @@
     }
 
     function triggerMediaUpload(type) {
+      initAudio();
       if (type === 'done') {
         const input = document.getElementById('customDoneMediaInput');
         input.value = '';
@@ -1392,12 +1490,12 @@
         currentDoneAudioId = val;
         SafeStore.setItem('wk_active_done_audio_id_v27', val);
         updateDeleteAudioBtnVisibility('done');
-        idbGetMediaUrl(val);
+        idbGetRecord(val).then(r => decodeAndCacheRecord(r));
       } else {
         currentAlarmAudioId = val;
         SafeStore.setItem('wk_active_alarm_audio_id_v27', val);
         updateDeleteAudioBtnVisibility('alarm');
-        idbGetMediaUrl(val);
+        idbGetRecord(val).then(r => decodeAndCacheRecord(r));
       }
       showToast('Geluid geselecteerd');
     }
@@ -1410,7 +1508,8 @@
       const name = prompt('Geef dit video/audio-fragment een naam:', defaultName.substring(0, 18));
       if (!name || name.trim() === '') return;
 
-      showToast('Bezig met laden...');
+      initAudio();
+      showToast('Audio decoderen (Spotify-safe)...');
       const reader = new FileReader();
       reader.onload = async function(e) {
         const arrayBuffer = e.target.result;
@@ -1438,7 +1537,7 @@
         }
 
         renderAudioDropdowns();
-        showToast(`'${name.trim()}' opgeslagen!`);
+        showToast(`'${name.trim()}' klaar voor gebruik!`);
         playMediaById(mediaId);
       };
       reader.onerror = () => showToast('Fout bij inlezen bestand');
@@ -1510,9 +1609,8 @@
     }
 
     function startTimer(seconds) {
-      blessMediaElementsForBackground();
       stopTimer();
-      startBackgroundKeepAlive();
+      startWebAudioKeepAlive();
       timerTargetTime = Date.now() + (seconds * 1000);
       timerSeconds = seconds;
       renderTimer();
@@ -1529,6 +1627,7 @@
       const remaining = Math.ceil((timerTargetTime - Date.now()) / 1000);
       if (remaining <= 0) {
         stopTimer();
+        triggerHaptic('alarm');
         playAlarmAudio();
       } else {
         timerSeconds = remaining;
@@ -1537,7 +1636,7 @@
     }
 
     function addTimer(sec) {
-      blessMediaElementsForBackground();
+      initAudio();
       if (isStopwatch) stopTimer();
       if (!timerInterval) {
         startTimer(sec);
@@ -1554,7 +1653,7 @@
       } else {
         stopTimer();
         isStopwatch = true;
-        startBackgroundKeepAlive();
+        startWebAudioKeepAlive();
         loopBtn.style.color = 'var(--accent)';
         document.getElementById('timerModeLabel').innerText = 'Stopwatch';
         stopwatchStartTime = Date.now();
@@ -1567,7 +1666,7 @@
       timerInterval = null;
       timerSeconds = 0;
       isStopwatch = false;
-      stopBackgroundKeepAlive();
+      stopWebAudioKeepAlive();
       document.getElementById('loopBtn').style.color = '';
       document.getElementById('timerModeLabel').innerText = 'Rusttimer';
       renderTimer();
@@ -1582,6 +1681,7 @@
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
+        configureAmbientAudioSession();
         if (timerInterval || wakeLockUserToggled) acquireWakeLock();
         if (timerInterval) checkTimerTick();
       }
@@ -2285,6 +2385,7 @@
       const k = getKey();
       data[k][exIdx].sets[setIdx][field] = String(val);
       saveData();
+      triggerHaptic('tap');
       renderExercises();
     }
 
@@ -2322,13 +2423,15 @@
     }
 
     function toggleComplete(exIdx, setIdx) {
-      blessMediaElementsForBackground();
+      initAudio();
       pushHistory();
       const k = getKey();
       const ex = data[k][exIdx];
       const s = ex.sets[setIdx];
       s.completed = !s.completed;
       saveData();
+
+      triggerHaptic('tap');
 
       if (s.completed) {
         playDoneAudio();
@@ -2352,6 +2455,7 @@
       s.reps = reps;
       s.actualRir = String(actualRir);
       saveData();
+      triggerHaptic('tap');
       renderExercises();
       updateStats();
     }
@@ -2741,7 +2845,9 @@
     }
 
     async function init() {
+      configureAmbientAudioSession();
       document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
+      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
       document.getElementById('autoTimerSelect').value = autoTimerSeconds;
       document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
       document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
