@@ -734,12 +734,14 @@
 
   <div id="toast"></div>
 
-  <!-- Verborgen native checkbox voor fysieke iPhone Taptic Engine haptics -->
-  <label style="position:fixed; top:-100px; left:-100px; opacity:0; pointer-events:none;">
-    <input type="checkbox" id="iosHapticNativeSwitch">
-  </label>
-
+  <!-- Bestands-uploads voor Custom Achtergrond & Geluiden (Audio & Video) -->
   <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
+  <input type="file" id="customDoneMediaInput" accept="audio/*,video/*" style="display:none;" onchange="handleCustomMediaUpload(event, 'done')">
+  <input type="file" id="customAlarmMediaInput" accept="audio/*,video/*" style="display:none;" onchange="handleCustomMediaUpload(event, 'alarm')">
+
+  <!-- Dynamische mediaspeler voor geüploade audio/video -->
+  <audio id="dynamicAudioPlayer" preload="auto"></audio>
+
   <datalist id="exerciseSuggestions"></datalist>
 
   <header>
@@ -870,36 +872,26 @@
       </div>
 
       <div class="setting-section">
-        <div class="setting-title">Geluiden & Haptics</div>
+        <div class="setting-title">Geluiden</div>
         <div class="setting-row">
-          <span>Set Voltooid Toon:</span>
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <select id="doneAudioSelect" onchange="changeAudioSetting('done', this.value)" style="max-width: 140px;">
-              <option value="beep">Luide Piep</option>
-              <option value="doubleclick">Dubbele Klik</option>
-              <option value="chime">Krachtige Chime</option>
-            </select>
+          <span>Set Voltooid:</span>
+          <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+            <select id="doneAudioSelect" onchange="changeAudioSetting('done', this.value)" style="max-width: 140px;"></select>
             <button class="btn-config" onclick="playDoneAudio()">▶ Test</button>
+            <button class="btn-config" id="deleteDoneAudioBtn" style="display:none; color:#ef4444;" onclick="deleteCustomAudio('done')">🗑️</button>
           </div>
         </div>
         <div class="setting-row">
           <span>Timer Alarm:</span>
-          <div style="display: flex; gap: 4px; align-items: center;">
-            <select id="alarmAudioSelect" onchange="changeAudioSetting('alarm', this.value)" style="max-width: 140px;">
-              <option value="classic">Luid Alarm (Klassiek)</option>
-              <option value="boxing">Boksbel (Doordringend)</option>
-              <option value="triplebeep">3x Snelle Piep</option>
-            </select>
+          <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+            <select id="alarmAudioSelect" onchange="changeAudioSetting('alarm', this.value)" style="max-width: 140px;"></select>
             <button class="btn-config" onclick="playAlarmAudio()">▶ Test</button>
+            <button class="btn-config" id="deleteAlarmAudioBtn" style="display:none; color:#ef4444;" onclick="deleteCustomAudio('alarm')">🗑️</button>
           </div>
         </div>
         <div class="setting-row" style="margin-top: 6px;">
           <span>Audio Inschakelen:</span>
           <button class="btn-config" id="soundToggleBtn" onclick="toggleSound()">Audio Aan</button>
-        </div>
-        <div class="setting-row">
-          <span>Trillen (Haptics):</span>
-          <button class="btn-config" id="hapticToggleBtn" onclick="toggleHaptics()">Haptic Aan</button>
         </div>
       </div>
 
@@ -1000,10 +992,11 @@
     
     let data = JSON.parse(SafeStore.getItem('workout_data_v27')) || {};
     let soundEnabled = JSON.parse(SafeStore.getItem('wk_sound_v27') ?? 'true');
-    let hapticsEnabled = JSON.parse(SafeStore.getItem('wk_haptic_v27') ?? 'true');
     let autoTimerSeconds = parseInt(SafeStore.getItem('wk_autotimer_sec_v27') ?? '90');
     let soundVolume = parseFloat(SafeStore.getItem('wk_sound_volume_v27') ?? '1.0');
 
+    let customDoneAudios = JSON.parse(SafeStore.getItem('wk_custom_done_audios_v27')) || [];
+    let customAlarmAudios = JSON.parse(SafeStore.getItem('wk_custom_alarm_audios_v27')) || [];
     let currentDoneAudioId = SafeStore.getItem('wk_active_done_audio_id_v27') || 'beep';
     let currentAlarmAudioId = SafeStore.getItem('wk_active_alarm_audio_id_v27') || 'classic';
 
@@ -1023,15 +1016,6 @@
     let audioCtx = null;
     let silentAudioLoop = null;
 
-    function triggerHaptic() {
-      if (!hapticsEnabled) return;
-      try {
-        const sw = document.getElementById('iosHapticNativeSwitch');
-        if (sw) sw.click();
-        if (navigator.vibrate) navigator.vibrate([40]);
-      } catch (e) {}
-    }
-
     function initAudio() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -1040,6 +1024,8 @@
     function changeVolumeLevel(val) {
       soundVolume = parseFloat(val);
       SafeStore.setItem('wk_sound_volume_v27', soundVolume);
+      const player = document.getElementById('dynamicAudioPlayer');
+      if (player) player.volume = soundVolume;
       playSynthTone(750, 0.15, 'sawtooth');
       showToast(`Volume: ${Math.round(soundVolume * 100)}%`);
     }
@@ -1089,6 +1075,16 @@
 
     function playAlarmAudio() {
       if (!soundEnabled) return;
+      const customMatch = customAlarmAudios.find(a => a.id === currentAlarmAudioId);
+      if (customMatch && customMatch.data) {
+        const p = document.getElementById('dynamicAudioPlayer');
+        p.src = customMatch.data;
+        p.volume = soundVolume;
+        p.currentTime = 0;
+        p.play().catch(() => {});
+        return;
+      }
+
       if (currentAlarmAudioId === 'boxing') {
         playSynthTone(580, 0.5, 'triangle');
         setTimeout(() => playSynthTone(580, 0.5, 'triangle'), 300);
@@ -1104,6 +1100,16 @@
 
     function playDoneAudio() {
       if (!soundEnabled) return;
+      const customMatch = customDoneAudios.find(a => a.id === currentDoneAudioId);
+      if (customMatch && customMatch.data) {
+        const p = document.getElementById('dynamicAudioPlayer');
+        p.src = customMatch.data;
+        p.volume = soundVolume;
+        p.currentTime = 0;
+        p.play().catch(() => {});
+        return;
+      }
+
       if (currentDoneAudioId === 'doubleclick') {
         playSynthTone(950, 0.05, 'square');
         setTimeout(() => playSynthTone(1350, 0.08, 'square'), 70);
@@ -1148,11 +1154,132 @@
       showToast(val === 'simple' ? 'Simpele modus actief' : 'Geavanceerde modus actief');
     }
 
+    function renderAudioDropdowns() {
+      const doneSelect = document.getElementById('doneAudioSelect');
+      let doneHtml = `
+        <option value="beep">Luide Piep</option>
+        <option value="doubleclick">Dubbele Klik</option>
+        <option value="chime">Krachtige Chime</option>
+        <option value="upload_new">+ Nieuw Geluid/Video...</option>
+      `;
+      customDoneAudios.forEach(item => {
+        doneHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+      });
+      doneSelect.innerHTML = doneHtml;
+      doneSelect.value = currentDoneAudioId;
+      updateDeleteAudioBtnVisibility('done');
+
+      const alarmSelect = document.getElementById('alarmAudioSelect');
+      let alarmHtml = `
+        <option value="classic">Luid Alarm (Klassiek)</option>
+        <option value="boxing">Boksbel (Doordringend)</option>
+        <option value="triplebeep">3x Snelle Piep</option>
+        <option value="upload_new">+ Nieuw Geluid/Video...</option>
+      `;
+      customAlarmAudios.forEach(item => {
+        alarmHtml += `<option value="${item.id}">${escapeHtml(item.name)}</option>`;
+      });
+      alarmSelect.innerHTML = alarmHtml;
+      alarmSelect.value = currentAlarmAudioId;
+      updateDeleteAudioBtnVisibility('alarm');
+    }
+
+    function updateDeleteAudioBtnVisibility(type) {
+      if (type === 'done') {
+        const btn = document.getElementById('deleteDoneAudioBtn');
+        const isCustom = customDoneAudios.some(a => a.id === currentDoneAudioId);
+        btn.style.display = isCustom ? 'inline-flex' : 'none';
+      } else {
+        const btn = document.getElementById('deleteAlarmAudioBtn');
+        const isCustom = customAlarmAudios.some(a => a.id === currentAlarmAudioId);
+        btn.style.display = isCustom ? 'inline-flex' : 'none';
+      }
+    }
+
+    function changeAudioSetting(type, val) {
+      if (val === 'upload_new') {
+        if (type === 'done') {
+          document.getElementById('customDoneMediaInput').click();
+        } else {
+          document.getElementById('customAlarmMediaInput').click();
+        }
+        return;
+      }
+
+      if (type === 'done') {
+        currentDoneAudioId = val;
+        SafeStore.setItem('wk_active_done_audio_id_v27', val);
+        updateDeleteAudioBtnVisibility('done');
+      } else {
+        currentAlarmAudioId = val;
+        SafeStore.setItem('wk_active_alarm_audio_id_v27', val);
+        updateDeleteAudioBtnVisibility('alarm');
+      }
+      showToast('Geluid ingesteld');
+    }
+
+    function handleCustomMediaUpload(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : `Geluid ${Date.now()}`;
+      const name = prompt('Geef dit geluid/video een naam:', defaultName.substring(0, 16));
+      if (!name || name.trim() === '') return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = e.target.result;
+        try {
+          const newItem = {
+            id: 'custom_media_' + Date.now(),
+            name: name.trim(),
+            data: base64
+          };
+
+          if (type === 'done') {
+            customDoneAudios.push(newItem);
+            SafeStore.setItem('wk_custom_done_audios_v27', JSON.stringify(customDoneAudios));
+            currentDoneAudioId = newItem.id;
+            SafeStore.setItem('wk_active_done_audio_id_v27', newItem.id);
+          } else {
+            customAlarmAudios.push(newItem);
+            SafeStore.setItem('wk_custom_alarm_audios_v27', JSON.stringify(customAlarmAudios));
+            currentAlarmAudioId = newItem.id;
+            SafeStore.setItem('wk_active_alarm_audio_id_v27', newItem.id);
+          }
+
+          renderAudioDropdowns();
+          showToast(`'${name}' opgeslagen!`);
+        } catch (err) {
+          showToast('Bestand is te groot voor browseropslag');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function deleteCustomAudio(type) {
+      if (!confirm('Weet je zeker dat je dit geluid wilt verwijderen?')) return;
+
+      if (type === 'done') {
+        customDoneAudios = customDoneAudios.filter(a => a.id !== currentDoneAudioId);
+        SafeStore.setItem('wk_custom_done_audios_v27', JSON.stringify(customDoneAudios));
+        currentDoneAudioId = 'beep';
+        SafeStore.setItem('wk_active_done_audio_id_v27', 'beep');
+      } else {
+        customAlarmAudios = customAlarmAudios.filter(a => a.id !== currentAlarmAudioId);
+        SafeStore.setItem('wk_custom_alarm_audios_v27', JSON.stringify(customAlarmAudios));
+        currentAlarmAudioId = 'classic';
+        SafeStore.setItem('wk_active_alarm_audio_id_v27', 'classic');
+      }
+
+      renderAudioDropdowns();
+      showToast('Geluid verwijderd');
+    }
+
     function openSettingsModal() {
       document.getElementById('settingsModal').style.display = 'flex';
       document.getElementById('muscleModeSelect').value = muscleMode;
-      document.getElementById('doneAudioSelect').value = currentDoneAudioId;
-      document.getElementById('alarmAudioSelect').value = currentAlarmAudioId;
+      renderAudioDropdowns();
       renderThemeDropdown();
       updateCycleCountLabels();
     }
@@ -1165,17 +1292,6 @@
       const wEl = document.getElementById('activeWeeksCountLabel');
       if (dEl) dEl.innerText = days.length;
       if (wEl) wEl.innerText = totalWeeks;
-    }
-
-    function changeAudioSetting(type, val) {
-      if (type === 'done') {
-        currentDoneAudioId = val;
-        SafeStore.setItem('wk_active_done_audio_id_v27', val);
-      } else {
-        currentAlarmAudioId = val;
-        SafeStore.setItem('wk_active_alarm_audio_id_v27', val);
-      }
-      showToast('Geluid ingesteld');
     }
 
     function triggerBgUpload() {
@@ -1371,14 +1487,6 @@
       setTimeout(() => { toast.style.display = 'none'; }, 2200);
     }
 
-    function toggleHaptics() {
-      hapticsEnabled = !hapticsEnabled;
-      SafeStore.setItem('wk_haptic_v27', JSON.stringify(hapticsEnabled));
-      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
-      triggerHaptic();
-      showToast(hapticsEnabled ? 'Haptics Aan' : 'Haptics Uit');
-    }
-
     function toggleSound() {
       soundEnabled = !soundEnabled;
       SafeStore.setItem('wk_sound_v27', JSON.stringify(soundEnabled));
@@ -1437,7 +1545,6 @@
         if (remaining <= 0) {
           stopTimer();
           playAlarmAudio();
-          triggerHaptic();
         } else {
           timerSeconds = remaining;
           renderTimer();
@@ -1497,7 +1604,6 @@
         if (remaining <= 0) {
           stopTimer();
           playAlarmAudio();
-          triggerHaptic();
         } else {
           timerSeconds = remaining;
           renderTimer();
@@ -1534,11 +1640,11 @@
 
     function init() {
       document.getElementById('soundToggleBtn').innerText = soundEnabled ? 'Audio Aan' : 'Audio Uit';
-      document.getElementById('hapticToggleBtn').innerText = hapticsEnabled ? 'Haptic Aan' : 'Haptic Uit';
       document.getElementById('autoTimerSelect').value = autoTimerSeconds;
       document.getElementById('volumeControlSelect').value = soundVolume.toFixed(2);
       document.getElementById('summaryModeLabel').innerText = muscleMode === 'simple' ? 'SIMPEL' : 'GEAVANCEERD';
 
+      renderAudioDropdowns();
       renderThemeDropdown();
       applyTheme(currentTheme);
 
@@ -1967,7 +2073,6 @@
       const k = getKey();
       data[k][exIdx].sets[setIdx][field] = String(val);
       saveData();
-      triggerHaptic();
       renderExercises();
     }
 
@@ -2012,8 +2117,6 @@
       s.completed = !s.completed;
       saveData();
 
-      triggerHaptic();
-
       if (s.completed) {
         playDoneAudio();
         if (!isStopwatch && !ex.linkedSuperset && autoTimerSeconds > 0) {
@@ -2036,7 +2139,6 @@
       s.reps = reps;
       s.actualRir = String(actualRir);
       saveData();
-      triggerHaptic();
       renderExercises();
       updateStats();
     }
